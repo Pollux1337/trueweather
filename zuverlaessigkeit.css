@@ -135,5 +135,17 @@ select {
 .divbar .fill.pos { left: 50%; background: var(--better); }
 .divbar .fill.neg { right: 50%; background: var(--worse); }
 
+.cities td.left, .cities th { text-align: left; }
+.cities th:last-child, .cities td:last-child { text-align: right; }
+.cities td .muted { font-size: 0.8rem; }
+
+.status.info {
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--better) 10%, transparent);
+  color: var(--text);
+  font-size: 0.9rem;
+}
+
 .about ul { margin: 8px 0 0; padding-left: 20px; }
 .about li { margin: 6px 0; font-size: 0.9rem; }

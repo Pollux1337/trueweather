@@ -5,8 +5,8 @@ on:
     - cron: "15 5 * * *" # täglich 05:15 UTC = 07:15 Uhr (Sommerzeit) bzw. 06:15 Uhr (Winterzeit)
   workflow_dispatch:
     inputs:
-      backfill:
-        description: "Archiv ab Datum importieren (JJJJ-MM-TT). Leer lassen für einen normalen Lauf."
+      budget:
+        description: "Budget für den Archiv-Import (Open-Meteo-Einheiten, Standard 6000)"
         required: false
   push:
     branches: [main] # bei Code-Änderungen nur das Dashboard neu veröffentlichen
@@ -32,14 +32,9 @@ jobs:
 
       - name: Daten sammeln
         env:
-          BACKFILL: ${{ inputs.backfill }}
+          ARCHIVE_BUDGET: ${{ inputs.budget || '6000' }}
           MET_USER_AGENT: "WetterVorhersageCheck/1.0 (+https://github.com/${{ github.repository }})"
-        run: |
-          if [ -n "$BACKFILL" ]; then
-            node collector/collect.mjs --backfill "$BACKFILL"
-          else
-            node collector/collect.mjs
-          fi
+        run: node collector/collect.mjs
 
       - name: Daten speichern
         if: always()

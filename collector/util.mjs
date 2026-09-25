@@ -3,6 +3,8 @@ import { dirname } from "node:path";
 
 export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+export class RateLimitError extends Error {}
+
 // fetch mit Wiederholung bei Netzwerkfehlern, 429 (Rate-Limit) und 5xx
 export async function fetchJson(url, { headers = {}, retries = 4 } = {}) {
   for (let attempt = 0; ; attempt++) {
@@ -15,11 +17,13 @@ export async function fetchJson(url, { headers = {}, retries = 4 } = {}) {
       continue;
     }
     if (res.ok) return res.json();
+    const body = await res.text().catch(() => "");
+    // Stunden- oder Tageslimit: Warten lohnt nicht, später weitermachen
+    if (res.status === 429 && /hourly|daily/i.test(body)) throw new RateLimitError(body.slice(0, 200));
     if ((res.status === 429 || res.status >= 500) && attempt < retries) {
       await sleep(res.status === 429 ? 65_000 : 5_000 * (attempt + 1));
       continue;
     }
-    const body = await res.text().catch(() => "");
     throw new Error(`HTTP ${res.status} (${url.split("?")[0]}): ${body.slice(0, 200)}`);
   }
 }

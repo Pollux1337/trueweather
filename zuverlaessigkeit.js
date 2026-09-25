@@ -11,6 +11,7 @@ const RAIN_MM = 1;        // ab dieser Tagesmenge gilt ein Tag als Regentag
 const MIN_N_CHART = 5;    // mindestens so viele Tage, damit ein Wert angezeigt wird
 const MIN_N_MONTH = 10;   // Monatswerte im Verlauf
 const LEADS = [1, 2, 3, 4, 5, 6, 7];
+const ALL = "__alle";
 
 const $ = (id) => document.getElementById(id);
 const state = { providers: [], locations: [], status: null, cache: {}, charts: {} };
@@ -62,7 +63,9 @@ async function init() {
     state.locations = locations;
     state.status = await fetchText("data/status.json").then(JSON.parse).catch(() => null);
 
-    $("f-location").innerHTML = locations.map((l) => `<option value="${l.id}">${l.name}${l.region ? ` (${l.region})` : ""}</option>`).join("");
+    const sorted = [...locations].sort((a, b) => a.name.localeCompare(b.name, "de"));
+    $("f-location").innerHTML = `<option value="${ALL}">Alle ${locations.length} Orte (gemittelt)</option>` +
+      sorted.map((l) => `<option value="${l.id}">${l.name}${l.region ? ` (${l.region})` : ""}</option>`).join("");
     const params = new URLSearchParams(location.search);
     if (params.get("ort") && locations.some((l) => l.id === params.get("ort"))) $("f-location").value = params.get("ort");
 
@@ -84,6 +87,13 @@ async function loadLocation(id) {
   return state.cache[id];
 }
 
+// Liefert [{ loc, data }] für den gewählten Ort oder alle Orte mit vorhandenen Daten
+async function getSets(selection) {
+  const locs = selection === ALL ? state.locations : state.locations.filter((l) => l.id === selection);
+  const results = await Promise.allSettled(locs.map((l) => loadLocation(l.id)));
+  return locs.map((loc, i) => ({ loc, data: results[i].value })).filter((s) => s.data && s.data.obs.size);
+}
+
 function showStatus(text, isError = false) {
   const el = $("status");
   el.textContent = text;
@@ -93,7 +103,7 @@ function showStatus(text, isError = false) {
 
 // ---------- Auswertung ----------
 
-function computePairs(data, metric, period, commonOnly) {
+function computePairs(data, metric, period, commonOnly, locId = "") {
   const m = METRICS[metric];
   const dates = [...data.obs.keys()].sort();
   const lastObs = dates.at(-1);
@@ -104,7 +114,7 @@ function computePairs(data, metric, period, commonOnly) {
     if (r.target < from || r.target > lastObs) continue;
     const o = data.obs.get(r.target);
     if (!o || o[m.field] == null || r[m.field] == null) continue;
-    pairs.push({ provider: r.provider, lead: r.lead, target: r.target, f: r[m.field], o: o[m.field] });
+    pairs.push({ loc: locId, provider: r.provider, lead: r.lead, target: r.target, f: r[m.field], o: o[m.field] });
   }
 
   if (commonOnly) {
@@ -179,26 +189,35 @@ function bestAt(stats, lead, kind) {
 // ---------- Anzeige ----------
 
 async function update() {
-  const locId = $("f-location").value;
+  const selection = $("f-location").value;
+  const all = selection === ALL;
   const metric = $("f-metric").value;
   const m = METRICS[metric];
-  const loc = state.locations.find((l) => l.id === locId);
-  showStatus(`Lade ${loc.name} …`);
+  const loc = state.locations.find((l) => l.id === selection);
+  showStatus(all ? `Lade ${state.locations.length} Orte …` : `Lade ${loc.name} …`);
 
-  let data;
-  try { data = await loadLocation(locId); } catch (err) {
-    console.error(err);
-    return showStatus(`Für ${loc.name} liegen noch keine Daten vor.`, true);
+  const sets = await getSets(selection);
+  renderWarning();
+  if (!sets.length) {
+    for (const id of ["kpis", "ranking-card", "city-card", "lead-card", "table-card", "trend-card", "latest-card"]) $(id).hidden = true;
+    return showStatus(all ? "Es liegen noch keine Daten vor." : `Für ${loc.name} liegen noch keine Daten vor. Der Import läuft.`, true);
   }
 
-  const { pairs, from, lastObs, firstObs } = computePairs(data, metric, $("f-period").value, $("f-common").checked);
+  // Paare aus Vorhersage und Messung, bei „Alle Orte“ zusammengelegt
+  const period = $("f-period").value, common = $("f-common").checked;
+  let pairs = [], lastObs = "", firstObs = "9999";
+  for (const s of sets) {
+    const r = computePairs(s.data, metric, period, common, s.loc.id);
+    pairs = pairs.concat(r.pairs);
+    if (r.lastObs > lastObs) lastObs = r.lastObs;
+    if (r.firstObs < firstObs) firstObs = r.firstObs;
+  }
   const stats = computeStats(pairs, m.kind);
-  const ctx = { loc, metric, m, pairs, stats, from, lastObs, firstObs, data };
+  const ctx = { loc, all, sets, metric, m, pairs, stats, lastObs, firstObs, data: sets[0].data };
 
-  renderWarning();
   if (!pairs.length) {
     showStatus("Für diese Auswahl gibt es noch keine vergleichbaren Tage. Tipp: „Nur Tage, an denen alle Anbieter Daten haben“ braucht einige Tage Sammelzeit.", true);
-    for (const id of ["kpis", "ranking-card", "lead-card", "table-card", "trend-card"]) $(id).hidden = true;
+    for (const id of ["kpis", "ranking-card", "city-card", "lead-card", "table-card", "trend-card"]) $(id).hidden = true;
     renderLatest(ctx);
     return;
   }
@@ -218,10 +237,20 @@ function renderWarning() {
   const failed = Object.entries(s.locations || {}).flatMap(([id, l]) => l.results.filter((r) => !r.ok).map((r) => `${id}/${r.step}`));
   el.hidden = !failed.length;
   el.textContent = failed.length ? `Beim letzten Sammellauf gab es Fehler bei: ${failed.join(", ")}.` : "";
+
+  // Hinweis, solange der Archiv-Import noch läuft
+  const archive = Object.entries(s.archive || {});
+  const pending = archive.filter(([, v]) => v < 100);
+  $("info").hidden = !pending.length;
+  if (pending.length) {
+    const avg = Math.round(archive.reduce((a, [, v]) => a + v, 0) / archive.length);
+    $("info").textContent = `Archiv-Import läuft: ${avg} % der Daten seit Januar 2024 sind eingelesen. Er wird bei jedem täglichen Lauf fortgesetzt. Bis dahin beruhen die Werte bei ${pending.length} Orten auf einem kürzeren Zeitraum.`;
+  }
 }
 
-function renderKpis({ m, pairs, stats, lastObs, loc }) {
+function renderKpis({ m, pairs, stats, lastObs, loc, all, sets }) {
   const days = new Set(pairs.map((p) => p.target)).size;
+  const locDays = new Set(pairs.map((p) => `${p.loc}|${p.target}`)).size;
   const firstDay = pairs.reduce((a, p) => (p.target < a ? p.target : a), lastObs);
   const short = { day: "numeric", month: "short", year: "numeric" };
   const b1 = bestAt(stats, 1, m.kind);
@@ -234,7 +263,9 @@ function renderKpis({ m, pairs, stats, lastObs, loc }) {
   const lastRun = state.status?.lastRun ? new Date(state.status.lastRun).toLocaleString("de-DE", { dateStyle: "medium", timeStyle: "short" }) : "–";
   const tile = (label, value, note) => `<div class="card kpi"><div class="label">${label}</div><div class="value">${value}</div><div class="note">${note}</div></div>`;
   $("kpis").innerHTML = [
-    tile("Ausgewertete Tage", days.toLocaleString("de-DE"), `${fmtDate(firstDay, short)} bis ${fmtDate(lastObs, short)} · Station ${loc.stationName}`),
+    all
+      ? tile("Ausgewertete Tage", days.toLocaleString("de-DE"), `${fmtDate(firstDay, short)} bis ${fmtDate(lastObs, short)} · ${sets.length} Orte, zusammen ${locDays.toLocaleString("de-DE")} Messtage`)
+      : tile("Ausgewertete Tage", days.toLocaleString("de-DE"), `${fmtDate(firstDay, short)} bis ${fmtDate(lastObs, short)} · Station ${loc.stationName}`),
     tile("Am genauesten für morgen", b1 ? b1.p.name : "–", b1 ? `${m.kind === "hit" ? "Trefferquote" : "Ø Abweichung"} ${fmt(b1.s.value, m.digits)}${unit}` : "zu wenig Daten"),
     tile("Am genauesten für in 5 Tagen", b5 ? b5.p.name : "–", b5 ? `${m.kind === "hit" ? "Trefferquote" : "Ø Abweichung"} ${fmt(b5.s.value, m.digits)}${unit}` : "zu wenig Daten"),
     tile(m.kind === "hit" ? "Trefferquote: Tag 1 → Tag 7" : "Ø Abweichung: Tag 1 → Tag 7", `${fmt(avg(1), m.digits)} → ${fmt(avg(7), m.digits)}${unit}`, `Mittel aller Anbieter · letzte Aktualisierung ${lastRun}`),
@@ -242,41 +273,67 @@ function renderKpis({ m, pairs, stats, lastObs, loc }) {
   $("kpis").hidden = false;
 }
 
-function renderRanking({ data, metric }) {
+const mean = (vals) => (vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : null);
+const pct = (v) => {
+  if (v == null) return "–";
+  const r = Math.round(v);
+  return `${r > 0 ? "+" : r < 0 ? "−" : "±"}${Math.abs(r)} %`;
+};
+
+// Ranking je Ort berechnen, danach über die Orte mitteln (jeder Ort zählt gleich)
+function computeRanking(sets, period, common) {
+  const keys = Object.keys(METRICS);
+  const perLoc = {}; // locId -> metric -> providerId -> Prozent
+  const days = {};   // providerId -> Set(Ort|Tag), Höchsttemperatur
+  const locDays = {}; // locId -> Anzahl Tage
+  for (const { loc, data } of sets) {
+    perLoc[loc.id] = {};
+    for (const key of keys) {
+      const { pairs } = computePairs(data, key, period, common, loc.id);
+      perLoc[loc.id][key] = relativeScores(computeStats(pairs, METRICS[key].kind), METRICS[key].kind);
+      if (key === "tmax") {
+        for (const p of pairs) (days[p.provider] ??= new Set()).add(`${loc.id}|${p.target}`);
+        locDays[loc.id] = new Set(pairs.map((p) => p.target)).size;
+      }
+    }
+  }
+  const locIds = Object.keys(perLoc);
+  const scores = Object.fromEntries(keys.map((k) => [k, Object.fromEntries(state.providers.map((p) => [p.id, mean(locIds.map((l) => perLoc[l][k][p.id]).filter((v) => v != null))]))]));
+  const totalOf = (byMetric, pid) => {
+    const vals = keys.map((k) => byMetric[k][pid]).filter((v) => v != null);
+    return vals.length === keys.length ? mean(vals) : null;
+  };
+  const rows = state.providers
+    .map((p) => ({ p, total: totalOf(scores, p.id), days: days[p.id]?.size || 0 }))
+    .sort((a, b) => (b.total ?? -Infinity) - (a.total ?? -Infinity));
+  // Gesamtwertung je Ort für die Sieger-Tabelle
+  const byLoc = Object.fromEntries(locIds.map((l) => [l, state.providers
+    .map((p) => ({ p, total: totalOf(perLoc[l], p.id) }))
+    .filter((r) => r.total != null)
+    .sort((a, b) => b.total - a.total)]));
+  return { keys, scores, rows, byLoc, locDays };
+}
+
+function renderRanking({ sets, metric, all }) {
   const period = $("f-period").value;
   const common = $("f-common").checked;
-  const keys = Object.keys(METRICS);
-  const scores = {}; // metric -> providerId -> Prozent
-  const days = {};   // providerId -> ausgewertete Tage (Höchsttemperatur)
-  for (const key of keys) {
-    const { pairs } = computePairs(data, key, period, common);
-    scores[key] = relativeScores(computeStats(pairs, METRICS[key].kind), METRICS[key].kind);
-    if (key === "tmax") for (const p of pairs) days[p.provider] = (days[p.provider] || new Set()).add(p.target);
-  }
-
-  const rows = state.providers.map((p) => {
-    const vals = keys.map((k) => scores[k][p.id]).filter((v) => v != null);
-    return { p, total: vals.length === keys.length ? vals.reduce((a, b) => a + b, 0) / vals.length : null, days: days[p.id]?.size || 0 };
-  });
-  rows.sort((a, b) => (b.total ?? -Infinity) - (a.total ?? -Infinity));
+  const { keys, scores, rows, byLoc, locDays } = computeRanking(sets, period, common);
+  const days = Object.fromEntries(rows.map((r) => [r.p.id, r.days]));
 
   const ranked = rows.filter((r) => r.total != null);
   const maxAbs = Math.max(1, ...ranked.map((r) => Math.abs(r.total)));
-  const pct = (v) => {
-    if (v == null) return "–";
-    const r = Math.round(v);
-    return `${r > 0 ? "+" : r < 0 ? "−" : "±"}${Math.abs(r)} %`;
-  };
   const periodText = $("f-period").selectedOptions[0].textContent;
 
-  $("ranking-sub").textContent = `Zeitraum: ${periodText}${common ? ", nur Tage mit Daten aller Anbieter" : ""}. Gewertet werden alle fünf Messgrößen über alle Vorlaufzeiten, die ein Anbieter rechnet.`;
+  $("ranking-sub").textContent = `Zeitraum: ${periodText}${common ? ", nur Tage mit Daten aller Anbieter" : ""}. Gewertet werden alle fünf Messgrößen über alle Vorlaufzeiten, die ein Anbieter rechnet.` +
+    (all ? ` Das Ranking wird für jeden der ${sets.length} Orte einzeln berechnet und dann gemittelt, jeder Ort zählt gleich viel.` : "");
+  renderCityWinners(all, sets, byLoc, locDays);
   const w = ranked[0];
   $("ranking-winner").innerHTML = w
     ? `🏆 Zuverlässigste Quelle: <strong>${w.p.name}</strong>. Sie liegt im Schnitt ${fmt(Math.abs(w.total), 0)} % ${w.total >= 0 ? "genauer" : "ungenauer"} als der Durchschnitt aller Anbieter.`
     : "Noch zu wenig Daten für ein Ranking.";
 
   const medal = ["🥇", "🥈", "🥉"];
-  let html = `<thead><tr><th>Platz</th><th>Anbieter</th><th>Gesamt</th>${keys.map((k) => `<th class="${k === metric ? "sel" : ""}">${METRICS[k].label}</th>`).join("")}<th>Reichweite</th><th>Tage</th></tr></thead><tbody>`;
+  let html = `<thead><tr><th>Platz</th><th>Anbieter</th><th>Gesamt</th>${keys.map((k) => `<th class="${k === metric ? "sel" : ""}">${METRICS[k].label}</th>`).join("")}<th>Reichweite</th><th>${all ? "Messtage" : "Tage"}</th></tr></thead><tbody>`;
   rows.forEach((r, i) => {
     const has = r.total != null;
     const place = has ? medal[i] || `${i + 1}.` : "–";
@@ -289,11 +346,37 @@ function renderRanking({ data, metric }) {
       <td class="total">${bar}</td>
       ${keys.map((k) => `<td class="${k === metric ? "sel" : ""} ${scores[k][r.p.id] == null ? "muted" : ""}">${pct(scores[k][r.p.id])}</td>`).join("")}
       <td>${r.p.maxLead} Tage</td>
-      <td>${r.days.toLocaleString("de-DE")}</td>
+      <td>${days[r.p.id].toLocaleString("de-DE")}</td>
     </tr>`;
   });
   $("ranking").innerHTML = html + "</tbody>";
   $("ranking-card").hidden = false;
+}
+
+function renderCityWinners(all, sets, byLoc, locDays) {
+  $("city-card").hidden = !all;
+  if (!all) return;
+  const locs = sets.map((s) => s.loc).sort((a, b) => a.name.localeCompare(b.name, "de"));
+
+  // Wie oft gewinnt welcher Anbieter?
+  const wins = {};
+  for (const l of locs) if (byLoc[l.id][0]) wins[byLoc[l.id][0].p.id] = (wins[byLoc[l.id][0].p.id] || 0) + 1;
+  const counted = Object.entries(wins).sort((a, b) => b[1] - a[1]);
+  const rated = locs.filter((l) => byLoc[l.id].length).length;
+  $("city-sub").textContent = counted.length
+    ? `Platz 1 geht an: ${counted.map(([id, n]) => `${state.providers.find((p) => p.id === id).name} (${n}×)`).join(", ")}, bei ${rated} bewerteten Orten.`
+    : "Noch zu wenig Daten.";
+
+  const place = (r) => (r ? `<span class="swatch" style="background:${color(r.p)}"></span>${r.p.name} <span class="muted">${pct(r.total)}</span>` : `<span class="muted">–</span>`);
+  let html = `<thead><tr><th>Ort</th><th>Station</th><th>🥇 Platz 1</th><th>🥈 Platz 2</th><th>🥉 Platz 3</th><th>Tage</th></tr></thead><tbody>`;
+  for (const l of locs) {
+    const r = byLoc[l.id];
+    html += `<tr><td class="name">${l.name}<small>${l.region}${l.capital === false ? " · zusätzlicher Ort" : ""}</small></td>
+      <td class="left muted">${l.stationName}</td>
+      <td class="left">${place(r[0])}</td><td class="left">${place(r[1])}</td><td class="left">${place(r[2])}</td>
+      <td>${(locDays[l.id] || 0).toLocaleString("de-DE")}</td></tr>`;
+  }
+  $("cities").innerHTML = html + "</tbody>";
 }
 
 function chartTheme() {
@@ -416,8 +499,9 @@ function renderTrend({ m, pairs }) {
   $("trend-card").hidden = false;
 }
 
-function renderLatest({ m, data, lastObs }) {
-  if (!lastObs) { $("latest-card").hidden = true; return; }
+function renderLatest({ m, data, lastObs, all }) {
+  // Einzelvergleich nur für einen Ort sinnvoll
+  if (all || !lastObs) { $("latest-card").hidden = true; return; }
   const o = data.obs.get(lastObs);
   const field = m.field;
   const unit = field === "precip" ? "mm" : m.unit === "%" ? "mm" : m.unit;

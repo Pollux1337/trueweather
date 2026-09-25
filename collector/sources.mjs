@@ -24,6 +24,13 @@ export async function fetchObservations(loc, start, end) {
 // ---------- Open-Meteo: archivierte Vorhersagen (Previous Runs API) ----------
 // temperature_2m_previous_dayK = Vorhersage, die K Tage vorher für diese Stunde gemacht wurde.
 
+// Open-Meteo zählt große Abfragen mehrfach: je 10 Variablen und je 14 Tage eine Einheit
+export function openMeteoCost(provider, start, end) {
+  const days = daysBetween(start, end) + 1;
+  const chunks = Math.ceil(days / 92);
+  return chunks * Math.max(1, (provider.maxLead * 3) / 10) * Math.max(1, Math.min(days, 92) / 14);
+}
+
 export async function fetchOpenMeteoArchive(loc, provider, start, end) {
   const leads = Array.from({ length: provider.maxLead }, (_, i) => i + 1);
   const vars = leads.flatMap((k) => [`temperature_2m_previous_day${k}`, `precipitation_previous_day${k}`, `wind_speed_10m_previous_day${k}`]);
@@ -44,7 +51,7 @@ export async function fetchOpenMeteoArchive(loc, provider, start, end) {
         if (d.tmax != null) rows.push({ target, provider: provider.id, lead: k, ...d });
       }
     }
-    await sleep(1_500); // Rate-Limit schonen
+    await sleep(Math.max(1_000, openMeteoCost(provider, from, to) * 130)); // Minutenlimit (600 Einheiten) schonen
   }
   return rows;
 }

@@ -1,12 +1,19 @@
 [
-  {
-    "id": "luebeck",
-    "name": "Lübeck",
-    "region": "Ostseeküste",
-    "lat": 53.8025,
-    "lon": 10.6989,
-    "dwdStation": "03086",
-    "stationName": "Lübeck-Blankensee",
-    "timezone": "Europe/Berlin"
-  }
+  { "id": "berlin",       "name": "Berlin",      "region": "Berlin",                 "capital": true,  "lat": 52.4676, "lon": 13.402,  "dwdStation": "00433", "stationName": "Berlin-Tempelhof",          "timezone": "Europe/Berlin" },
+  { "id": "bremen",       "name": "Bremen",      "region": "Bremen",                 "capital": true,  "lat": 53.0451, "lon": 8.7981,  "dwdStation": "00691", "stationName": "Bremen",                    "timezone": "Europe/Berlin" },
+  { "id": "dresden",      "name": "Dresden",     "region": "Sachsen",                "capital": true,  "lat": 51.1278, "lon": 13.7543, "dwdStation": "01048", "stationName": "Dresden-Klotzsche",         "timezone": "Europe/Berlin" },
+  { "id": "duesseldorf",  "name": "Düsseldorf",  "region": "Nordrhein-Westfalen",    "capital": true,  "lat": 51.296,  "lon": 6.7686,  "dwdStation": "01078", "stationName": "Düsseldorf",                "timezone": "Europe/Berlin" },
+  { "id": "erfurt",       "name": "Erfurt",      "region": "Thüringen",              "capital": true,  "lat": 50.9827, "lon": 10.9613, "dwdStation": "01270", "stationName": "Erfurt-Weimar",             "timezone": "Europe/Berlin" },
+  { "id": "hamburg",      "name": "Hamburg",     "region": "Hamburg",                "capital": true,  "lat": 53.6332, "lon": 9.9881,  "dwdStation": "01975", "stationName": "Hamburg-Fuhlsbüttel",       "timezone": "Europe/Berlin" },
+  { "id": "hannover",     "name": "Hannover",    "region": "Niedersachsen",          "capital": true,  "lat": 52.4644, "lon": 9.6779,  "dwdStation": "02014", "stationName": "Hannover",                  "timezone": "Europe/Berlin" },
+  { "id": "kiel",         "name": "Kiel",        "region": "Schleswig-Holstein",     "capital": true,  "lat": 54.3776, "lon": 10.1424, "dwdStation": "02564", "stationName": "Kiel-Holtenau",             "timezone": "Europe/Berlin" },
+  { "id": "luebeck",      "name": "Lübeck",      "region": "Schleswig-Holstein",     "capital": false, "lat": 53.8025, "lon": 10.6989, "dwdStation": "03086", "stationName": "Lübeck-Blankensee",         "timezone": "Europe/Berlin" },
+  { "id": "magdeburg",    "name": "Magdeburg",   "region": "Sachsen-Anhalt",         "capital": true,  "lat": 52.1029, "lon": 11.5827, "dwdStation": "03126", "stationName": "Magdeburg",                 "timezone": "Europe/Berlin" },
+  { "id": "mainz",        "name": "Mainz",       "region": "Rheinland-Pfalz",        "capital": true,  "lat": 49.9859, "lon": 7.9548,  "dwdStation": "01580", "stationName": "Geisenheim",                "timezone": "Europe/Berlin" },
+  { "id": "muenchen",     "name": "München",     "region": "Bayern",                 "capital": true,  "lat": 48.1632, "lon": 11.5429, "dwdStation": "03379", "stationName": "München-Stadt",             "timezone": "Europe/Berlin" },
+  { "id": "potsdam",      "name": "Potsdam",     "region": "Brandenburg",            "capital": true,  "lat": 52.3812, "lon": 13.0622, "dwdStation": "03987", "stationName": "Potsdam",                   "timezone": "Europe/Berlin" },
+  { "id": "saarbruecken", "name": "Saarbrücken", "region": "Saarland",               "capital": true,  "lat": 49.2128, "lon": 7.1077,  "dwdStation": "04336", "stationName": "Saarbrücken-Ensheim",       "timezone": "Europe/Berlin" },
+  { "id": "schwerin",     "name": "Schwerin",    "region": "Mecklenburg-Vorpommern", "capital": true,  "lat": 53.6424, "lon": 11.3871, "dwdStation": "04625", "stationName": "Schwerin",                  "timezone": "Europe/Berlin" },
+  { "id": "stuttgart",    "name": "Stuttgart",   "region": "Baden-Württemberg",      "capital": true,  "lat": 48.8281, "lon": 9.2,     "dwdStation": "04928", "stationName": "Stuttgart (Schnarrenberg)", "timezone": "Europe/Berlin" },
+  { "id": "wiesbaden",    "name": "Wiesbaden",   "region": "Hessen",                 "capital": true,  "lat": 50.0259, "lon": 8.5213,  "dwdStation": "01420", "stationName": "Frankfurt/Main",            "timezone": "Europe/Berlin" }
 ]

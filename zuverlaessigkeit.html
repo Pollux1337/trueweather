@@ -13,7 +13,6 @@
       <h1>Vorhersage-Check</h1>
       <p class="muted subtitle">Wie zuverlässig sind Wettervorhersagen 1 bis 7 Tage im Voraus?</p>
     </div>
-    <nav><a href="index.html">← Aktuelles Wetter</a></nav>
   </header>
 
   <main>
@@ -46,6 +45,7 @@
 
     <p id="status" class="status" role="status">Lade Daten …</p>
     <p id="warning" class="status error" hidden></p>
+    <p id="info" class="status info" hidden></p>
 
     <section class="kpis" id="kpis" hidden></section>
 
@@ -55,6 +55,12 @@
       <p class="ranking-winner" id="ranking-winner"></p>
       <div class="table-wrap"><table id="ranking" class="ranking"></table></div>
       <p class="muted small">Prozent = wie viel genauer (+) oder ungenauer (−) ein Anbieter im Schnitt ist als der Durchschnitt aller Anbieter bei derselben Vorlaufzeit. So werden auch Anbieter mit kürzerer Reichweite fair verglichen. Die Gesamtwertung ist der Mittelwert der fünf Messgrößen.</p>
+    </section>
+
+    <section class="card" id="city-card" hidden>
+      <h3>Sieger je Ort</h3>
+      <p class="muted" id="city-sub"></p>
+      <div class="table-wrap"><table id="cities" class="ranking cities"></table></div>
     </section>
 
     <section class="card" id="lead-card" hidden>
@@ -92,7 +98,8 @@
     <section class="card about">
       <h3>So wird gemessen</h3>
       <ul>
-        <li><strong>Messwerte:</strong> DWD-Wetterstation (stündliche Werte, zu Tageswerten zusammengefasst). Ein Tag zählt erst, wenn mindestens 22 Stunden vorliegen.</li>
+        <li><strong>Orte:</strong> die 16 Landeshauptstädte und zusätzlich Lübeck, jeweils mit einer nahegelegenen DWD-Wetterstation. Für Mainz und Wiesbaden gibt es keine vollständige Station in der Stadt. Deshalb werden dort Geisenheim bzw. Frankfurt/Main verwendet, beide etwa 21 km entfernt.</li>
+        <li><strong>Messwerte:</strong> stündliche Werte der Station, zu Tageswerten zusammengefasst. Ein Tag zählt erst, wenn mindestens 22 Stunden vorliegen.</li>
         <li><strong>Vorlaufzeit:</strong> „3 Tage“ heißt: Die Vorhersage wurde 3 Tage vor dem Zieltag erstellt.</li>
         <li><strong>Abweichung:</strong> mittlerer absoluter Fehler, also wie weit die Vorhersage im Schnitt danebenlag, egal in welche Richtung. Kleiner ist besser.</li>
         <li><strong>Regen ja/nein:</strong> Anteil der Tage, an denen richtig vorhergesagt wurde, ob mindestens 1 mm Regen fällt. Größer ist besser.</li>
