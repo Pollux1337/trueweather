@@ -1,0 +1,10 @@
+[
+  { "id": "icon",   "name": "DWD ICON",         "org": "Deutscher Wetterdienst",       "source": "openmeteo", "model": "icon_seamless",        "maxLead": 6 },
+  { "id": "ecmwf",  "name": "ECMWF IFS",        "org": "Europäisches Zentrum (EZMW)",  "source": "openmeteo", "model": "ecmwf_ifs025",         "maxLead": 7 },
+  { "id": "gfs",    "name": "NOAA GFS",         "org": "US-Wetterdienst",              "source": "openmeteo", "model": "gfs_seamless",         "maxLead": 7 },
+  { "id": "arpege", "name": "Météo-France",     "org": "Französischer Wetterdienst",   "source": "openmeteo", "model": "meteofrance_seamless", "maxLead": 3 },
+  { "id": "ukmo",   "name": "UK Met Office",    "org": "Britischer Wetterdienst",      "source": "openmeteo", "model": "ukmo_seamless",        "maxLead": 6 },
+  { "id": "gem",    "name": "GEM Kanada",       "org": "Kanadischer Wetterdienst",     "source": "openmeteo", "model": "gem_seamless",         "maxLead": 7 },
+  { "id": "mosmix", "name": "DWD MOSMIX",       "org": "DWD, statistisch nachbearbeitet", "source": "brightsky",                              "maxLead": 7 },
+  { "id": "metno",  "name": "MET Norway (yr)",  "org": "Norwegischer Wetterdienst",    "source": "metno",                                      "maxLead": 7 }
+]

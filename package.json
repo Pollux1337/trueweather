@@ -1,0 +1,11 @@
+{
+  "name": "wetter-dashboard",
+  "private": true,
+  "type": "module",
+  "description": "Wetter-Dashboard und Zuverlässigkeits-Check für Wettervorhersagen",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "collect": "node collector/collect.mjs",
+    "backfill": "node collector/collect.mjs --backfill"
+  }
+}

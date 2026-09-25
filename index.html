@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wetter-Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>Wetter-Dashboard</h1>
+      <a class="nav-link" href="zuverlaessigkeit.html">Vorhersage-Check →</a>
+    </div>
+    <form id="search-form" class="search" autocomplete="off">
+      <input id="search-input" type="search" placeholder="Stadt suchen, z. B. Hamburg" aria-label="Stadt suchen">
+      <button type="submit">Suchen</button>
+      <button type="button" id="locate-btn" title="Meinen Standort verwenden" aria-label="Meinen Standort verwenden">📍</button>
+      <ul id="suggestions" class="suggestions" hidden></ul>
+    </form>
+  </header>
+
+  <main>
+    <p id="status" class="status" role="status">Lade Wetterdaten …</p>
+
+    <section id="current" class="card current" hidden>
+      <div class="current-main">
+        <div>
+          <h2 id="place"></h2>
+          <p id="updated" class="muted"></p>
+        </div>
+        <div class="current-temp">
+          <span id="current-icon" class="big-icon"></span>
+          <span id="current-temp"></span>
+        </div>
+        <p id="current-desc" class="current-desc"></p>
+      </div>
+      <dl class="stats">
+        <div><dt>Gefühlt</dt><dd id="feels"></dd></div>
+        <div><dt>Luftfeuchte</dt><dd id="humidity"></dd></div>
+        <div><dt>Wind</dt><dd id="wind"></dd></div>
+        <div><dt>Niederschlag</dt><dd id="precip"></dd></div>
+        <div><dt>Luftdruck</dt><dd id="pressure"></dd></div>
+        <div><dt>UV-Index</dt><dd id="uv"></dd></div>
+      </dl>
+    </section>
+
+    <section id="hourly" class="card" hidden>
+      <h3>Nächste 24 Stunden</h3>
+      <div id="hourly-chart" class="chart"></div>
+    </section>
+
+    <section id="daily" class="card" hidden>
+      <h3>7-Tage-Vorhersage</h3>
+      <ul id="daily-list" class="daily-list"></ul>
+    </section>
+  </main>
+
+  <footer class="muted">Daten: <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a></footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

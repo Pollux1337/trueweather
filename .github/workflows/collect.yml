@@ -1,0 +1,73 @@
+name: Wetterdaten sammeln
+
+on:
+  schedule:
+    - cron: "15 5 * * *" # täglich 05:15 UTC = 07:15 Uhr (Sommerzeit) bzw. 06:15 Uhr (Winterzeit)
+  workflow_dispatch:
+    inputs:
+      backfill:
+        description: "Archiv ab Datum importieren (JJJJ-MM-TT). Leer lassen für einen normalen Lauf."
+        required: false
+  push:
+    branches: [main] # bei Code-Änderungen nur das Dashboard neu veröffentlichen
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: wetterdaten
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    if: github.event_name != 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Daten sammeln
+        env:
+          BACKFILL: ${{ inputs.backfill }}
+          MET_USER_AGENT: "WetterVorhersageCheck/1.0 (+https://github.com/${{ github.repository }})"
+        run: |
+          if [ -n "$BACKFILL" ]; then
+            node collector/collect.mjs --backfill "$BACKFILL"
+          else
+            node collector/collect.mjs
+          fi
+
+      - name: Daten speichern
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data
+          if git diff --cached --quiet; then
+            echo "Keine neuen Daten."
+          else
+            git commit -m "Wetterdaten $(date -u +%F)"
+            git push
+          fi
+
+  deploy:
+    needs: collect
+    if: always()
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }} # neuester Stand inkl. der gerade gespeicherten Daten
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: deployment
+        uses: actions/deploy-pages@v4

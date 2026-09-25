@@ -1,0 +1,60 @@
+{
+  "lastRun": "2026-09-25T19:39:52.407Z",
+  "mode": "backfill ab 2024-01-01",
+  "locations": {
+    "luebeck": {
+      "today": "2026-09-25",
+      "results": [
+        {
+          "step": "messwerte",
+          "ok": true,
+          "added": 962,
+          "updated": 11,
+          "total": 973
+        },
+        {
+          "step": "icon",
+          "ok": true,
+          "added": 5765,
+          "updated": 84,
+          "total": 6283
+        },
+        {
+          "step": "ecmwf",
+          "ok": true,
+          "added": 6629,
+          "updated": 98,
+          "total": 12912
+        },
+        {
+          "step": "gfs",
+          "ok": true,
+          "added": 6734,
+          "updated": 98,
+          "total": 19646
+        },
+        {
+          "step": "arpege",
+          "ok": true,
+          "added": 2892,
+          "updated": 42,
+          "total": 22538
+        },
+        {
+          "step": "ukmo",
+          "ok": true,
+          "added": 3715,
+          "updated": 84,
+          "total": 26253
+        },
+        {
+          "step": "gem",
+          "ok": true,
+          "added": 6714,
+          "updated": 98,
+          "total": 32967
+        }
+      ]
+    }
+  }
+}

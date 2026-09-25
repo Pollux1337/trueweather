@@ -1,0 +1,12 @@
+[
+  {
+    "id": "luebeck",
+    "name": "Lübeck",
+    "region": "Ostseeküste",
+    "lat": 53.8025,
+    "lon": 10.6989,
+    "dwdStation": "03086",
+    "stationName": "Lübeck-Blankensee",
+    "timezone": "Europe/Berlin"
+  }
+]

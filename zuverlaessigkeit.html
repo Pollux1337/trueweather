@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vorhersage-Check</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="zuverlaessigkeit.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>Vorhersage-Check</h1>
+      <p class="muted subtitle">Wie zuverlässig sind Wettervorhersagen 1 bis 7 Tage im Voraus?</p>
+    </div>
+    <nav><a href="index.html">← Aktuelles Wetter</a></nav>
+  </header>
+
+  <main>
+    <section class="filters card" aria-label="Filter">
+      <label>Ort
+        <select id="f-location"></select>
+      </label>
+      <label>Messgröße
+        <select id="f-metric">
+          <option value="tmax">Höchsttemperatur</option>
+          <option value="tmin">Tiefsttemperatur</option>
+          <option value="rainhit">Regen ja/nein</option>
+          <option value="precip">Niederschlagsmenge</option>
+          <option value="wind">Wind (Tagesmaximum)</option>
+        </select>
+      </label>
+      <label>Zeitraum
+        <select id="f-period">
+          <option value="30">Letzte 30 Tage</option>
+          <option value="90">Letzte 90 Tage</option>
+          <option value="365" selected>Letzte 12 Monate</option>
+          <option value="all">Alles</option>
+        </select>
+      </label>
+      <label class="check">
+        <input type="checkbox" id="f-common">
+        Nur Tage, an denen alle Anbieter Daten haben
+      </label>
+    </section>
+
+    <p id="status" class="status" role="status">Lade Daten …</p>
+    <p id="warning" class="status error" hidden></p>
+
+    <section class="kpis" id="kpis" hidden></section>
+
+    <section class="card" id="lead-card" hidden>
+      <h3 id="lead-title"></h3>
+      <p class="muted" id="lead-sub"></p>
+      <div class="chart-box"><canvas id="lead-chart" role="img"></canvas></div>
+    </section>
+
+    <section class="card" id="table-card" hidden>
+      <h3 id="table-title"></h3>
+      <p class="muted" id="table-sub"></p>
+      <div class="table-wrap"><table id="matrix" class="matrix"></table></div>
+    </section>
+
+    <section class="card" id="trend-card" hidden>
+      <div class="card-head">
+        <h3 id="trend-title"></h3>
+        <label class="inline">Vorlaufzeit
+          <select id="f-trend-lead">
+            <option value="1">1 Tag</option><option value="2">2 Tage</option><option value="3" selected>3 Tage</option>
+            <option value="4">4 Tage</option><option value="5">5 Tage</option><option value="6">6 Tage</option><option value="7">7 Tage</option>
+          </select>
+        </label>
+      </div>
+      <p class="muted" id="trend-sub"></p>
+      <div class="chart-box"><canvas id="trend-chart" role="img"></canvas></div>
+    </section>
+
+    <section class="card" id="latest-card" hidden>
+      <h3 id="latest-title"></h3>
+      <p class="muted" id="latest-sub"></p>
+      <div class="table-wrap"><table id="latest" class="matrix latest"></table></div>
+    </section>
+
+    <section class="card about">
+      <h3>So wird gemessen</h3>
+      <ul>
+        <li><strong>Messwerte:</strong> DWD-Wetterstation (stündliche Werte, zu Tageswerten zusammengefasst). Ein Tag zählt erst, wenn mindestens 22 Stunden vorliegen.</li>
+        <li><strong>Vorlaufzeit:</strong> „3 Tage“ heißt: Die Vorhersage wurde 3 Tage vor dem Zieltag erstellt.</li>
+        <li><strong>Abweichung:</strong> mittlerer absoluter Fehler, also wie weit die Vorhersage im Schnitt danebenlag, egal in welche Richtung. Kleiner ist besser.</li>
+        <li><strong>Regen ja/nein:</strong> Anteil der Tage, an denen richtig vorhergesagt wurde, ob mindestens 1 mm Regen fällt. Größer ist besser.</li>
+        <li><strong>Quellen:</strong> Die Wettermodelle (ICON, ECMWF, GFS, Météo-France, UK Met Office, GEM) stammen aus dem Vorhersage-Archiv von Open-Meteo (seit 2024). DWD MOSMIX und MET Norway werden erst seit Projektstart täglich gesammelt. Für einen fairen Vergleich aktiviere „Nur Tage, an denen alle Anbieter Daten haben“.</li>
+        <li><strong>Reichweite:</strong> Nicht jedes Modell rechnet 7 Tage weit: Météo-France bis 3 Tage, ICON und UK Met Office bis 6 Tage.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="muted" id="footer">Daten: <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a>, <a href="https://brightsky.dev" target="_blank" rel="noopener">Bright Sky / DWD</a>, <a href="https://api.met.no" target="_blank" rel="noopener">MET Norway</a></footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script src="zuverlaessigkeit.js"></script>
+</body>
+</html>
