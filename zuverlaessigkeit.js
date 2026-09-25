@@ -4,7 +4,7 @@
 import {
   METRICS, METRIC_KEYS, RAIN_MM, MIN_N, MIN_N_MONTH, LEADS,
   parseCsv, computePairs, computeStats, relativeByLead, score, badness, computeRanking, mean,
-} from "./lib/scoring.js";
+} from "./lib/scoring.js?v=__VERSION__";
 
 const ALL = "__alle";
 const GEO_URL = "https://cdn.jsdelivr.net/gh/isellsoap/deutschlandGeoJSON@main/2_bundeslaender/3_mittel.geo.json";
@@ -170,6 +170,8 @@ async function update() {
   }
   if (!ctx) {
     for (const id of CARDS) $(id).hidden = true;
+    // Karte trotzdem zeigen: alle Regionen grau, bis Daten da sind
+    if (all) { state.ctx = { all: true, rel: {}, locDays: {} }; renderMap(state.ctx); }
     return showStatus(common
       ? "Für diese Auswahl gibt es noch keine vergleichbaren Tage. „Nur Tage, an denen alle Anbieter Daten haben“ braucht einige Tage Sammelzeit."
       : all ? "Es liegen noch keine Daten vor." : `Für ${loc.name} liegen noch keine Daten vor. Der Import läuft.`, true);
@@ -263,18 +265,19 @@ async function renderMap(ctx) {
   const W = 600, H = 800;
   const projection = d3.geoMercator().fitExtent([[10, 10], [W - 10, H - 10]], geo);
   const path = d3.geoPath(projection);
-  const locs = state.locations.filter((l) => ctx.rel[l.id]);
+  const locs = state.locations; // alle Stationen; ohne genug Daten bleibt die Fläche grau
   const pts = locs.map((l) => projection([l.lon, l.lat]));
   const voronoi = d3.Delaunay.from(pts).voronoi([0, 0, W, H]);
 
   // Farbe je Region
   const better = cssVar("--better"), worse = cssVar("--worse"), mid = isDark() ? "#383835" : "#f0efec";
   const diverge = d3.scaleLinear().domain([-25, 0, 25]).range([worse, mid, better]).clamp(true);
+  const noData = cssVar("--nodata");
   const fillFor = (l) => {
     const ranking = byLoc[l.id] || [];
-    if (mode === "best") return ranking[0] ? color(ranking[0].p) : "var(--bg)";
+    if (mode === "best") return ranking[0] ? color(ranking[0].p) : noData;
     const r = ranking.find((x) => x.p.id === mode);
-    return r ? diverge(r.total) : "var(--bg)";
+    return r ? diverge(r.total) : noData;
   };
 
   const svg = [`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Deutschlandkarte: ${mode === "best" ? "bester Wetterdienst je Region" : `Güte von ${esc(providerById(mode).name)} je Region`}">`,
@@ -303,7 +306,8 @@ async function renderMap(ctx) {
       const rows = mode === "best"
         ? ranking.slice(0, 3).map((r, i) => `<div><span class="swatch" style="background:${color(r.p)}"></span>${i + 1}. ${esc(r.p.name)} <span class="muted">${pct(r.total)}</span></div>`).join("")
         : (() => { const r = ranking.find((x) => x.p.id === mode); return `<div>${esc(providerById(mode).name)}: <strong>${pct(r?.total)}</strong> gegenüber dem Durchschnitt</div>`; })();
-      tip.innerHTML = `<strong>${esc(l.name)}</strong><div class="muted">${esc(l.region)} · Station ${esc(l.stationName)} · ${(ctx.locDays[l.id] || 0).toLocaleString("de-DE")} Tage</div>${rows || '<div class="muted">noch zu wenig Daten</div>'}`;
+      const days = (ctx.locDays?.[l.id] || 0).toLocaleString("de-DE");
+      tip.innerHTML = `<strong>${esc(l.name)}</strong><div class="muted">${esc(l.region)} · Station ${esc(l.stationName)} · ${days} Tage</div>${ranking.length ? rows : '<div class="muted">Noch zu wenig Daten, wird gerade gesammelt.</div>'}`;
       const rect = box.getBoundingClientRect();
       const x = e.clientX - rect.left, y = e.clientY - rect.top;
       tip.style.left = `${Math.min(x + 14, rect.width - 250)}px`;
@@ -320,6 +324,13 @@ async function renderMap(ctx) {
 }
 
 function renderMapLegend(mode, byLoc, locs) {
+  const missing = locs.filter((l) => !byLoc[l.id]?.length).length;
+  const gray = missing ? `<span class="legend-item"><span class="swatch" style="background:var(--nodata)"></span>noch zu wenig Daten <strong>${missing}</strong></span>` : "";
+  renderMapLegendInner(mode, byLoc, locs);
+  $("map-legend").insertAdjacentHTML("beforeend", gray);
+}
+
+function renderMapLegendInner(mode, byLoc, locs) {
   if (mode === "best") {
     const wins = {};
     for (const l of locs) { const w = byLoc[l.id]?.[0]; if (w) wins[w.p.id] = (wins[w.p.id] || 0) + 1; }
@@ -328,7 +339,7 @@ function renderMapLegend(mode, byLoc, locs) {
       .map((p) => ({ p, n: wins[p.id] || 0 }))
       .sort((a, b) => b.n - a.n)
       .map(({ p, n }) => `<span class="legend-item${n ? "" : " zero"}"><span class="swatch" style="background:${color(p)}"></span>${esc(p.name)} <strong>${n}</strong></span>`)
-      .join("") + `<span class="legend-note">Anzahl Regionen mit Platz 1, von ${rated}</span>`;
+      .join("") + `<span class="legend-note">Anzahl Regionen mit Platz 1, von ${rated} bewerteten</span>`;
   } else {
     $("map-legend").innerHTML = `<span class="legend-note">ungenauer als der Durchschnitt</span><span class="gradient"></span><span class="legend-note">genauer</span><span class="legend-note">(−25 % … +25 %)</span>`;
   }

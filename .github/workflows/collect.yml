@@ -65,6 +65,8 @@ jobs:
           node-version: 22
       - name: Zusammenfassung für das Dashboard erzeugen
         run: node collector/summarize.mjs
+      - name: Versionskennung einsetzen (verhindert veraltete Browser-Caches)
+        run: sed -i "s/__VERSION__/${GITHUB_SHA::7}-${GITHUB_RUN_ID}/g" zuverlaessigkeit.html zuverlaessigkeit.js
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

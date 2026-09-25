@@ -3,6 +3,7 @@
   --series-1: #2a78d6; --series-2: #eb6834; --series-3: #1baf7a; --series-4: #eda100;
   --series-5: #e87ba4; --series-6: #008300; --series-7: #4a3aa7; --series-8: #e34948;
   --grid: #e1e0d9;
+  --nodata: #d6d5cf;
   --heat-0: #f3f7fd; --heat-1: #cde2fb; --heat-2: #9ec5f4; --heat-3: #6da7ec; --heat-4: #3987e5; --heat-5: #256abf; --heat-6: #184f95;
 }
 
@@ -11,6 +12,7 @@
     --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500;
     --series-5: #d55181; --series-6: #008300; --series-7: #9085e9; --series-8: #e66767;
     --grid: #2c2c2a;
+    --nodata: #3a3a37;
     --heat-0: #1d2533; --heat-1: #0d366b; --heat-2: #104281; --heat-3: #184f95; --heat-4: #1c5cab; --heat-5: #256abf; --heat-6: #3987e5;
   }
 }

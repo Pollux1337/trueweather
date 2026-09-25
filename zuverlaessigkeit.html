@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vorhersage-Check</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="zuverlaessigkeit.css">
+  <link rel="stylesheet" href="style.css?v=__VERSION__">
+  <link rel="stylesheet" href="zuverlaessigkeit.css?v=__VERSION__">
 </head>
 <body>
   <header class="topbar">
@@ -47,11 +47,9 @@
     <p id="warning" class="status error" hidden></p>
     <p id="info" class="status info" hidden></p>
 
-    <section class="kpis" id="kpis" hidden></section>
-
     <section class="card" id="map-card" hidden>
       <h3>Deutschlandkarte: Welcher Wetterdienst ist wo am sinnvollsten?</h3>
-      <p class="muted">Jede Fläche gehört zur nächstgelegenen Messstation und ist in der Farbe des Anbieters eingefärbt, der dort am zuverlässigsten ist. Fahre über eine Fläche für Details.</p>
+      <p class="muted">Jede Fläche gehört zur nächstgelegenen Messstation und ist in der Farbe des Anbieters eingefärbt, der dort am zuverlässigsten ist. Graue Flächen haben noch zu wenig Daten und färben sich ein, sobald genug gesammelt ist. Fahre über eine Fläche für Details.</p>
       <div class="map-controls">
         <label>Ansicht
           <select id="m-mode"></select>
@@ -88,6 +86,8 @@
         </div>
       </div>
     </section>
+
+    <section class="kpis" id="kpis" hidden></section>
 
     <section class="card" id="ranking-card" hidden>
       <h3>Ranking: Welche Quelle ist am zuverlässigsten?</h3>
@@ -157,6 +157,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
-  <script type="module" src="zuverlaessigkeit.js"></script>
+  <!-- __VERSION__ wird beim Veröffentlichen durch die Commit-Kennung ersetzt, damit Browser keine alte Version nutzen -->
+  <script type="module" src="zuverlaessigkeit.js?v=__VERSION__"></script>
 </body>
 </html>
