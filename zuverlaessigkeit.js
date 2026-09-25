@@ -150,6 +150,22 @@ function computeStats(pairs, kind) {
   return stats;
 }
 
+// Relative Güte je Anbieter: pro Vorlaufzeit mit dem Mittel aller Anbieter vergleichen, dann mitteln.
+// +10 heißt: im Schnitt 10 % genauer als der Durchschnitt. Fair auch bei unterschiedlicher Reichweite.
+function relativeScores(stats, kind) {
+  const avgAt = {};
+  for (const k of LEADS) {
+    const vals = state.providers.map((p) => stats[p.id][k]).filter((s) => s.n >= MIN_N_CHART).map((s) => badness(s, kind));
+    avgAt[k] = vals.length >= 2 ? vals.reduce((a, b) => a + b, 0) / vals.length : null;
+  }
+  const result = {};
+  for (const p of state.providers) {
+    const rels = LEADS.filter((k) => avgAt[k] && stats[p.id][k].n >= MIN_N_CHART).map((k) => 1 - badness(stats[p.id][k], kind) / avgAt[k]);
+    result[p.id] = rels.length ? (100 * rels.reduce((a, b) => a + b, 0)) / rels.length : null;
+  }
+  return result;
+}
+
 function bestAt(stats, lead, kind) {
   let best = null;
   for (const p of state.providers) {
@@ -182,12 +198,13 @@ async function update() {
   renderWarning();
   if (!pairs.length) {
     showStatus("Für diese Auswahl gibt es noch keine vergleichbaren Tage. Tipp: „Nur Tage, an denen alle Anbieter Daten haben“ braucht einige Tage Sammelzeit.", true);
-    for (const id of ["kpis", "lead-card", "table-card", "trend-card"]) $(id).hidden = true;
+    for (const id of ["kpis", "ranking-card", "lead-card", "table-card", "trend-card"]) $(id).hidden = true;
     renderLatest(ctx);
     return;
   }
   showStatus("");
   renderKpis(ctx);
+  renderRanking(ctx);
   renderLeadChart(ctx);
   renderMatrix(ctx);
   renderTrend(ctx);
@@ -223,6 +240,60 @@ function renderKpis({ m, pairs, stats, lastObs, loc }) {
     tile(m.kind === "hit" ? "Trefferquote: Tag 1 → Tag 7" : "Ø Abweichung: Tag 1 → Tag 7", `${fmt(avg(1), m.digits)} → ${fmt(avg(7), m.digits)}${unit}`, `Mittel aller Anbieter · letzte Aktualisierung ${lastRun}`),
   ].join("");
   $("kpis").hidden = false;
+}
+
+function renderRanking({ data, metric }) {
+  const period = $("f-period").value;
+  const common = $("f-common").checked;
+  const keys = Object.keys(METRICS);
+  const scores = {}; // metric -> providerId -> Prozent
+  const days = {};   // providerId -> ausgewertete Tage (Höchsttemperatur)
+  for (const key of keys) {
+    const { pairs } = computePairs(data, key, period, common);
+    scores[key] = relativeScores(computeStats(pairs, METRICS[key].kind), METRICS[key].kind);
+    if (key === "tmax") for (const p of pairs) days[p.provider] = (days[p.provider] || new Set()).add(p.target);
+  }
+
+  const rows = state.providers.map((p) => {
+    const vals = keys.map((k) => scores[k][p.id]).filter((v) => v != null);
+    return { p, total: vals.length === keys.length ? vals.reduce((a, b) => a + b, 0) / vals.length : null, days: days[p.id]?.size || 0 };
+  });
+  rows.sort((a, b) => (b.total ?? -Infinity) - (a.total ?? -Infinity));
+
+  const ranked = rows.filter((r) => r.total != null);
+  const maxAbs = Math.max(1, ...ranked.map((r) => Math.abs(r.total)));
+  const pct = (v) => {
+    if (v == null) return "–";
+    const r = Math.round(v);
+    return `${r > 0 ? "+" : r < 0 ? "−" : "±"}${Math.abs(r)} %`;
+  };
+  const periodText = $("f-period").selectedOptions[0].textContent;
+
+  $("ranking-sub").textContent = `Zeitraum: ${periodText}${common ? ", nur Tage mit Daten aller Anbieter" : ""}. Gewertet werden alle fünf Messgrößen über alle Vorlaufzeiten, die ein Anbieter rechnet.`;
+  const w = ranked[0];
+  $("ranking-winner").innerHTML = w
+    ? `🏆 Zuverlässigste Quelle: <strong>${w.p.name}</strong>. Sie liegt im Schnitt ${fmt(Math.abs(w.total), 0)} % ${w.total >= 0 ? "genauer" : "ungenauer"} als der Durchschnitt aller Anbieter.`
+    : "Noch zu wenig Daten für ein Ranking.";
+
+  const medal = ["🥇", "🥈", "🥉"];
+  let html = `<thead><tr><th>Platz</th><th>Anbieter</th><th>Gesamt</th>${keys.map((k) => `<th class="${k === metric ? "sel" : ""}">${METRICS[k].label}</th>`).join("")}<th>Reichweite</th><th>Tage</th></tr></thead><tbody>`;
+  rows.forEach((r, i) => {
+    const has = r.total != null;
+    const place = has ? medal[i] || `${i + 1}.` : "–";
+    const bar = has
+      ? `<div class="divbar"><span>${pct(r.total)}</span><span class="track"><span class="fill ${r.total >= 0 ? "pos" : "neg"}" style="width:${(Math.abs(r.total) / maxAbs) * 50}%"></span></span></div>`
+      : `<span class="muted">zu wenig Daten</span>`;
+    html += `<tr class="${i === 0 && has ? "top" : ""}">
+      <td class="place">${place}</td>
+      <td class="name"><span class="swatch" style="background:${color(r.p)}"></span>${r.p.name}<small>${r.p.org}</small></td>
+      <td class="total">${bar}</td>
+      ${keys.map((k) => `<td class="${k === metric ? "sel" : ""} ${scores[k][r.p.id] == null ? "muted" : ""}">${pct(scores[k][r.p.id])}</td>`).join("")}
+      <td>${r.p.maxLead} Tage</td>
+      <td>${r.days.toLocaleString("de-DE")}</td>
+    </tr>`;
+  });
+  $("ranking").innerHTML = html + "</tbody>";
+  $("ranking-card").hidden = false;
 }
 
 function chartTheme() {

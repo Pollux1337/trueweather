@@ -104,5 +104,36 @@ select {
 .legend-scale { display: flex; align-items: center; gap: 6px; margin-top: 10px; font-size: 0.8rem; color: var(--muted); }
 .legend-scale span.box { width: 22px; height: 12px; border-radius: 2px; }
 
+/* Ranking */
+:root { --better: #2a78d6; --worse: #e34948; }
+@media (prefers-color-scheme: dark) { :root { --better: #3987e5; --worse: #e66767; } }
+
+.ranking-winner { font-size: 1.05rem; margin: 0 0 14px; }
+.small { font-size: 0.8rem; margin: 12px 0 0; }
+
+.ranking {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.9rem;
+}
+.ranking th { font-size: 0.8rem; font-weight: 600; color: var(--muted); text-align: right; padding: 6px 10px; white-space: nowrap; }
+.ranking th:nth-child(-n+2) { text-align: left; }
+.ranking td { padding: 10px; border-top: 1px solid var(--border); text-align: right; white-space: nowrap; }
+.ranking td.place { text-align: left; font-weight: 700; width: 2.5rem; }
+.ranking td.name { text-align: left; font-weight: 600; }
+.ranking td.name small { display: block; font-weight: 400; color: var(--muted); font-size: 0.75rem; }
+.ranking td.total { font-weight: 700; min-width: 190px; }
+.ranking td.muted, .ranking td.sel.muted { color: var(--muted); }
+.ranking .sel { background: var(--bg); }
+.ranking tr.top td { background: color-mix(in srgb, var(--better) 7%, transparent); }
+
+.divbar { display: flex; align-items: center; gap: 10px; justify-content: flex-end; }
+.divbar .track { position: relative; width: 110px; height: 10px; }
+.divbar .track::before { content: ""; position: absolute; left: 50%; top: -3px; bottom: -3px; width: 1px; background: var(--border); }
+.divbar .fill { position: absolute; top: 0; bottom: 0; border-radius: 3px; }
+.divbar .fill.pos { left: 50%; background: var(--better); }
+.divbar .fill.neg { right: 50%; background: var(--worse); }
+
 .about ul { margin: 8px 0 0; padding-left: 20px; }
 .about li { margin: 6px 0; font-size: 0.9rem; }
