@@ -13,6 +13,7 @@ import { fileURLToPath } from "node:url";
 import { join } from "node:path";
 import { addDays, localDate, upsertCsv, RateLimitError } from "./util.mjs";
 import { fetchObservations, fetchOpenMeteoArchive, openMeteoCost, fetchMosmix, fetchMetno } from "./sources.mjs";
+import { buildSummary } from "./summarize.mjs";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const ARCHIVE_FROM = "2024-01-01";
@@ -140,6 +141,16 @@ for (const loc of allLocations) {
   status.archive[loc.id] = Math.round((100 * done.reduce((a, b) => a + b, 0)) / ids.length);
 }
 if (stopReason) status.archiveNote = stopReason;
+
+// Zusammenfassung für das Dashboard
+try {
+  const t0 = Date.now();
+  const info = await buildSummary();
+  console.log(`✔ Zusammenfassung: ${info.orte} Orte (${((Date.now() - t0) / 1000).toFixed(1)} s)`);
+} catch (err) {
+  failures++;
+  console.error(`✘ Zusammenfassung: ${err.stack || err}`);
+}
 
 // status.json: Ergebnisse anderer Orte bei --only erhalten
 if (only) {

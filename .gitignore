@@ -1,2 +1,4 @@
 .claude/
 node_modules/
+# wird beim Veröffentlichen erzeugt (collector/summarize.mjs)
+data/summary.json

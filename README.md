@@ -18,18 +18,27 @@ Zwei Seiten, ohne Build-Schritt und ohne API-Schlüssel:
 | `mosmix` | DWD MOSMIX | Bright Sky, täglich gesammelt | 1–7 Tage | Projektstart |
 | `metno` | MET Norway (yr) | api.met.no, täglich gesammelt | 1–7 Tage | Projektstart |
 
-**Orte:** die 16 Landeshauptstädte und zusätzlich Lübeck (`config/locations.json`). Das Dashboard zeigt jeden Ort einzeln und „Alle Orte (gemittelt)“. Im gemittelten Ranking wird jeder Ort einzeln bewertet und dann gemittelt, sodass jeder Ort gleich viel zählt. Mainz nutzt die Station Geisenheim und Wiesbaden die Station Frankfurt/Main, weil es in beiden Städten keine vollständige DWD-Station gibt.
+**Orte:** die 16 Landeshauptstädte, Lübeck und 51 weitere DWD-Stationen im 70-km-Raster, zusammen 68 (`config/locations.json`). Das Dashboard zeigt jeden Ort einzeln und „Alle Orte (gemittelt)“. Im gemittelten Ranking wird jeder Ort einzeln bewertet und dann gemittelt, sodass jeder Ort gleich viel zählt. Mainz nutzt die Station Geisenheim und Wiesbaden die Station Frankfurt/Main, weil es in beiden Städten keine vollständige DWD-Station gibt.
 
 **Messwerte:** DWD-Station je Ort über [Bright Sky](https://brightsky.dev). Ein Tag wird erst ausgewertet, wenn mindestens 22 Stundenwerte vorliegen. Der DWD liefert die Werte mit 1–3 Tagen Verzögerung vollständig nach.
 
 **Tageswerte:** Höchst- und Tiefsttemperatur, Niederschlagssumme und stärkster Stundenmittelwind, jeweils für 0–24 Uhr Ortszeit. Ein Regentag hat mindestens 1 mm Niederschlag.
+
+## Karte
+
+Die Ansicht „Alle Orte“ zeigt eine Deutschlandkarte. Jede Fläche (Voronoi-Zelle) umfasst das Gebiet, das einer Messstation am nächsten liegt, und ist in der Farbe des dort zuverlässigsten Anbieters eingefärbt. Die Karte lässt sich nach Messgröße und Vorlaufzeit (kurz, mittel, lang) filtern. Alternativ zeigt sie für einen einzelnen Anbieter, wo er besser oder schlechter als der Durchschnitt ist. Daneben steht eine Tabelle mit dem besten Anbieter je Bundesland.
+
+Weitere Stationen findet `node collector/find-stations.mjs`. Das Skript wählt aus den DWD-Stationslisten gleichmäßig verteilte Stationen mit vollständigen Messungen (Standard: 70-km-Raster, höchstens 800 m hoch). Mit `--write` übernimmt es sie in die Konfiguration.
 
 ## Aufbau
 
 ```
 config/locations.json     Orte (neuer Ort = neuer Eintrag, inkl. DWD-Stations-ID)
 config/providers.json     Anbieter und ihre Reichweite
-collector/                Sammel-Skript (Node.js, keine Abhängigkeiten)
+collector/collect.mjs     Sammel-Skript (Node.js, keine Abhängigkeiten)
+collector/summarize.mjs   erzeugt data/summary.json für „Alle Orte“ und die Karte
+collector/find-stations.mjs  sucht gleichmäßig verteilte DWD-Stationen
+lib/scoring.js            Auswertung, gemeinsam für Browser und Node
 data/<ort>/observations.csv   Messwerte pro Tag
 data/<ort>/forecasts.csv      Vorhersagen: Zieltag, Anbieter, Vorlaufzeit, Werte
 data/status.json          Ergebnis des letzten Sammellaufs

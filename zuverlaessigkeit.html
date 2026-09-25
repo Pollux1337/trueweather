@@ -49,6 +49,46 @@
 
     <section class="kpis" id="kpis" hidden></section>
 
+    <section class="card" id="map-card" hidden>
+      <h3>Deutschlandkarte: Welcher Wetterdienst ist wo am sinnvollsten?</h3>
+      <p class="muted">Jede Fläche gehört zur nächstgelegenen Messstation und ist in der Farbe des Anbieters eingefärbt, der dort am zuverlässigsten ist. Fahre über eine Fläche für Details.</p>
+      <div class="map-controls">
+        <label>Ansicht
+          <select id="m-mode"></select>
+        </label>
+        <label>Bewertung
+          <select id="m-metric">
+            <option value="gesamt">Gesamt (alle Messgrößen)</option>
+            <option value="tmax">Höchsttemperatur</option>
+            <option value="tmin">Tiefsttemperatur</option>
+            <option value="rainhit">Regen ja/nein</option>
+            <option value="precip">Niederschlagsmenge</option>
+            <option value="wind">Wind (Tagesmaximum)</option>
+          </select>
+        </label>
+        <label>Vorlaufzeit
+          <select id="m-leads">
+            <option value="all">Alle (1–7 Tage)</option>
+            <option value="short">Kurzfristig (1–2 Tage)</option>
+            <option value="mid">Mittelfristig (3–4 Tage)</option>
+            <option value="long">Langfristig (5–7 Tage)</option>
+          </select>
+        </label>
+      </div>
+      <div class="map-layout">
+        <div class="map-wrap">
+          <div id="map" class="map"></div>
+          <div id="map-tip" class="map-tip" hidden></div>
+        </div>
+        <div class="map-side">
+          <div id="map-legend" class="map-legend"></div>
+          <h4>Bester Anbieter je Bundesland</h4>
+          <div class="table-wrap"><table id="states" class="ranking cities states"></table></div>
+          <p class="muted small">Wertung wie im Ranking: Prozent gegenüber dem Durchschnitt aller Anbieter, gemittelt über die Orte im Land. Die Zeitraum-Filter oben gelten auch hier.</p>
+        </div>
+      </div>
+    </section>
+
     <section class="card" id="ranking-card" hidden>
       <h3>Ranking: Welche Quelle ist am zuverlässigsten?</h3>
       <p class="muted" id="ranking-sub"></p>
@@ -60,7 +100,10 @@
     <section class="card" id="city-card" hidden>
       <h3>Sieger je Ort</h3>
       <p class="muted" id="city-sub"></p>
-      <div class="table-wrap"><table id="cities" class="ranking cities"></table></div>
+      <details>
+        <summary>Alle Orte anzeigen</summary>
+        <div class="table-wrap"><table id="cities" class="ranking cities"></table></div>
+      </details>
     </section>
 
     <section class="card" id="lead-card" hidden>
@@ -98,7 +141,8 @@
     <section class="card about">
       <h3>So wird gemessen</h3>
       <ul>
-        <li><strong>Orte:</strong> die 16 Landeshauptstädte und zusätzlich Lübeck, jeweils mit einer nahegelegenen DWD-Wetterstation. Für Mainz und Wiesbaden gibt es keine vollständige Station in der Stadt. Deshalb werden dort Geisenheim bzw. Frankfurt/Main verwendet, beide etwa 21 km entfernt.</li>
+        <li><strong>Orte:</strong> die 16 Landeshauptstädte, Lübeck und 51 weitere DWD-Stationen in einem Raster von etwa 70 km, damit ganz Deutschland abgedeckt ist: Küste, Tiefland, Mittelgebirge und Alpenrand. Berggipfel über 800 m sind ausgenommen, weil die Rechenmodelle sie nicht abbilden. Mainz und Wiesbaden haben keine vollständige Station in der Stadt, dort werden Geisenheim bzw. Frankfurt/Main verwendet (je etwa 21 km entfernt).</li>
+        <li><strong>Karte:</strong> Jede Fläche umfasst das Gebiet, das dieser Station am nächsten liegt. Grenzen der Bundesländer: <a href="https://github.com/isellsoap/deutschlandGeoJSON" target="_blank" rel="noopener">deutschlandGeoJSON</a>.</li>
         <li><strong>Messwerte:</strong> stündliche Werte der Station, zu Tageswerten zusammengefasst. Ein Tag zählt erst, wenn mindestens 22 Stunden vorliegen.</li>
         <li><strong>Vorlaufzeit:</strong> „3 Tage“ heißt: Die Vorhersage wurde 3 Tage vor dem Zieltag erstellt.</li>
         <li><strong>Abweichung:</strong> mittlerer absoluter Fehler, also wie weit die Vorhersage im Schnitt danebenlag, egal in welche Richtung. Kleiner ist besser.</li>
@@ -112,6 +156,7 @@
   <footer class="muted" id="footer">Daten: <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a>, <a href="https://brightsky.dev" target="_blank" rel="noopener">Bright Sky / DWD</a>, <a href="https://api.met.no" target="_blank" rel="noopener">MET Norway</a></footer>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
-  <script src="zuverlaessigkeit.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+  <script type="module" src="zuverlaessigkeit.js"></script>
 </body>
 </html>
