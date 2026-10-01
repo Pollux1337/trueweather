@@ -1,558 +1,218 @@
 {
-  "lastRun": "2026-09-30T05:29:42.007Z",
+  "lastRun": "2026-10-01T05:29:47.671Z",
   "locations": {
     "berlin": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 999
+          "total": 1000
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 32999
+          "total": 33049
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 33006
+          "total": 33056
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 33013
+          "total": 33063
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 33016
+          "total": 33066
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 33022
+          "total": 33072
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 33029
+          "total": 33079
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 33036
+          "total": 33086
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 33043
+          "total": 33093
         }
       ]
     },
     "bremen": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 1003
+          "total": 1004
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 33173
+          "total": 33223
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 33180
+          "total": 33230
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 33187
+          "total": 33237
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 33190
+          "total": 33240
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 33196
+          "total": 33246
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 33203
+          "total": 33253
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 33210
+          "total": 33260
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 33217
+          "total": 33267
         }
       ]
     },
     "dresden": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 1003
+          "total": 1004
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 32999
+          "total": 33049
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 33006
+          "total": 33056
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 33013
+          "total": 33063
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 33016
+          "total": 33066
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 33022
+          "total": 33072
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 33029
+          "total": 33079
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 33036
+          "total": 33086
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 33043
+          "total": 33093
         }
       ]
     },
     "duesseldorf": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 977
-        },
-        {
-          "step": "icon",
-          "ok": true,
-          "added": 6,
-          "updated": 78,
-          "total": 33173
-        },
-        {
-          "step": "ecmwf",
-          "ok": true,
-          "added": 7,
-          "updated": 91,
-          "total": 33180
-        },
-        {
-          "step": "gfs",
-          "ok": true,
-          "added": 7,
-          "updated": 91,
-          "total": 33187
-        },
-        {
-          "step": "arpege",
-          "ok": true,
-          "added": 3,
-          "updated": 39,
-          "total": 33190
-        },
-        {
-          "step": "ukmo",
-          "ok": true,
-          "added": 6,
-          "updated": 78,
-          "total": 33196
-        },
-        {
-          "step": "gem",
-          "ok": true,
-          "added": 7,
-          "updated": 91,
-          "total": 33203
-        },
-        {
-          "step": "mosmix",
-          "ok": true,
-          "added": 7,
-          "updated": 0,
-          "total": 33210
-        },
-        {
-          "step": "metno",
-          "ok": true,
-          "added": 7,
-          "updated": 0,
-          "total": 33217
-        }
-      ]
-    },
-    "erfurt": {
-      "today": "2026-09-30",
-      "results": [
-        {
-          "step": "messwerte",
-          "ok": true,
-          "added": 1,
-          "updated": 12,
-          "total": 1002
-        },
-        {
-          "step": "icon",
-          "ok": true,
-          "added": 6,
-          "updated": 78,
-          "total": 32999
-        },
-        {
-          "step": "ecmwf",
-          "ok": true,
-          "added": 7,
-          "updated": 91,
-          "total": 33006
-        },
-        {
-          "step": "gfs",
-          "ok": true,
-          "added": 7,
-          "updated": 91,
-          "total": 33013
-        },
-        {
-          "step": "arpege",
-          "ok": true,
-          "added": 3,
-          "updated": 39,
-          "total": 33016
-        },
-        {
-          "step": "ukmo",
-          "ok": true,
-          "added": 6,
-          "updated": 78,
-          "total": 33022
-        },
-        {
-          "step": "gem",
-          "ok": true,
-          "added": 7,
-          "updated": 91,
-          "total": 33029
-        },
-        {
-          "step": "mosmix",
-          "ok": true,
-          "added": 7,
-          "updated": 0,
-          "total": 33036
-        },
-        {
-          "step": "metno",
-          "ok": true,
-          "added": 7,
-          "updated": 0,
-          "total": 33043
-        }
-      ]
-    },
-    "hamburg": {
-      "today": "2026-09-30",
-      "results": [
-        {
-          "step": "messwerte",
-          "ok": true,
-          "added": 1,
-          "updated": 13,
-          "total": 993
-        },
-        {
-          "step": "icon",
-          "ok": true,
-          "added": 6,
-          "updated": 78,
-          "total": 33173
-        },
-        {
-          "step": "ecmwf",
-          "ok": true,
-          "added": 7,
-          "updated": 91,
-          "total": 33180
-        },
-        {
-          "step": "gfs",
-          "ok": true,
-          "added": 7,
-          "updated": 91,
-          "total": 33187
-        },
-        {
-          "step": "arpege",
-          "ok": true,
-          "added": 3,
-          "updated": 39,
-          "total": 33190
-        },
-        {
-          "step": "ukmo",
-          "ok": true,
-          "added": 6,
-          "updated": 78,
-          "total": 33196
-        },
-        {
-          "step": "gem",
-          "ok": true,
-          "added": 7,
-          "updated": 91,
-          "total": 33203
-        },
-        {
-          "step": "mosmix",
-          "ok": true,
-          "added": 7,
-          "updated": 0,
-          "total": 33210
-        },
-        {
-          "step": "metno",
-          "ok": true,
-          "added": 7,
-          "updated": 0,
-          "total": 33217
-        }
-      ]
-    },
-    "hannover": {
-      "today": "2026-09-30",
-      "results": [
-        {
-          "step": "messwerte",
-          "ok": true,
-          "added": 1,
-          "updated": 13,
-          "total": 990
-        },
-        {
-          "step": "icon",
-          "ok": true,
-          "added": 6,
-          "updated": 78,
-          "total": 30889
-        },
-        {
-          "step": "ecmwf",
-          "ok": true,
-          "added": 7,
-          "updated": 91,
-          "total": 30896
-        },
-        {
-          "step": "gfs",
-          "ok": true,
-          "added": 7,
-          "updated": 91,
-          "total": 30903
-        },
-        {
-          "step": "arpege",
-          "ok": true,
-          "added": 3,
-          "updated": 39,
-          "total": 30906
-        },
-        {
-          "step": "ukmo",
-          "ok": true,
-          "added": 6,
-          "updated": 78,
-          "total": 30912
-        },
-        {
-          "step": "gem",
-          "ok": true,
-          "added": 7,
-          "updated": 91,
-          "total": 30919
-        },
-        {
-          "step": "mosmix",
-          "ok": true,
-          "added": 7,
-          "updated": 0,
-          "total": 30926
-        },
-        {
-          "step": "metno",
-          "ok": true,
-          "added": 7,
-          "updated": 0,
-          "total": 30933
-        }
-      ]
-    },
-    "kiel": {
-      "today": "2026-09-30",
-      "results": [
-        {
-          "step": "messwerte",
-          "ok": true,
-          "added": 1,
-          "updated": 13,
-          "total": 845
-        },
-        {
-          "step": "icon",
-          "ok": true,
-          "added": 6,
-          "updated": 78,
-          "total": 29249
-        },
-        {
-          "step": "ecmwf",
-          "ok": true,
-          "added": 7,
-          "updated": 91,
-          "total": 29256
-        },
-        {
-          "step": "gfs",
-          "ok": true,
-          "added": 7,
-          "updated": 91,
-          "total": 29263
-        },
-        {
-          "step": "arpege",
-          "ok": true,
-          "added": 3,
-          "updated": 39,
-          "total": 29266
-        },
-        {
-          "step": "ukmo",
-          "ok": true,
-          "added": 6,
-          "updated": 78,
-          "total": 29272
-        },
-        {
-          "step": "gem",
-          "ok": true,
-          "added": 7,
-          "updated": 91,
-          "total": 29279
-        },
-        {
-          "step": "mosmix",
-          "ok": true,
-          "added": 7,
-          "updated": 0,
-          "total": 29286
-        },
-        {
-          "step": "metno",
-          "ok": true,
-          "added": 7,
-          "updated": 0,
-          "total": 29293
-        }
-      ]
-    },
-    "luebeck": {
-      "today": "2026-09-30",
-      "results": [
-        {
-          "step": "messwerte",
-          "ok": true,
-          "added": 1,
-          "updated": 10,
           "total": 978
         },
         {
@@ -560,1130 +220,1470 @@
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 33173
+          "total": 33223
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 33180
+          "total": 33230
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 33187
+          "total": 33237
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 33190
+          "total": 33240
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 33196
+          "total": 33246
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 33203
+          "total": 33253
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 33210
+          "total": 33260
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 33217
+          "total": 33267
+        }
+      ]
+    },
+    "erfurt": {
+      "today": "2026-10-01",
+      "results": [
+        {
+          "step": "messwerte",
+          "ok": true,
+          "added": 1,
+          "updated": 12,
+          "total": 1003
+        },
+        {
+          "step": "icon",
+          "ok": true,
+          "added": 6,
+          "updated": 78,
+          "total": 33049
+        },
+        {
+          "step": "ecmwf",
+          "ok": true,
+          "added": 7,
+          "updated": 91,
+          "total": 33056
+        },
+        {
+          "step": "gfs",
+          "ok": true,
+          "added": 7,
+          "updated": 91,
+          "total": 33063
+        },
+        {
+          "step": "arpege",
+          "ok": true,
+          "added": 3,
+          "updated": 39,
+          "total": 33066
+        },
+        {
+          "step": "ukmo",
+          "ok": true,
+          "added": 6,
+          "updated": 78,
+          "total": 33072
+        },
+        {
+          "step": "gem",
+          "ok": true,
+          "added": 7,
+          "updated": 91,
+          "total": 33079
+        },
+        {
+          "step": "mosmix",
+          "ok": true,
+          "added": 7,
+          "updated": 0,
+          "total": 33086
+        },
+        {
+          "step": "metno",
+          "ok": true,
+          "added": 7,
+          "updated": 0,
+          "total": 33093
+        }
+      ]
+    },
+    "hamburg": {
+      "today": "2026-10-01",
+      "results": [
+        {
+          "step": "messwerte",
+          "ok": true,
+          "added": 1,
+          "updated": 13,
+          "total": 994
+        },
+        {
+          "step": "icon",
+          "ok": true,
+          "added": 6,
+          "updated": 78,
+          "total": 33223
+        },
+        {
+          "step": "ecmwf",
+          "ok": true,
+          "added": 7,
+          "updated": 91,
+          "total": 33230
+        },
+        {
+          "step": "gfs",
+          "ok": true,
+          "added": 7,
+          "updated": 91,
+          "total": 33237
+        },
+        {
+          "step": "arpege",
+          "ok": true,
+          "added": 3,
+          "updated": 39,
+          "total": 33240
+        },
+        {
+          "step": "ukmo",
+          "ok": true,
+          "added": 6,
+          "updated": 78,
+          "total": 33246
+        },
+        {
+          "step": "gem",
+          "ok": true,
+          "added": 7,
+          "updated": 91,
+          "total": 33253
+        },
+        {
+          "step": "mosmix",
+          "ok": true,
+          "added": 7,
+          "updated": 0,
+          "total": 33260
+        },
+        {
+          "step": "metno",
+          "ok": true,
+          "added": 7,
+          "updated": 0,
+          "total": 33267
+        }
+      ]
+    },
+    "hannover": {
+      "today": "2026-10-01",
+      "results": [
+        {
+          "step": "messwerte",
+          "ok": true,
+          "added": 1,
+          "updated": 13,
+          "total": 991
+        },
+        {
+          "step": "icon",
+          "ok": true,
+          "added": 6,
+          "updated": 78,
+          "total": 33223
+        },
+        {
+          "step": "ecmwf",
+          "ok": true,
+          "added": 7,
+          "updated": 91,
+          "total": 33230
+        },
+        {
+          "step": "gfs",
+          "ok": true,
+          "added": 7,
+          "updated": 91,
+          "total": 33237
+        },
+        {
+          "step": "arpege",
+          "ok": true,
+          "added": 3,
+          "updated": 39,
+          "total": 33240
+        },
+        {
+          "step": "ukmo",
+          "ok": true,
+          "added": 6,
+          "updated": 78,
+          "total": 33246
+        },
+        {
+          "step": "gem",
+          "ok": true,
+          "added": 7,
+          "updated": 91,
+          "total": 33253
+        },
+        {
+          "step": "mosmix",
+          "ok": true,
+          "added": 7,
+          "updated": 0,
+          "total": 33260
+        },
+        {
+          "step": "metno",
+          "ok": true,
+          "added": 7,
+          "updated": 0,
+          "total": 33267
+        }
+      ]
+    },
+    "kiel": {
+      "today": "2026-10-01",
+      "results": [
+        {
+          "step": "messwerte",
+          "ok": true,
+          "added": 1,
+          "updated": 13,
+          "total": 1002
+        },
+        {
+          "step": "icon",
+          "ok": true,
+          "added": 6,
+          "updated": 78,
+          "total": 33223
+        },
+        {
+          "step": "ecmwf",
+          "ok": true,
+          "added": 7,
+          "updated": 91,
+          "total": 33230
+        },
+        {
+          "step": "gfs",
+          "ok": true,
+          "added": 7,
+          "updated": 91,
+          "total": 33237
+        },
+        {
+          "step": "arpege",
+          "ok": true,
+          "added": 3,
+          "updated": 39,
+          "total": 33240
+        },
+        {
+          "step": "ukmo",
+          "ok": true,
+          "added": 6,
+          "updated": 78,
+          "total": 33246
+        },
+        {
+          "step": "gem",
+          "ok": true,
+          "added": 7,
+          "updated": 91,
+          "total": 33253
+        },
+        {
+          "step": "mosmix",
+          "ok": true,
+          "added": 7,
+          "updated": 0,
+          "total": 33260
+        },
+        {
+          "step": "metno",
+          "ok": true,
+          "added": 7,
+          "updated": 0,
+          "total": 33267
+        }
+      ]
+    },
+    "luebeck": {
+      "today": "2026-10-01",
+      "results": [
+        {
+          "step": "messwerte",
+          "ok": true,
+          "added": 1,
+          "updated": 10,
+          "total": 979
+        },
+        {
+          "step": "icon",
+          "ok": true,
+          "added": 6,
+          "updated": 78,
+          "total": 33223
+        },
+        {
+          "step": "ecmwf",
+          "ok": true,
+          "added": 7,
+          "updated": 91,
+          "total": 33230
+        },
+        {
+          "step": "gfs",
+          "ok": true,
+          "added": 7,
+          "updated": 91,
+          "total": 33237
+        },
+        {
+          "step": "arpege",
+          "ok": true,
+          "added": 3,
+          "updated": 39,
+          "total": 33240
+        },
+        {
+          "step": "ukmo",
+          "ok": true,
+          "added": 6,
+          "updated": 78,
+          "total": 33246
+        },
+        {
+          "step": "gem",
+          "ok": true,
+          "added": 7,
+          "updated": 91,
+          "total": 33253
+        },
+        {
+          "step": "mosmix",
+          "ok": true,
+          "added": 7,
+          "updated": 0,
+          "total": 33260
+        },
+        {
+          "step": "metno",
+          "ok": true,
+          "added": 7,
+          "updated": 0,
+          "total": 33267
         }
       ]
     },
     "magdeburg": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
-          "added": 2,
-          "updated": 12,
-          "total": 847
+          "added": 1,
+          "updated": 13,
+          "total": 1004
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 26758
+          "total": 32140
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 26765
+          "total": 32147
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 26772
+          "total": 32154
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 26775
+          "total": 32157
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 26781
+          "total": 32163
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 26788
+          "total": 32170
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 26795
+          "total": 32177
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 26802
+          "total": 32184
         }
       ]
     },
     "mainz": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 748
+          "total": 914
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 26360
+          "total": 32059
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 26367
+          "total": 32066
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 26374
+          "total": 32073
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 26377
+          "total": 32076
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 26383
+          "total": 32082
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 26390
+          "total": 32089
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 26397
+          "total": 32096
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 26404
+          "total": 32103
         }
       ]
     },
     "muenchen": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 750
+          "total": 934
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 26205
+          "total": 31884
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 26212
+          "total": 31891
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 26219
+          "total": 31898
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 26222
+          "total": 31901
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 26228
+          "total": 31907
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 26235
+          "total": 31914
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 26242
+          "total": 31921
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 26249
+          "total": 31928
         }
       ]
     },
     "potsdam": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 754
+          "total": 938
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 26206
+          "total": 31885
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 26213
+          "total": 31892
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 26220
+          "total": 31899
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 26223
+          "total": 31902
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 26229
+          "total": 31908
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 26236
+          "total": 31915
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 26243
+          "total": 31922
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 26250
+          "total": 31929
         }
       ]
     },
     "saarbruecken": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 747
+          "total": 931
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 26360
+          "total": 32059
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 26367
+          "total": 32066
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 26374
+          "total": 32073
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 26377
+          "total": 32076
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 26383
+          "total": 32082
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 26390
+          "total": 32089
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 26397
+          "total": 32096
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 26404
+          "total": 32103
         }
       ]
     },
     "schwerin": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 744
+          "total": 929
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 26360
+          "total": 32059
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 26367
+          "total": 32066
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 26374
+          "total": 32073
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 26377
+          "total": 32076
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 26383
+          "total": 32082
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 26390
+          "total": 32089
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 26397
+          "total": 32096
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 26404
+          "total": 32103
         }
       ]
     },
     "stuttgart": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 752
+          "total": 937
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 26360
+          "total": 32059
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 26367
+          "total": 32066
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 26374
+          "total": 32073
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 26377
+          "total": 32076
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 26383
+          "total": 32082
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 26390
+          "total": 32089
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 26397
+          "total": 32096
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 26404
+          "total": 32103
         }
       ]
     },
     "wiesbaden": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 747
+          "total": 932
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 26360
+          "total": 32059
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 26367
+          "total": 32066
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 26374
+          "total": 32073
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 26377
+          "total": 32076
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 26383
+          "total": 32082
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 26390
+          "total": 32089
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 26397
+          "total": 32096
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 26404
+          "total": 32103
         }
       ]
     },
     "kempten": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 385
+          "total": 570
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13701
+          "total": 19971
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13708
+          "total": 19978
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13715
+          "total": 19985
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13718
+          "total": 19988
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13724
+          "total": 19994
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13731
+          "total": 20001
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13738
+          "total": 20008
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13745
+          "total": 20015
         }
       ]
     },
     "garmisch-partenkirchen": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 386
+          "total": 571
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13701
+          "total": 19971
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13708
+          "total": 19978
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13715
+          "total": 19985
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13718
+          "total": 19988
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13724
+          "total": 19994
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13731
+          "total": 20001
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13738
+          "total": 20008
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13745
+          "total": 20015
         }
       ]
     },
     "chieming": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 384
+          "total": 569
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13701
+          "total": 19971
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13708
+          "total": 19978
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13715
+          "total": 19985
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13718
+          "total": 19988
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13724
+          "total": 19994
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13731
+          "total": 20001
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13738
+          "total": 20008
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13745
+          "total": 20015
         }
       ]
     },
     "weingarten-kr-ravensburg": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 386
+          "total": 571
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13711
+          "total": 19019
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13718
+          "total": 19026
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13725
+          "total": 19033
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13728
+          "total": 19036
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13734
+          "total": 19042
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13741
+          "total": 19049
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13748
+          "total": 19056
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13755
+          "total": 19063
         }
       ]
     },
     "guenzburg": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 386
+          "total": 479
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13701
+          "total": 16876
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13708
+          "total": 16883
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13715
+          "total": 16890
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13718
+          "total": 16893
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13724
+          "total": 16899
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13731
+          "total": 16906
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13738
+          "total": 16913
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13745
+          "total": 16920
         }
       ]
     },
     "lahr": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 386
+          "total": 479
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13712
+          "total": 16904
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13719
+          "total": 16911
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13726
+          "total": 16918
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13729
+          "total": 16921
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13735
+          "total": 16927
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13742
+          "total": 16934
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13749
+          "total": 16941
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13756
+          "total": 16948
         }
       ]
     },
     "balingen-bronnhaupten": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 386
+          "total": 479
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13711
+          "total": 16903
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13718
+          "total": 16910
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13725
+          "total": 16917
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13728
+          "total": 16920
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13734
+          "total": 16926
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13741
+          "total": 16933
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13748
+          "total": 16940
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13755
+          "total": 16947
         }
       ]
     },
     "muensingen-apfelstetten": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 380
+          "total": 471
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13683
+          "total": 16868
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13690
+          "total": 16875
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13697
+          "total": 16882
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13700
+          "total": 16885
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13706
+          "total": 16891
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13713
+          "total": 16898
         },
         {
           "step": "mosmix",
@@ -1695,2460 +1695,2800 @@
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13720
+          "total": 16905
         }
       ]
     },
     "gelbelsee": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 386
+          "total": 479
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13702
+          "total": 16877
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13709
+          "total": 16884
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13716
+          "total": 16891
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13719
+          "total": 16894
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13725
+          "total": 16900
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13732
+          "total": 16907
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13739
+          "total": 16914
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13746
+          "total": 16921
         }
       ]
     },
     "straubing": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 382
+          "total": 473
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13701
+          "total": 16876
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13708
+          "total": 16883
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13715
+          "total": 16890
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13718
+          "total": 16893
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13724
+          "total": 16899
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13731
+          "total": 16906
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13738
+          "total": 16913
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13745
+          "total": 16920
         }
       ]
     },
     "zwiesel": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 386
+          "total": 478
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13702
+          "total": 16877
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13709
+          "total": 16884
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13716
+          "total": 16891
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13719
+          "total": 16894
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13725
+          "total": 16900
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13732
+          "total": 16907
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13739
+          "total": 16914
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13746
+          "total": 16921
         }
       ]
     },
     "nuernberg": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 386
+          "total": 479
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13702
+          "total": 16877
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13709
+          "total": 16884
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13716
+          "total": 16891
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13719
+          "total": 16894
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13725
+          "total": 16900
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13732
+          "total": 16907
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13739
+          "total": 16914
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13746
+          "total": 16921
         }
       ]
     },
     "waldmuenchen": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 384
+          "total": 477
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13702
+          "total": 16877
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13709
+          "total": 16884
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13716
+          "total": 16891
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13719
+          "total": 16894
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13725
+          "total": 16900
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13732
+          "total": 16907
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13739
+          "total": 16914
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13746
+          "total": 16921
         }
       ]
     },
     "trier-petrisberg": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 384
+          "total": 477
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13712
+          "total": 16904
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13719
+          "total": 16911
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13726
+          "total": 16918
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13729
+          "total": 16921
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13735
+          "total": 16927
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13742
+          "total": 16934
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13749
+          "total": 16941
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13756
+          "total": 16948
         }
       ]
     },
     "mannheim": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 377
+          "total": 470
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13712
+          "total": 16904
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13719
+          "total": 16911
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13726
+          "total": 16918
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13729
+          "total": 16921
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13735
+          "total": 16927
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13742
+          "total": 16934
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13749
+          "total": 16941
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13756
+          "total": 16948
         }
       ]
     },
     "kissingen-bad": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 386
+          "total": 471
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13712
+          "total": 16904
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13719
+          "total": 16911
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13726
+          "total": 16918
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13729
+          "total": 16921
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13735
+          "total": 16927
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13742
+          "total": 16934
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13749
+          "total": 16941
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13756
+          "total": 16948
         }
       ]
     },
     "fichtelberg-oberfranken-huettstadl": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 386
+          "total": 479
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13702
+          "total": 16877
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13709
+          "total": 16884
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13716
+          "total": 16891
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13719
+          "total": 16894
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13725
+          "total": 16900
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13732
+          "total": 16907
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13739
+          "total": 16914
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13746
+          "total": 16921
         }
       ]
     },
     "nuerburg-barweiler": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 385
+          "total": 478
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13712
+          "total": 16904
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13719
+          "total": 16911
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13726
+          "total": 16918
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13729
+          "total": 16921
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13735
+          "total": 16927
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13742
+          "total": 16934
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13749
+          "total": 16941
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13756
+          "total": 16948
         }
       ]
     },
     "neuhuetten-spessart": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 383
+          "total": 476
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13712
+          "total": 16904
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13719
+          "total": 16911
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13726
+          "total": 16918
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13729
+          "total": 16921
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13735
+          "total": 16927
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13742
+          "total": 16934
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13749
+          "total": 16941
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13756
+          "total": 16948
         }
       ]
     },
     "kroelpa-rockendorf": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 386
+          "total": 479
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13702
+          "total": 16877
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13709
+          "total": 16884
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13716
+          "total": 16891
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13719
+          "total": 16894
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13725
+          "total": 16900
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13732
+          "total": 16907
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13739
+          "total": 16914
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13746
+          "total": 16921
         }
       ]
     },
     "lichtentanne": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 386
+          "total": 479
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13702
+          "total": 16877
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13709
+          "total": 16884
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13716
+          "total": 16891
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13719
+          "total": 16894
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13725
+          "total": 16900
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13732
+          "total": 16907
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13739
+          "total": 16914
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13746
+          "total": 16921
         }
       ]
     },
     "marienberg": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 380
+          "total": 473
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13702
+          "total": 16877
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13709
+          "total": 16884
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13716
+          "total": 16891
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13719
+          "total": 16894
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13725
+          "total": 16900
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13732
+          "total": 16907
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13739
+          "total": 16914
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13746
+          "total": 16921
         }
       ]
     },
     "bertsdorf-hoernitz": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 373
+          "total": 466
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13702
+          "total": 16877
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13709
+          "total": 16884
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13716
+          "total": 16891
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13719
+          "total": 16894
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13725
+          "total": 16900
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13732
+          "total": 16907
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13739
+          "total": 16914
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13746
+          "total": 16921
         }
       ]
     },
     "giessen-wettenberg": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 378
+          "total": 471
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13712
+          "total": 16904
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13719
+          "total": 16911
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13726
+          "total": 16918
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13729
+          "total": 16921
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13735
+          "total": 16927
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13742
+          "total": 16934
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13749
+          "total": 16941
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13756
+          "total": 16948
         }
       ]
     },
     "hersfeld-bad": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 384
+          "total": 474
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13712
+          "total": 16904
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13719
+          "total": 16911
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13726
+          "total": 16918
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13729
+          "total": 16921
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13735
+          "total": 16927
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13742
+          "total": 16934
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13749
+          "total": 16941
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13756
+          "total": 16948
         }
       ]
     },
     "leinefelde": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 386
+          "total": 478
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13712
+          "total": 16904
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13719
+          "total": 16911
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13726
+          "total": 16918
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13729
+          "total": 16921
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13735
+          "total": 16927
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13742
+          "total": 16934
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13749
+          "total": 16941
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13756
+          "total": 16948
         }
       ]
     },
     "querfurt-muehle-lodersleben": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 386
+          "total": 479
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13702
+          "total": 16877
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13709
+          "total": 16884
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13716
+          "total": 16891
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13719
+          "total": 16894
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13725
+          "total": 16900
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13732
+          "total": 16907
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13739
+          "total": 16914
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13746
+          "total": 16921
         }
       ]
     },
     "leipzig-holzhausen": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 386
+          "total": 479
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13702
+          "total": 16877
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13709
+          "total": 16884
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13716
+          "total": 16891
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13719
+          "total": 16894
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13725
+          "total": 16900
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13732
+          "total": 16907
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13739
+          "total": 16914
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13746
+          "total": 16921
         }
       ]
     },
     "doberlug-kirchhain": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 386
+          "total": 475
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13702
+          "total": 16877
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13709
+          "total": 16884
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13716
+          "total": 16891
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13719
+          "total": 16894
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13725
+          "total": 16900
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13732
+          "total": 16907
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13739
+          "total": 16914
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13746
+          "total": 16921
         }
       ]
     },
     "hoyerswerda": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 386
+          "total": 479
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13702
+          "total": 16877
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13709
+          "total": 16884
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13716
+          "total": 16891
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13719
+          "total": 16894
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13725
+          "total": 16900
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13732
+          "total": 16907
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13739
+          "total": 16914
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13746
+          "total": 16921
         }
       ]
     },
     "luedenscheid": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 386
+          "total": 479
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13712
+          "total": 16904
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13719
+          "total": 16911
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13726
+          "total": 16918
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13729
+          "total": 16921
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13735
+          "total": 16927
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13742
+          "total": 16934
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13749
+          "total": 16941
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13756
+          "total": 16948
         }
       ]
     },
     "warburg": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 378
+          "total": 454
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13712
+          "total": 16904
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13719
+          "total": 16911
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13726
+          "total": 16918
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13729
+          "total": 16921
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13735
+          "total": 16927
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13742
+          "total": 16934
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13749
+          "total": 16941
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13756
+          "total": 16948
         }
       ]
     },
     "wernigerode": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 381
+          "total": 474
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13712
+          "total": 16904
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13719
+          "total": 16911
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13726
+          "total": 16918
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13729
+          "total": 16921
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13735
+          "total": 16927
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13742
+          "total": 16934
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13749
+          "total": 16941
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13756
+          "total": 16948
         }
       ]
     },
     "wiesenburg": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 362
+          "total": 451
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13702
+          "total": 16877
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13709
+          "total": 16884
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13716
+          "total": 16891
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13719
+          "total": 16894
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13725
+          "total": 16900
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13732
+          "total": 16907
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13739
+          "total": 16914
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13746
+          "total": 16921
         }
       ]
     },
     "ahaus": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 386
+          "total": 479
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13712
+          "total": 16904
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13719
+          "total": 16911
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13726
+          "total": 16918
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13729
+          "total": 16921
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13735
+          "total": 16927
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13742
+          "total": 16934
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13749
+          "total": 16941
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13756
+          "total": 16948
         }
       ]
     },
     "muenster-osnabrueck": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 386
+          "total": 479
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13712
+          "total": 16904
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13719
+          "total": 16911
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13726
+          "total": 16918
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13729
+          "total": 16921
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13735
+          "total": 16927
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13742
+          "total": 16934
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13749
+          "total": 16941
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13756
+          "total": 16948
         }
       ]
     },
     "salzuflen-bad": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 386
+          "total": 479
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13712
+          "total": 16904
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13719
+          "total": 16911
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13726
+          "total": 16918
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13729
+          "total": 16921
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13735
+          "total": 16927
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13742
+          "total": 16934
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13749
+          "total": 16941
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13756
+          "total": 16948
         }
       ]
     },
     "manschnow": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 366
+          "total": 452
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13702
+          "total": 16877
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13709
+          "total": 16884
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13716
+          "total": 16891
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13719
+          "total": 16894
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13725
+          "total": 16900
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13732
+          "total": 16907
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13739
+          "total": 16914
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13746
+          "total": 16921
         }
       ]
     },
     "diepholz": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 382
+          "total": 475
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13712
+          "total": 16904
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13719
+          "total": 16911
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13726
+          "total": 16918
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13729
+          "total": 16921
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13735
+          "total": 16927
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13742
+          "total": 16934
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13749
+          "total": 16941
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13756
+          "total": 16948
         }
       ]
     },
     "marnitz": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 386
+          "total": 479
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13702
+          "total": 16877
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13709
+          "total": 16884
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13716
+          "total": 16891
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13719
+          "total": 16894
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13725
+          "total": 16900
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13732
+          "total": 16907
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13739
+          "total": 16914
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13746
+          "total": 16921
         }
       ]
     },
     "waren-mueritz": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 386
+          "total": 479
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13702
+          "total": 16877
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13709
+          "total": 16884
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13716
+          "total": 16891
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13719
+          "total": 16894
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13725
+          "total": 16900
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13732
+          "total": 16907
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13739
+          "total": 16914
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13746
+          "total": 16921
         }
       ]
     },
     "feldberg-mecklenburg": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 365
+          "total": 441
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13702
+          "total": 16877
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13709
+          "total": 16884
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13716
+          "total": 16891
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13719
+          "total": 16894
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13725
+          "total": 16900
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13732
+          "total": 16907
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13739
+          "total": 16914
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13746
+          "total": 16921
         }
       ]
     },
     "emden": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 386
+          "total": 479
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13712
+          "total": 16904
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13719
+          "total": 16911
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13726
+          "total": 16918
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13729
+          "total": 16921
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13735
+          "total": 16927
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13742
+          "total": 16934
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13749
+          "total": 16941
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13756
+          "total": 16948
         }
       ]
     },
     "bremerhaven": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 0,
-          "updated": 9,
-          "total": 360
+          "updated": 8,
+          "total": 452
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13712
+          "total": 16904
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13719
+          "total": 16911
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13726
+          "total": 16918
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 13729
+          "total": 16921
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 13735
+          "total": 16927
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 13742
+          "total": 16934
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13749
+          "total": 16941
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 13756
+          "total": 16948
         }
       ]
     },
     "sanitz-gross-luesewitz": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
+      "results": [
+        {
+          "step": "messwerte",
+          "ok": true,
+          "added": 1,
+          "updated": 13,
+          "total": 479
+        },
+        {
+          "step": "icon",
+          "ok": true,
+          "added": 6,
+          "updated": 78,
+          "total": 14304
+        },
+        {
+          "step": "ecmwf",
+          "ok": true,
+          "added": 7,
+          "updated": 91,
+          "total": 14311
+        },
+        {
+          "step": "gfs",
+          "ok": true,
+          "added": 7,
+          "updated": 91,
+          "total": 14318
+        },
+        {
+          "step": "arpege",
+          "ok": true,
+          "added": 3,
+          "updated": 39,
+          "total": 14321
+        },
+        {
+          "step": "ukmo",
+          "ok": true,
+          "added": 6,
+          "updated": 78,
+          "total": 14327
+        },
+        {
+          "step": "gem",
+          "ok": true,
+          "added": 7,
+          "updated": 91,
+          "total": 14334
+        },
+        {
+          "step": "mosmix",
+          "ok": true,
+          "added": 7,
+          "updated": 0,
+          "total": 14341
+        },
+        {
+          "step": "metno",
+          "ok": true,
+          "added": 7,
+          "updated": 0,
+          "total": 14348
+        }
+      ]
+    },
+    "greifswald": {
+      "today": "2026-10-01",
+      "results": [
+        {
+          "step": "messwerte",
+          "ok": true,
+          "added": 1,
+          "updated": 13,
+          "total": 387
+        },
+        {
+          "step": "icon",
+          "ok": true,
+          "added": 6,
+          "updated": 78,
+          "total": 13752
+        },
+        {
+          "step": "ecmwf",
+          "ok": true,
+          "added": 7,
+          "updated": 91,
+          "total": 13759
+        },
+        {
+          "step": "gfs",
+          "ok": true,
+          "added": 7,
+          "updated": 91,
+          "total": 13766
+        },
+        {
+          "step": "arpege",
+          "ok": true,
+          "added": 3,
+          "updated": 39,
+          "total": 13769
+        },
+        {
+          "step": "ukmo",
+          "ok": true,
+          "added": 6,
+          "updated": 78,
+          "total": 13775
+        },
+        {
+          "step": "gem",
+          "ok": true,
+          "added": 7,
+          "updated": 91,
+          "total": 13782
+        },
+        {
+          "step": "mosmix",
+          "ok": true,
+          "added": 7,
+          "updated": 0,
+          "total": 13789
+        },
+        {
+          "step": "metno",
+          "ok": true,
+          "added": 7,
+          "updated": 0,
+          "total": 13796
+        }
+      ]
+    },
+    "ueckermuende": {
+      "today": "2026-10-01",
+      "results": [
+        {
+          "step": "messwerte",
+          "ok": true,
+          "added": 1,
+          "updated": 13,
+          "total": 387
+        },
+        {
+          "step": "icon",
+          "ok": true,
+          "added": 6,
+          "updated": 78,
+          "total": 13752
+        },
+        {
+          "step": "ecmwf",
+          "ok": true,
+          "added": 7,
+          "updated": 91,
+          "total": 13759
+        },
+        {
+          "step": "gfs",
+          "ok": true,
+          "added": 7,
+          "updated": 91,
+          "total": 13766
+        },
+        {
+          "step": "arpege",
+          "ok": true,
+          "added": 3,
+          "updated": 39,
+          "total": 13769
+        },
+        {
+          "step": "ukmo",
+          "ok": true,
+          "added": 6,
+          "updated": 78,
+          "total": 13775
+        },
+        {
+          "step": "gem",
+          "ok": true,
+          "added": 7,
+          "updated": 91,
+          "total": 13782
+        },
+        {
+          "step": "mosmix",
+          "ok": true,
+          "added": 7,
+          "updated": 0,
+          "total": 13789
+        },
+        {
+          "step": "metno",
+          "ok": true,
+          "added": 7,
+          "updated": 0,
+          "total": 13796
+        }
+      ]
+    },
+    "fehmarn": {
+      "today": "2026-10-01",
+      "results": [
+        {
+          "step": "messwerte",
+          "ok": true,
+          "added": 1,
+          "updated": 13,
+          "total": 384
+        },
+        {
+          "step": "icon",
+          "ok": true,
+          "added": 6,
+          "updated": 78,
+          "total": 13762
+        },
+        {
+          "step": "ecmwf",
+          "ok": true,
+          "added": 7,
+          "updated": 91,
+          "total": 13769
+        },
+        {
+          "step": "gfs",
+          "ok": true,
+          "added": 7,
+          "updated": 91,
+          "total": 13776
+        },
+        {
+          "step": "arpege",
+          "ok": true,
+          "added": 3,
+          "updated": 39,
+          "total": 13779
+        },
+        {
+          "step": "ukmo",
+          "ok": true,
+          "added": 6,
+          "updated": 78,
+          "total": 13785
+        },
+        {
+          "step": "gem",
+          "ok": true,
+          "added": 7,
+          "updated": 91,
+          "total": 13792
+        },
+        {
+          "step": "mosmix",
+          "ok": true,
+          "added": 7,
+          "updated": 0,
+          "total": 13799
+        },
+        {
+          "step": "metno",
+          "ok": true,
+          "added": 7,
+          "updated": 0,
+          "total": 13806
+        }
+      ]
+    },
+    "arkona": {
+      "today": "2026-10-01",
+      "results": [
+        {
+          "step": "messwerte",
+          "ok": true,
+          "added": 1,
+          "updated": 13,
+          "total": 387
+        },
+        {
+          "step": "icon",
+          "ok": true,
+          "added": 6,
+          "updated": 78,
+          "total": 13752
+        },
+        {
+          "step": "ecmwf",
+          "ok": true,
+          "added": 7,
+          "updated": 91,
+          "total": 13759
+        },
+        {
+          "step": "gfs",
+          "ok": true,
+          "added": 7,
+          "updated": 91,
+          "total": 13766
+        },
+        {
+          "step": "arpege",
+          "ok": true,
+          "added": 3,
+          "updated": 39,
+          "total": 13769
+        },
+        {
+          "step": "ukmo",
+          "ok": true,
+          "added": 6,
+          "updated": 78,
+          "total": 13775
+        },
+        {
+          "step": "gem",
+          "ok": true,
+          "added": 7,
+          "updated": 91,
+          "total": 13782
+        },
+        {
+          "step": "mosmix",
+          "ok": true,
+          "added": 7,
+          "updated": 0,
+          "total": 13789
+        },
+        {
+          "step": "metno",
+          "ok": true,
+          "added": 7,
+          "updated": 0,
+          "total": 13796
+        }
+      ]
+    },
+    "sankt-peter-ording": {
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
@@ -4162,464 +4502,124 @@
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 10942
+          "total": 13762
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 10949
+          "total": 13769
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 10956
+          "total": 13776
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 10959
+          "total": 13779
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 10965
+          "total": 13785
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 10972
+          "total": 13792
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 10979
+          "total": 13799
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 10986
-        }
-      ]
-    },
-    "greifswald": {
-      "today": "2026-09-30",
-      "results": [
-        {
-          "step": "messwerte",
-          "ok": true,
-          "added": 1,
-          "updated": 13,
-          "total": 294
-        },
-        {
-          "step": "icon",
-          "ok": true,
-          "added": 6,
-          "updated": 78,
-          "total": 10390
-        },
-        {
-          "step": "ecmwf",
-          "ok": true,
-          "added": 7,
-          "updated": 91,
-          "total": 10397
-        },
-        {
-          "step": "gfs",
-          "ok": true,
-          "added": 7,
-          "updated": 91,
-          "total": 10404
-        },
-        {
-          "step": "arpege",
-          "ok": true,
-          "added": 3,
-          "updated": 39,
-          "total": 10407
-        },
-        {
-          "step": "ukmo",
-          "ok": true,
-          "added": 6,
-          "updated": 78,
-          "total": 10413
-        },
-        {
-          "step": "gem",
-          "ok": true,
-          "added": 7,
-          "updated": 91,
-          "total": 10420
-        },
-        {
-          "step": "mosmix",
-          "ok": true,
-          "added": 7,
-          "updated": 0,
-          "total": 10427
-        },
-        {
-          "step": "metno",
-          "ok": true,
-          "added": 7,
-          "updated": 0,
-          "total": 10434
-        }
-      ]
-    },
-    "ueckermuende": {
-      "today": "2026-09-30",
-      "results": [
-        {
-          "step": "messwerte",
-          "ok": true,
-          "added": 1,
-          "updated": 13,
-          "total": 294
-        },
-        {
-          "step": "icon",
-          "ok": true,
-          "added": 6,
-          "updated": 78,
-          "total": 10390
-        },
-        {
-          "step": "ecmwf",
-          "ok": true,
-          "added": 7,
-          "updated": 91,
-          "total": 10397
-        },
-        {
-          "step": "gfs",
-          "ok": true,
-          "added": 7,
-          "updated": 91,
-          "total": 10404
-        },
-        {
-          "step": "arpege",
-          "ok": true,
-          "added": 3,
-          "updated": 39,
-          "total": 10407
-        },
-        {
-          "step": "ukmo",
-          "ok": true,
-          "added": 6,
-          "updated": 78,
-          "total": 10413
-        },
-        {
-          "step": "gem",
-          "ok": true,
-          "added": 7,
-          "updated": 91,
-          "total": 10420
-        },
-        {
-          "step": "mosmix",
-          "ok": true,
-          "added": 7,
-          "updated": 0,
-          "total": 10427
-        },
-        {
-          "step": "metno",
-          "ok": true,
-          "added": 7,
-          "updated": 0,
-          "total": 10434
-        }
-      ]
-    },
-    "fehmarn": {
-      "today": "2026-09-30",
-      "results": [
-        {
-          "step": "messwerte",
-          "ok": true,
-          "added": 1,
-          "updated": 13,
-          "total": 291
-        },
-        {
-          "step": "icon",
-          "ok": true,
-          "added": 6,
-          "updated": 78,
-          "total": 10400
-        },
-        {
-          "step": "ecmwf",
-          "ok": true,
-          "added": 7,
-          "updated": 91,
-          "total": 10407
-        },
-        {
-          "step": "gfs",
-          "ok": true,
-          "added": 7,
-          "updated": 91,
-          "total": 10414
-        },
-        {
-          "step": "arpege",
-          "ok": true,
-          "added": 3,
-          "updated": 39,
-          "total": 10417
-        },
-        {
-          "step": "ukmo",
-          "ok": true,
-          "added": 6,
-          "updated": 78,
-          "total": 10423
-        },
-        {
-          "step": "gem",
-          "ok": true,
-          "added": 7,
-          "updated": 91,
-          "total": 10430
-        },
-        {
-          "step": "mosmix",
-          "ok": true,
-          "added": 7,
-          "updated": 0,
-          "total": 10437
-        },
-        {
-          "step": "metno",
-          "ok": true,
-          "added": 7,
-          "updated": 0,
-          "total": 10444
-        }
-      ]
-    },
-    "arkona": {
-      "today": "2026-09-30",
-      "results": [
-        {
-          "step": "messwerte",
-          "ok": true,
-          "added": 1,
-          "updated": 13,
-          "total": 294
-        },
-        {
-          "step": "icon",
-          "ok": true,
-          "added": 6,
-          "updated": 78,
-          "total": 10390
-        },
-        {
-          "step": "ecmwf",
-          "ok": true,
-          "added": 7,
-          "updated": 91,
-          "total": 10397
-        },
-        {
-          "step": "gfs",
-          "ok": true,
-          "added": 7,
-          "updated": 91,
-          "total": 10404
-        },
-        {
-          "step": "arpege",
-          "ok": true,
-          "added": 3,
-          "updated": 39,
-          "total": 10407
-        },
-        {
-          "step": "ukmo",
-          "ok": true,
-          "added": 6,
-          "updated": 78,
-          "total": 10413
-        },
-        {
-          "step": "gem",
-          "ok": true,
-          "added": 7,
-          "updated": 91,
-          "total": 10420
-        },
-        {
-          "step": "mosmix",
-          "ok": true,
-          "added": 7,
-          "updated": 0,
-          "total": 10427
-        },
-        {
-          "step": "metno",
-          "ok": true,
-          "added": 7,
-          "updated": 0,
-          "total": 10434
-        }
-      ]
-    },
-    "sankt-peter-ording": {
-      "today": "2026-09-30",
-      "results": [
-        {
-          "step": "messwerte",
-          "ok": true,
-          "added": 1,
-          "updated": 13,
-          "total": 294
-        },
-        {
-          "step": "icon",
-          "ok": true,
-          "added": 6,
-          "updated": 78,
-          "total": 10400
-        },
-        {
-          "step": "ecmwf",
-          "ok": true,
-          "added": 7,
-          "updated": 91,
-          "total": 10407
-        },
-        {
-          "step": "gfs",
-          "ok": true,
-          "added": 7,
-          "updated": 91,
-          "total": 10414
-        },
-        {
-          "step": "arpege",
-          "ok": true,
-          "added": 3,
-          "updated": 39,
-          "total": 10417
-        },
-        {
-          "step": "ukmo",
-          "ok": true,
-          "added": 6,
-          "updated": 78,
-          "total": 10423
-        },
-        {
-          "step": "gem",
-          "ok": true,
-          "added": 7,
-          "updated": 91,
-          "total": 10430
-        },
-        {
-          "step": "mosmix",
-          "ok": true,
-          "added": 7,
-          "updated": 0,
-          "total": 10437
-        },
-        {
-          "step": "metno",
-          "ok": true,
-          "added": 7,
-          "updated": 0,
-          "total": 10444
+          "total": 13806
         }
       ]
     },
     "list-auf-sylt": {
-      "today": "2026-09-30",
+      "today": "2026-10-01",
       "results": [
         {
           "step": "messwerte",
           "ok": true,
           "added": 1,
           "updated": 13,
-          "total": 276
+          "total": 369
         },
         {
           "step": "icon",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 10400
+          "total": 13762
         },
         {
           "step": "ecmwf",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 10407
+          "total": 13769
         },
         {
           "step": "gfs",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 10414
+          "total": 13776
         },
         {
           "step": "arpege",
           "ok": true,
           "added": 3,
           "updated": 39,
-          "total": 10417
+          "total": 13779
         },
         {
           "step": "ukmo",
           "ok": true,
           "added": 6,
           "updated": 78,
-          "total": 10423
+          "total": 13785
         },
         {
           "step": "gem",
           "ok": true,
           "added": 7,
           "updated": 91,
-          "total": 10430
+          "total": 13792
         },
         {
           "step": "mosmix",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 10437
+          "total": 13799
         },
         {
           "step": "metno",
           "ok": true,
           "added": 7,
           "updated": 0,
-          "total": 10444
+          "total": 13806
         }
       ]
     }
@@ -4634,65 +4634,65 @@
     "hannover": 100,
     "kiel": 100,
     "luebeck": 100,
-    "magdeburg": 95,
-    "mainz": 94,
-    "muenchen": 94,
-    "potsdam": 94,
-    "saarbruecken": 94,
-    "schwerin": 94,
-    "stuttgart": 94,
-    "wiesbaden": 94,
-    "kempten": 57,
-    "garmisch-partenkirchen": 57,
-    "chieming": 57,
-    "weingarten-kr-ravensburg": 54,
-    "guenzburg": 48,
-    "lahr": 48,
-    "balingen-bronnhaupten": 48,
-    "muensingen-apfelstetten": 48,
-    "gelbelsee": 48,
-    "straubing": 48,
-    "zwiesel": 48,
-    "nuernberg": 48,
-    "waldmuenchen": 48,
-    "trier-petrisberg": 48,
-    "mannheim": 48,
-    "kissingen-bad": 48,
-    "fichtelberg-oberfranken-huettstadl": 48,
-    "nuerburg-barweiler": 48,
-    "neuhuetten-spessart": 48,
-    "kroelpa-rockendorf": 48,
-    "lichtentanne": 48,
-    "marienberg": 48,
-    "bertsdorf-hoernitz": 48,
-    "giessen-wettenberg": 48,
-    "hersfeld-bad": 48,
-    "leinefelde": 48,
-    "querfurt-muehle-lodersleben": 48,
-    "leipzig-holzhausen": 48,
-    "doberlug-kirchhain": 48,
-    "hoyerswerda": 48,
-    "luedenscheid": 48,
-    "warburg": 48,
-    "wernigerode": 48,
-    "wiesenburg": 48,
-    "ahaus": 48,
-    "muenster-osnabrueck": 48,
-    "salzuflen-bad": 48,
-    "manschnow": 48,
-    "diepholz": 48,
-    "marnitz": 48,
-    "waren-mueritz": 48,
-    "feldberg-mecklenburg": 48,
-    "emden": 48,
-    "bremerhaven": 48,
-    "sanitz-gross-luesewitz": 41,
-    "greifswald": 38,
-    "ueckermuende": 38,
-    "fehmarn": 38,
-    "arkona": 38,
-    "sankt-peter-ording": 38,
-    "list-auf-sylt": 38
+    "magdeburg": 100,
+    "mainz": 100,
+    "muenchen": 100,
+    "potsdam": 100,
+    "saarbruecken": 100,
+    "schwerin": 100,
+    "stuttgart": 100,
+    "wiesbaden": 100,
+    "kempten": 75,
+    "garmisch-partenkirchen": 75,
+    "chieming": 75,
+    "weingarten-kr-ravensburg": 70,
+    "guenzburg": 57,
+    "lahr": 57,
+    "balingen-bronnhaupten": 57,
+    "muensingen-apfelstetten": 57,
+    "gelbelsee": 57,
+    "straubing": 57,
+    "zwiesel": 57,
+    "nuernberg": 57,
+    "waldmuenchen": 57,
+    "trier-petrisberg": 57,
+    "mannheim": 57,
+    "kissingen-bad": 57,
+    "fichtelberg-oberfranken-huettstadl": 57,
+    "nuerburg-barweiler": 57,
+    "neuhuetten-spessart": 57,
+    "kroelpa-rockendorf": 57,
+    "lichtentanne": 57,
+    "marienberg": 57,
+    "bertsdorf-hoernitz": 57,
+    "giessen-wettenberg": 57,
+    "hersfeld-bad": 57,
+    "leinefelde": 57,
+    "querfurt-muehle-lodersleben": 57,
+    "leipzig-holzhausen": 57,
+    "doberlug-kirchhain": 57,
+    "hoyerswerda": 57,
+    "luedenscheid": 57,
+    "warburg": 57,
+    "wernigerode": 57,
+    "wiesenburg": 57,
+    "ahaus": 57,
+    "muenster-osnabrueck": 57,
+    "salzuflen-bad": 57,
+    "manschnow": 57,
+    "diepholz": 57,
+    "marnitz": 57,
+    "waren-mueritz": 57,
+    "feldberg-mecklenburg": 57,
+    "emden": 57,
+    "bremerhaven": 57,
+    "sanitz-gross-luesewitz": 50,
+    "greifswald": 48,
+    "ueckermuende": 48,
+    "fehmarn": 48,
+    "arkona": 48,
+    "sankt-peter-ording": 48,
+    "list-auf-sylt": 48
   },
-  "archiveNote": "Budget für diesen Lauf aufgebraucht"
+  "archiveNote": "Open-Meteo-Limit erreicht: {\"error\":true,\"reason\":\"Hourly API request limit exceeded. Please try again in the next hour.\"}"
 }
