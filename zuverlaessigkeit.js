@@ -67,7 +67,7 @@ async function init() {
       providers.map((p) => `<option value="${p.id}">Nur ${esc(p.name)}: wo gut, wo schlecht?</option>`).join("");
 
     for (const id of ["f-location", "f-metric", "f-period", "f-common", "f-trend-lead"]) $(id).addEventListener("change", update);
-    for (const id of ["m-metric", "m-leads", "m-mode"]) $(id).addEventListener("change", () => renderMap(state.ctx));
+    for (const id of ["m-metric", "m-leads", "m-mode", "m-stable"]) $(id).addEventListener("change", () => renderMap(state.ctx));
     matchMedia("(prefers-color-scheme: dark)").addEventListener("change", update);
     await update();
   } catch (err) {
@@ -106,7 +106,7 @@ function contextFromSummary(metric, period, common) {
   };
   const locs = Object.entries(view.locDays).filter(([, n]) => n > 0);
   return {
-    stats, rel: view.rel, trend, locDays: view.locDays,
+    stats, rel: view.rel, trend, locDays: view.locDays, provDays: view.provDays || {},
     meta: { days: view.days, firstDay: view.firstDay, lastObs: view.lastObs, locCount: locs.length, locDaysTotal: locs.reduce((a, [, n]) => a + n, 0) },
   };
 }
@@ -114,9 +114,12 @@ function contextFromSummary(metric, period, common) {
 function contextFromLocation(loc, data, metric, period, common) {
   let pairs = null, lastObs = null;
   const rel = { [loc.id]: {} };
+  const provDays = {};
   for (const m of METRIC_KEYS) {
     const r = computePairs(data, m, period, common, state.providers, loc.id);
-    rel[loc.id][m] = relativeByLead(computeStats(r.pairs, METRICS[m].kind, state.providers), METRICS[m].kind, state.providers);
+    const { rel: relM, n } = relativeByLead(r.pairs, METRICS[m].kind, state.providers);
+    rel[loc.id][m] = relM;
+    if (m === "tmax") for (const p of state.providers) provDays[p.id] = n[p.id][0];
     if (m === metric) { pairs = r.pairs; lastObs = r.lastObs; }
   }
   if (!pairs.length) return null;
@@ -140,7 +143,7 @@ function contextFromLocation(loc, data, metric, period, common) {
   };
   const targets = new Set(pairs.map((p) => p.target));
   return {
-    stats, rel, trend, data,
+    stats, rel, trend, data, provDays,
     meta: { days: targets.size, firstDay: [...targets].sort()[0], lastObs, locCount: 1, locDaysTotal: targets.size },
   };
 }
@@ -244,7 +247,8 @@ async function loadGeo() {
 
 function mapRanking(ctx) {
   const metricSel = $("m-metric").value;
-  return computeRanking(ctx.rel, state.providers, {
+  const providers = $("m-stable").checked ? state.providers.filter((p) => !isPreliminary(ctx, p)) : state.providers;
+  return computeRanking(ctx.rel, providers, {
     leads: LEAD_GROUPS[$("m-leads").value],
     metrics: metricSel === "gesamt" ? METRIC_KEYS : [metricSel],
   });
@@ -304,7 +308,7 @@ async function renderMap(ctx) {
       const l = locs[Number(cell.dataset.i)];
       const ranking = byLoc[l.id] || [];
       const rows = mode === "best"
-        ? ranking.slice(0, 3).map((r, i) => `<div><span class="swatch" style="background:${color(r.p)}"></span>${i + 1}. ${esc(r.p.name)} <span class="muted">${pct(r.total)}</span></div>`).join("")
+        ? ranking.slice(0, 3).map((r, i) => `<div><span class="swatch" style="background:${color(r.p)}"></span>${i + 1}. ${esc(r.p.name)} <span class="muted">${pct(r.total)}${isPreliminary(ctx, r.p) ? " · vorläufig" : ""}</span></div>`).join("")
         : (() => { const r = ranking.find((x) => x.p.id === mode); return `<div>${esc(providerById(mode).name)}: <strong>${pct(r?.total)}</strong> gegenüber dem Durchschnitt</div>`; })();
       const days = (ctx.locDays?.[l.id] || 0).toLocaleString("de-DE");
       tip.innerHTML = `<strong>${esc(l.name)}</strong><div class="muted">${esc(l.region)} · Station ${esc(l.stationName)} · ${days} Tage</div>${ranking.length ? rows : '<div class="muted">Noch zu wenig Daten, wird gerade gesammelt.</div>'}`;
@@ -338,7 +342,7 @@ function renderMapLegendInner(mode, byLoc, locs) {
     $("map-legend").innerHTML = state.providers
       .map((p) => ({ p, n: wins[p.id] || 0 }))
       .sort((a, b) => b.n - a.n)
-      .map(({ p, n }) => `<span class="legend-item${n ? "" : " zero"}"><span class="swatch" style="background:${color(p)}"></span>${esc(p.name)} <strong>${n}</strong></span>`)
+      .map(({ p, n }) => `<span class="legend-item${n ? "" : " zero"}"><span class="swatch" style="background:${color(p)}"></span>${esc(p.name)}${isPreliminary(state.ctx, p) ? " <span class=\"badge\">vorläufig</span>" : ""} <strong>${n}</strong></span>`)
       .join("") + `<span class="legend-note">Anzahl Regionen mit Platz 1, von ${rated} bewerteten</span>`;
   } else {
     $("map-legend").innerHTML = `<span class="legend-note">ungenauer als der Durchschnitt</span><span class="gradient"></span><span class="legend-note">genauer</span><span class="legend-note">(−25 % … +25 %)</span>`;
@@ -367,13 +371,14 @@ function renderStateTable(byLoc, locs) {
 
 // ---------- Ranking ----------
 
+// Weniger als PRELIM_DAYS Vergleichstage (je Ort): Ergebnis ist noch vom Zufall geprägt
+const PRELIM_DAYS = 60;
+const isPreliminary = (ctx, p) => (ctx.provDays?.[p.id] || 0) < PRELIM_DAYS;
+
 function renderRanking(ctx) {
-  const { all, metric, rel, stats, locDays } = ctx;
+  const { all, metric, rel, locDays, provDays } = ctx;
   const { scores, rows, byLoc } = computeRanking(rel, state.providers);
-  const tmaxStats = all ? null : computeStats(computePairs(ctx.data, "tmax", $("f-period").value, $("f-common").checked, state.providers).pairs, "error", state.providers);
-  const countFor = (p) => all
-    ? Object.values(byLoc).filter((r) => r.some((x) => x.p.id === p.id)).length
-    : Math.max(0, ...LEADS.map((k) => tmaxStats[p.id][k].n));
+  const days = (p) => provDays[p.id] || 0;
 
   const ranked = rows.filter((r) => r.total != null);
   const maxAbs = Math.max(1, ...ranked.map((r) => Math.abs(r.total)));
@@ -381,12 +386,16 @@ function renderRanking(ctx) {
   $("ranking-sub").textContent = `Zeitraum: ${periodText}${$("f-common").checked ? ", nur Tage mit Daten aller Anbieter" : ""}. Gewertet werden alle fünf Messgrößen über alle Vorlaufzeiten, die ein Anbieter rechnet.` +
     (all ? ` Das Ranking wird für jeden der ${Object.keys(rel).length} Orte einzeln berechnet und dann gemittelt, jeder Ort zählt gleich viel.` : "");
   const w = ranked[0];
-  $("ranking-winner").innerHTML = w
-    ? `🏆 Zuverlässigste Quelle: <strong>${esc(w.p.name)}</strong>. Sie liegt im Schnitt ${fmt(Math.abs(w.total), 0)} % ${w.total >= 0 ? "genauer" : "ungenauer"} als der Durchschnitt aller Anbieter.`
-    : "Noch zu wenig Daten für ein Ranking.";
+  const wSafe = ranked.find((r) => !isPreliminary(ctx, r.p));
+  $("ranking-winner").innerHTML = !w
+    ? "Noch zu wenig Daten für ein Ranking."
+    : `🏆 Zuverlässigste Quelle: <strong>${esc(w.p.name)}</strong>. Sie liegt im Schnitt ${fmt(Math.abs(w.total), 0)} % ${w.total >= 0 ? "genauer" : "ungenauer"} als der Durchschnitt aller Anbieter an denselben Tagen.` +
+      (isPreliminary(ctx, w.p) && wSafe
+        ? ` <span class="prelim-note">Vorläufig, erst ${days(w.p)} Tage verglichen. Bester Anbieter mit langer Datenreihe: <strong>${esc(wSafe.p.name)}</strong> (${pct(wSafe.total)}).</span>`
+        : "");
 
   const medal = ["🥇", "🥈", "🥉"];
-  let html = `<thead><tr><th>Platz</th><th>Anbieter</th><th>Gesamt</th>${METRIC_KEYS.map((k) => `<th class="${k === metric ? "sel" : ""}">${METRICS[k].label}</th>`).join("")}<th>Reichweite</th><th>${all ? "Orte" : "Tage"}</th></tr></thead><tbody>`;
+  let html = `<thead><tr><th>Platz</th><th>Anbieter</th><th>Gesamt</th>${METRIC_KEYS.map((k) => `<th class="${k === metric ? "sel" : ""}">${METRICS[k].label}</th>`).join("")}<th>Reichweite</th><th>${all ? "Tage je Ort" : "Tage"}</th></tr></thead><tbody>`;
   rows.forEach((r, i) => {
     const has = r.total != null;
     const bar = has
@@ -394,11 +403,11 @@ function renderRanking(ctx) {
       : `<span class="muted">zu wenig Daten</span>`;
     html += `<tr class="${i === 0 && has ? "top" : ""}">
       <td class="place">${has ? medal[i] || `${i + 1}.` : "–"}</td>
-      <td class="name"><span class="swatch" style="background:${color(r.p)}"></span>${esc(r.p.name)}<small>${esc(r.p.org)}</small></td>
+      <td class="name"><span class="swatch" style="background:${color(r.p)}"></span>${esc(r.p.name)}${isPreliminary(ctx, r.p) && has ? ` <span class="badge">vorläufig</span>` : ""}<small>${esc(r.p.org)}</small></td>
       <td class="total">${bar}</td>
       ${METRIC_KEYS.map((k) => `<td class="${k === metric ? "sel" : ""} ${scores[k][r.p.id] == null ? "muted" : ""}">${pct(scores[k][r.p.id])}</td>`).join("")}
       <td>${r.p.maxLead} Tage</td>
-      <td>${countFor(r.p).toLocaleString("de-DE")}</td>
+      <td>${days(r.p).toLocaleString("de-DE")}</td>
     </tr>`;
   });
   $("ranking").innerHTML = html + "</tbody>";

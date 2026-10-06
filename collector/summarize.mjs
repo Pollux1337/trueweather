@@ -32,15 +32,17 @@ export async function buildSummary() {
   const trend = {};
   for (const period of PERIODS) {
     for (const common of [false, true]) {
-      const view = { pooled: {}, rel: {}, locDays: {}, days: 0, firstDay: null, lastObs: null };
+      // provDays: je Anbieter die Zahl der Vergleichstage pro Ort (Höchsttemperatur, 1 Tag Vorlauf), gemittelt
+      const view = { pooled: {}, rel: {}, provDays: {}, locDays: {}, days: 0, firstDay: null, lastObs: null };
       const allTargets = new Set();
       const pooledPairs = Object.fromEntries(METRIC_KEYS.map((m) => [m, []]));
       for (const { loc, data } of sets) {
         view.rel[loc.id] = {};
         for (const m of METRIC_KEYS) {
           const { pairs, lastObs } = computePairs(data, m, period, common, providers, loc.id);
-          const stats = computeStats(pairs, METRICS[m].kind, providers);
-          view.rel[loc.id][m] = relativeByLead(stats, METRICS[m].kind, providers);
+          const { rel, n } = relativeByLead(pairs, METRICS[m].kind, providers);
+          view.rel[loc.id][m] = rel;
+          if (m === "tmax") for (const p of providers) (view.provDays[p.id] ??= []).push(n[p.id][0]);
           for (const p of pairs) pooledPairs[m].push(p);
           if (m === "tmax") {
             const targets = new Set(pairs.map((p) => p.target));
@@ -49,6 +51,10 @@ export async function buildSummary() {
             if (lastObs && (!view.lastObs || lastObs > view.lastObs)) view.lastObs = lastObs;
           }
         }
+      }
+      for (const id of Object.keys(view.provDays)) {
+        const v = view.provDays[id];
+        view.provDays[id] = v.length ? Math.round(v.reduce((a, b) => a + b, 0) / v.length) : 0;
       }
       view.days = allTargets.size;
       view.firstDay = [...allTargets].sort()[0] ?? null;

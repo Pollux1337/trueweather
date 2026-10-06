@@ -59,8 +59,16 @@ export async function fetchOpenMeteoArchive(loc, provider, start, end) {
 // ---------- DWD MOSMIX über Bright Sky (aktuelle Vorhersage, täglich gesammelt) ----------
 
 export async function fetchMosmix(loc, provider, today) {
-  const url = `https://api.brightsky.dev/weather?dwd_station_id=${loc.dwdStation}&date=${addDays(today, 1)}&last_date=${addDays(today, provider.maxLead + 1)}&tz=${encodeURIComponent(loc.timezone)}`;
-  const j = await fetchJson(url);
+  const range = `date=${addDays(today, 1)}&last_date=${addDays(today, provider.maxLead + 1)}&tz=${encodeURIComponent(loc.timezone)}`;
+  let j;
+  try {
+    j = await fetchJson(`https://api.brightsky.dev/weather?dwd_station_id=${loc.dwdStation}&${range}`);
+  } catch (err) {
+    // Manche MOSMIX-Punkte haben keine DWD-Stationsnummer (z. B. Münsingen) oder fehlen kurzzeitig:
+    // dann die nächste MOSMIX-Vorhersage im Umkreis von 10 km nehmen
+    if (!/HTTP 404/.test(err.message)) throw err;
+    j = await fetchJson(`https://api.brightsky.dev/weather?lat=${loc.lat}&lon=${loc.lon}&max_dist=10000&${range}`);
+  }
   const fcSources = new Set(j.sources.filter((s) => s.observation_type === "forecast").map((s) => s.id));
   const points = j.weather
     .filter((w) => fcSources.has(w.source_id))

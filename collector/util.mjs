@@ -16,8 +16,15 @@ export async function fetchJson(url, { headers = {}, retries = 4 } = {}) {
       await sleep(5_000 * (attempt + 1));
       continue;
     }
-    if (res.ok) return res.json();
     const body = await res.text().catch(() => "");
+    if (res.ok) {
+      // Open-Meteo liefert gelegentlich Text statt JSON (Server-Aussetzer) → wie Netzwerkfehler wiederholen
+      try { return JSON.parse(body); } catch (err) {
+        if (attempt >= retries) throw new Error(`Ungültige Antwort (${url.split("?")[0]}): ${body.slice(0, 120)}`);
+        await sleep(5_000 * (attempt + 1));
+        continue;
+      }
+    }
     // Stunden- oder Tageslimit: Warten lohnt nicht, später weitermachen
     if (res.status === 429 && /hourly|daily/i.test(body)) throw new RateLimitError(body.slice(0, 200));
     if ((res.status === 429 || res.status >= 500) && attempt < retries) {

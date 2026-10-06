@@ -27,15 +27,23 @@ try {
     if ([string]::IsNullOrEmpty($path)) { $path = "index.html" }
     $file = [IO.Path]::GetFullPath((Join-Path $root $path))
 
-    if ($file.StartsWith($root) -and (Test-Path $file -PathType Leaf)) {
-      $bytes = [IO.File]::ReadAllBytes($file)
-      $ext = [IO.Path]::GetExtension($file).ToLower()
-      $ctx.Response.ContentType = if ($types[$ext]) { $types[$ext] } else { "application/octet-stream" }
-      $ctx.Response.OutputStream.Write($bytes, 0, $bytes.Length)
-    } else {
-      $ctx.Response.StatusCode = 404
+    # Ein Fehler bei einer Anfrage (z. B. abgebrochene Verbindung) darf den Server nicht beenden
+    try {
+      if ($file.StartsWith($root) -and (Test-Path $file -PathType Leaf)) {
+        $bytes = [IO.File]::ReadAllBytes($file)
+        $ext = [IO.Path]::GetExtension($file).ToLower()
+        $ctx.Response.ContentType = if ($types[$ext]) { $types[$ext] } else { "application/octet-stream" }
+        $ctx.Response.ContentLength64 = $bytes.Length
+        # HEAD-Anfragen bekommen nur die Kopfzeilen, keinen Inhalt
+        if ($ctx.Request.HttpMethod -ne "HEAD") { $ctx.Response.OutputStream.Write($bytes, 0, $bytes.Length) }
+      } else {
+        $ctx.Response.StatusCode = 404
+      }
+    } catch {
+      Write-Host "Fehler bei $path : $($_.Exception.Message)"
+    } finally {
+      try { $ctx.Response.Close() } catch {}
     }
-    $ctx.Response.Close()
   }
 } finally {
   $listener.Stop()
