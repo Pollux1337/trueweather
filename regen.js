@@ -26,7 +26,7 @@ const state = {
 // ---------- Hilfsfunktionen ----------
 
 const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-const isDark = () => matchMedia("(prefers-color-scheme: dark)").matches;
+const isDark = () => true; // Anthrazit-Design ist immer dunkel
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 const fmt = (v, d = 0) => (v == null || !Number.isFinite(v) ? "–" : v.toLocaleString("de-DE", { minimumFractionDigits: d, maximumFractionDigits: d }));
 const pct = (v) => (v == null ? "–" : `${fmt(v)} %`);
@@ -138,7 +138,6 @@ function bindControls() {
   $("c-lead").addEventListener("change", (e) => { state.sel.lead = Number(e.target.value); update(); });
   $("c-view").addEventListener("change", (e) => { state.sel.view = e.target.value; update(); });
   $("c-smooth").addEventListener("change", (e) => { state.sel.smooth = e.target.checked; update(); });
-  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => update());
 }
 
 function fillLeads() {
@@ -201,7 +200,8 @@ async function setupMap() {
   const outline = path(state.geo);
 
   const svg = [`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Deutschlandkarte">`,
-    `<defs><clipPath id="de"><path d="${outline}"/></clipPath></defs><g clip-path="url(#de)">`];
+    `<defs><clipPath id="de"><path d="${outline}"/></clipPath>` +
+    `<pattern id="nodata" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="${css("--nodata")}"/><line x1="0" y1="0" x2="0" y2="6" stroke="${css("--faint")}" stroke-opacity="0.35" stroke-width="1.4"/></pattern></defs><g clip-path="url(#de)">`];
   stations.forEach((s, i) => svg.push(`<path class="cell" data-i="${i}" d="${voronoi.renderCell(i)}"/>`));
   svg.push(`</g><path class="states" d="${outline}"/>`);
   for (const [name, lat, lon] of CITIES) {
@@ -252,7 +252,7 @@ async function renderMap(ctx) {
   const { sel } = state;
   const yn = sel.metric === "yn";
   const lead = leadName(sel.lead);
-  const noData = css("--nodata");
+  const noData = "url(#nodata)"; // schraffiert, damit „keine Daten“ nicht mit „wenig zuverlässig“ verwechselt wird
   const area = {}; // Station → { value } bzw. { ranking }
 
   if (sel.mode === "reliability") {
@@ -291,7 +291,7 @@ function renderSeqLegend(sc, yn) {
     <div><div class="scale">${(yn ? colors : [...colors].reverse()).map((c) => `<span style="background:${c}"></span>`).join("")}</div>
     <div class="ticks"><span>${ticks[0]}</span><span>${ticks[1]}</span><span>${ticks[2]}</span></div></div>
     <span class="note">${yn ? "Treffsicherheit: höher = zuverlässiger" : "Ø Abweichung: kleiner = genauer"}</span>
-    <span class="item"><span class="swatch square" style="background:var(--nodata)"></span>zu wenig Regen für eine Aussage</span>`;
+    <span class="item"><span class="swatch square nodata"></span>zu wenig Regen für eine Aussage</span>`;
 }
 
 function renderWinnerLegend(area) {
@@ -302,7 +302,7 @@ function renderWinnerLegend(area) {
     .map((p, pi) => ({ p, pi, n: wins[pi] || 0 }))
     .sort((a, b) => b.n - a.n)
     .map(({ p, pi, n }) => `<span class="item${n ? "" : " zero"}"><span class="swatch" style="background:${color(pi)}"></span>${esc(p.name)} <strong>${n}</strong></span>`)
-    .join("") + (none ? `<span class="item"><span class="swatch square" style="background:var(--nodata)"></span>zu wenig Daten <strong>${none}</strong></span>` : "") +
+    .join("") + (none ? `<span class="item"><span class="swatch square nodata"></span>zu wenig Daten <strong>${none}</strong></span>` : "") +
     `<span class="note">Zahl = Flächen mit Platz 1</span>`;
 }
 

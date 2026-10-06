@@ -1,55 +1,37 @@
 /* Regen-Check */
 
+/* Anthrazit-Design: bewusst immer dunkel, unabhängig von der Systemeinstellung */
 :root {
-  color-scheme: light;
-  --bg: #f3f5f8;
-  --card: #ffffff;
-  --text: #121a24;
-  --muted: #5c6877;
-  --faint: #8a95a3;
-  --border: #e2e7ee;
-  --grid: #e9ecf1;
-  --accent: #1f5fbf;
-  --accent-soft: #e5eefb;
-  --nodata: #dcdfe4;
-  --better: #2a78d6;
-  --worse: #e34948;
-  --radius: 14px;
-  --shadow: 0 1px 2px rgba(18, 26, 36, 0.04), 0 4px 16px rgba(18, 26, 36, 0.04);
-  /* Anbieter: feste Reihenfolge, jede Farbe gehört immer zum selben Dienst */
-  --series-1: #2a78d6; --series-2: #eb6834; --series-3: #1baf7a; --series-4: #eda100;
-  --series-5: #e87ba4; --series-6: #008300; --series-7: #4a3aa7; --series-8: #e34948;
-  /* Zuverlässigkeit: ein Farbton, hell = wenig, dunkel = viel */
-  --seq-0: #dbe8fa; --seq-1: #b7d3f6; --seq-2: #86b6ef; --seq-3: #5598e7; --seq-4: #2a78d6; --seq-5: #1c5cab; --seq-6: #104281;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
-    --bg: #0e1116;
-    --card: #171b22;
-    --text: #edf1f6;
-    --muted: #a3adba;
-    --faint: #7b8593;
-    --border: #2a313b;
-    --grid: #232a33;
-    --accent: #6ea2f0;
-    --accent-soft: #1b2a40;
-    --nodata: #2d333c;
-    --better: #3987e5;
-    --worse: #e66767;
-    --shadow: none;
-    --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500;
-    --series-5: #d55181; --series-6: #008300; --series-7: #9085e9; --series-8: #e66767;
-    /* im Dunkeln: wenig = dunkel, viel = hell */
-    --seq-0: #13294a; --seq-1: #173a68; --seq-2: #1c4f8c; --seq-3: #2a68b8; --seq-4: #3f85dc; --seq-5: #6da7ec; --seq-6: #a9cdf6;
-  }
+  color-scheme: dark;
+  --bg: #1c1f23;          /* Anthrazit */
+  --card: #25292e;        /* Flächen */
+  --raised: #2e3339;      /* Kennzahlen, Eingabefelder */
+  --text: #eef1f4;
+  --muted: #a7afb9;
+  --faint: #7e8792;
+  --border: #363c43;
+  --grid: #30363d;
+  --accent: #5fb0ff;
+  --accent-ink: #0f1a26;  /* Schrift auf Akzentflächen */
+  --accent-soft: #24384d;
+  --nodata: #34393f;
+  --better: #3987e5;
+  --worse: #e66767;
+  --radius: 16px;
+  --shadow: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 8px 24px rgba(0, 0, 0, 0.25);
+  /* Anbieter: feste Reihenfolge, jede Farbe gehört immer zum selben Dienst (Stufen für dunkle Flächen) */
+  --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500;
+  --series-5: #d55181; --series-6: #2f9e2f; --series-7: #9085e9; --series-8: #e66767;
+  /* Zuverlässigkeit: ein Farbton, dunkel = wenig, hell = viel */
+  --seq-0: #1b2c44; --seq-1: #1d3d63; --seq-2: #1f5288; --seq-3: #2a6bb6; --seq-4: #3f88dd; --seq-5: #6eaaee; --seq-6: #aacffa;
 }
 
 * { box-sizing: border-box; }
 
 body {
   margin: 0;
+  background-image: radial-gradient(1200px 500px at 15% -10%, rgba(95, 176, 255, 0.07), transparent 60%);
+  background-attachment: fixed;
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   background: var(--bg);
   color: var(--text);
@@ -75,16 +57,16 @@ h1, h2, h3 { margin: 0; }
 }
 
 .brand { display: flex; align-items: center; gap: 14px; }
-.brand h1 { font-size: 1.6rem; letter-spacing: -0.01em; }
+.brand h1 { font-size: 1.7rem; font-weight: 700; letter-spacing: -0.02em; }
 .brand p { margin: 2px 0 0; color: var(--muted); font-size: 0.95rem; }
 .logo { width: 44px; height: 44px; flex: none; }
 .logo path:first-child { fill: var(--accent); }
-.logo-tick { fill: none; stroke: #fff; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.logo-tick { fill: none; stroke: var(--accent-ink); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
 
 .status-chip {
   font-size: 0.82rem;
   color: var(--muted);
-  background: var(--card);
+  background: var(--raised);
   border: 1px solid var(--border);
   border-radius: 999px;
   padding: 6px 12px;
@@ -113,7 +95,7 @@ h1, h2, h3 { margin: 0; }
 
 .seg {
   display: inline-flex;
-  background: var(--card);
+  background: var(--raised);
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 3px;
@@ -130,7 +112,7 @@ h1, h2, h3 { margin: 0; }
   cursor: pointer;
   white-space: nowrap;
 }
-.seg button[aria-pressed="true"] { background: var(--accent); color: #fff; }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); font-weight: 600; }
 .seg button:not([aria-pressed="true"]):hover { background: var(--accent-soft); color: var(--text); }
 
 select {
@@ -139,7 +121,7 @@ select {
   padding: 7px 10px;
   border: 1px solid var(--border);
   border-radius: 10px;
-  background: var(--card);
+  background: var(--raised);
   color: var(--text);
 }
 
@@ -224,13 +206,14 @@ main {
 
 .swatch { display: inline-block; width: 10px; height: 10px; border-radius: 50%; flex: none; }
 .swatch.square { border-radius: 2px; }
+.swatch.nodata { background: repeating-linear-gradient(45deg, var(--nodata) 0 3px, color-mix(in srgb, var(--faint) 45%, var(--nodata)) 3px 4.4px); }
 
 /* ---------- Kennzahlen ---------- */
 
 .kpis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-.kpi { background: var(--bg); border-radius: 10px; padding: 12px 14px; }
+.kpi { background: var(--raised); border-radius: 10px; padding: 12px 14px; }
 .kpi .label { font-size: 0.78rem; color: var(--muted); }
-.kpi .value { font-size: 1.55rem; font-weight: 650; margin-top: 2px; }
+.kpi .value { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.01em; margin-top: 2px; }
 .kpi .hint { font-size: 0.75rem; color: var(--faint); margin-top: 2px; }
 
 /* ---------- Tabellen ---------- */
@@ -248,7 +231,8 @@ main {
 .table td.best { font-weight: 700; color: var(--accent); }
 .table.compact td { padding: 7px 8px; }
 .table.compact th { padding: 6px 8px; }
-.table tr.top td { background: color-mix(in srgb, var(--accent) 7%, transparent); }
+.table tr.top td { background: color-mix(in srgb, var(--accent) 9%, transparent); }
+.table tbody tr:hover td { background: color-mix(in srgb, var(--text) 3%, transparent); }
 
 .winner { margin: 0 0 12px; font-size: 1rem; }
 .badge { display: inline-block; margin-left: 6px; padding: 1px 7px; border-radius: 999px; font-size: 0.7rem; font-weight: 600; background: color-mix(in srgb, #eda100 22%, transparent); color: var(--text); vertical-align: middle; }
