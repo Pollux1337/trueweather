@@ -12,7 +12,13 @@ export async function fetchObservations(station, from, to) {
   // ein Tag Rand, damit auch die ersten/letzten Stunden in Ortszeit vollständig sind
   for (let a = addDays(from, -1); a <= addDays(to, 1); a = addDays(a, 31)) {
     const b = addDays(a, 31) < addDays(to, 2) ? addDays(a, 31) : addDays(to, 2);
-    const j = await fetchJson(`https://api.brightsky.dev/weather?dwd_station_id=${station.id}&date=${a}&last_date=${b}&tz=UTC`);
+    let j;
+    try {
+      j = await fetchJson(`https://api.brightsky.dev/weather?dwd_station_id=${station.id}&date=${a}&last_date=${b}&tz=UTC`);
+    } catch (err) {
+      if (err.status === 404) continue; // Station hat in diesem Zeitraum keine Messwerte → Tage bleiben unbewertet
+      throw err;
+    }
     const own = new Set(j.sources.filter((s) => s.observation_type !== "forecast").map((s) => s.id));
     for (const w of j.weather) {
       // nur Werte dieser Station, keine Ersatzwerte von Nachbarstationen
