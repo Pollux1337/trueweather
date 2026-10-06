@@ -1,11 +1,12 @@
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { dirname } from "node:path";
 
+export const TZ = "Europe/Berlin";
 export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 export class RateLimitError extends Error {}
 
-// fetch mit Wiederholung bei Netzwerkfehlern, 429 (Rate-Limit) und 5xx
+// fetch mit Wiederholung bei Netzwerkfehlern, 429 (Minutenlimit), 5xx und kaputten Antworten
 export async function fetchJson(url, { headers = {}, retries = 4 } = {}) {
   for (let attempt = 0; ; attempt++) {
     let res;
@@ -19,96 +20,53 @@ export async function fetchJson(url, { headers = {}, retries = 4 } = {}) {
     const body = await res.text().catch(() => "");
     if (res.ok) {
       // Open-Meteo liefert gelegentlich Text statt JSON (Server-Aussetzer) → wie Netzwerkfehler wiederholen
-      try { return JSON.parse(body); } catch (err) {
+      try { return JSON.parse(body); } catch {
         if (attempt >= retries) throw new Error(`Ungültige Antwort (${url.split("?")[0]}): ${body.slice(0, 120)}`);
         await sleep(5_000 * (attempt + 1));
         continue;
       }
     }
-    // Stunden- oder Tageslimit: Warten lohnt nicht, später weitermachen
+    // Stunden- oder Tageslimit: Warten lohnt nicht, beim nächsten Lauf weitermachen
     if (res.status === 429 && /hourly|daily/i.test(body)) throw new RateLimitError(body.slice(0, 200));
     if ((res.status === 429 || res.status >= 500) && attempt < retries) {
       await sleep(res.status === 429 ? 65_000 : 5_000 * (attempt + 1));
       continue;
     }
-    throw new Error(`HTTP ${res.status} (${url.split("?")[0]}): ${body.slice(0, 200)}`);
+    const err = new Error(`HTTP ${res.status} (${url.split("?")[0]}): ${body.slice(0, 200)}`);
+    err.status = res.status;
+    throw err;
   }
 }
 
-// ---------- Datum ----------
+// ---------- Zeit ----------
+// Stundenschlüssel „YYYY-MM-DDTHH“ = Beginn der Stunde in deutscher Ortszeit
 
-export function localDate(date, timeZone) {
-  return new Intl.DateTimeFormat("sv-SE", { timeZone }).format(date); // YYYY-MM-DD
-}
+const keyFmt = new Intl.DateTimeFormat("sv-SE", { timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", hourCycle: "h23" });
+const dateFmt = new Intl.DateTimeFormat("sv-SE", { timeZone: TZ });
+
+export const hourKey = (startDate) => keyFmt.format(startDate).replace(" ", "T");
+// Werte, die die vorangegangene Stunde zusammenfassen (Messung, Open-Meteo, MOSMIX): Ende → Beginn
+export const hourKeyFromEnd = (endDate) => hourKey(new Date(endDate.getTime() - 3_600_000));
+export const localDate = (date) => dateFmt.format(date);
 
 export function addDays(day, n) {
   const d = new Date(day + "T00:00:00Z");
   d.setUTCDate(d.getUTCDate() + n);
   return d.toISOString().slice(0, 10);
 }
+export const daysBetween = (a, b) => Math.round((Date.parse(b) - Date.parse(a)) / 86_400_000);
+export const round1 = (v) => Math.round(v * 10) / 10;
 
-export function daysBetween(a, b) {
-  return Math.round((Date.parse(b) - Date.parse(a)) / 86_400_000);
-}
+// ---------- Dateien ----------
 
-export const round1 = (v) => (v == null || !Number.isFinite(v) ? null : Math.round(v * 10) / 10);
-
-// ---------- Tageswerte aus Stundenwerten ----------
-
-// points: [{ date, temp, precip, wind }] – ein Eintrag pro Stunde (Ortszeit)
-// Ein Wert zählt nur, wenn mindestens minHours Stunden vorhanden sind.
-export function aggregateDaily(points, minHours = 22) {
-  const byDate = new Map();
-  for (const p of points) {
-    if (!byDate.has(p.date)) byDate.set(p.date, []);
-    byDate.get(p.date).push(p);
+export async function readJson(path, fallback) {
+  try { return JSON.parse(await readFile(path, "utf8")); } catch (err) {
+    if (fallback !== undefined && err.code === "ENOENT") return fallback;
+    throw err;
   }
-  const days = new Map();
-  for (const [date, hours] of byDate) {
-    const vals = (k) => hours.map((h) => h[k]).filter((v) => v != null && Number.isFinite(v));
-    const temp = vals("temp"), precip = vals("precip"), wind = vals("wind");
-    const day = {
-      tmax: temp.length >= minHours ? round1(Math.max(...temp)) : null,
-      tmin: temp.length >= minHours ? round1(Math.min(...temp)) : null,
-      precip: precip.length >= minHours ? round1(precip.reduce((a, b) => a + b, 0)) : null,
-      wind: wind.length >= minHours ? round1(Math.max(...wind)) : null,
-    };
-    if (Object.values(day).some((v) => v != null)) days.set(date, day);
-  }
-  return days;
 }
 
-// ---------- CSV (nur Zahlen und einfache IDs, daher ohne Anführungszeichen) ----------
-
-export async function readCsv(path) {
-  let text;
-  try { text = await readFile(path, "utf8"); } catch { return []; }
-  const [header, ...lines] = text.trim().split(/\r?\n/);
-  if (!header) return [];
-  const cols = header.split(",");
-  return lines.filter(Boolean).map((line) => {
-    const cells = line.split(",");
-    return Object.fromEntries(cols.map((c, i) => [c, cells[i] ?? ""]));
-  });
-}
-
-export async function writeCsv(path, columns, rows) {
+export async function writeJson(path, data, pretty = false) {
   await mkdir(dirname(path), { recursive: true });
-  const lines = rows.map((r) => columns.map((c) => r[c] ?? "").join(","));
-  await writeFile(path, [columns.join(","), ...lines].join("\n") + "\n", "utf8");
-}
-
-// Neue Zeilen einfügen. overwrite=true ersetzt vorhandene Zeilen mit gleichem Schlüssel.
-export async function upsertCsv(path, columns, keyCols, newRows, { overwrite = true } = {}) {
-  const key = (r) => keyCols.map((c) => r[c]).join("|");
-  const map = new Map((await readCsv(path)).map((r) => [key(r), r]));
-  let added = 0, updated = 0;
-  for (const r of newRows) {
-    const k = key(r);
-    if (!map.has(k)) { map.set(k, r); added++; }
-    else if (overwrite) { map.set(k, r); updated++; }
-  }
-  const rows = [...map.values()].sort((a, b) => (key(a) < key(b) ? -1 : key(a) > key(b) ? 1 : 0));
-  await writeCsv(path, columns, rows);
-  return { added, updated, total: rows.length };
+  await writeFile(path, JSON.stringify(data, null, pretty ? 1 : 0) + "\n", "utf8");
 }

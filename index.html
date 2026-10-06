@@ -3,61 +3,172 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wetter-Dashboard</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Regen-Check</title>
+  <meta name="description" content="Wie zuverlässig sagen Wetterdienste Regen voraus? Ausgewertet an hunderten DWD-Messstationen in ganz Deutschland.">
+  <link rel="stylesheet" href="regen.css?v=__VERSION__">
 </head>
 <body>
-  <header class="topbar">
-    <div>
-      <h1>Wetter-Dashboard</h1>
-      <a class="nav-link" href="zuverlaessigkeit.html">Vorhersage-Check →</a>
+  <header class="site-head">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3c5 7 9 11.6 9 16.2A9 9 0 0 1 7 19.2C7 14.6 11 10 16 3z"/><path class="logo-tick" d="M11.5 19.5l3 3 6-6"/></svg>
+      <div>
+        <h1>Regen-Check</h1>
+        <p>Wie zuverlässig sagen Wetterdienste Regen voraus? Jeden Tag überprüft an <span id="station-count">hunderten</span> DWD-Messstationen.</p>
+      </div>
     </div>
-    <form id="search-form" class="search" autocomplete="off">
-      <input id="search-input" type="search" placeholder="Stadt suchen, z. B. Hamburg" aria-label="Stadt suchen">
-      <button type="submit">Suchen</button>
-      <button type="button" id="locate-btn" title="Meinen Standort verwenden" aria-label="Meinen Standort verwenden">📍</button>
-      <ul id="suggestions" class="suggestions" hidden></ul>
-    </form>
+    <div class="status-chip" id="status-chip" role="status">Lade Daten …</div>
   </header>
 
-  <main>
-    <p id="status" class="status" role="status">Lade Wetterdaten …</p>
-
-    <section id="current" class="card current" hidden>
-      <div class="current-main">
-        <div>
-          <h2 id="place"></h2>
-          <p id="updated" class="muted"></p>
-        </div>
-        <div class="current-temp">
-          <span id="current-icon" class="big-icon"></span>
-          <span id="current-temp"></span>
-        </div>
-        <p id="current-desc" class="current-desc"></p>
+  <nav class="controls" aria-label="Einstellungen">
+    <div class="control">
+      <span class="control-label">Karte zeigt</span>
+      <div class="seg" id="c-mode" role="group" aria-label="Karte zeigt">
+        <button type="button" data-v="reliability" aria-pressed="true">Wie zuverlässig?</button>
+        <button type="button" data-v="best" aria-pressed="false">Wer ist am besten?</button>
       </div>
-      <dl class="stats">
-        <div><dt>Gefühlt</dt><dd id="feels"></dd></div>
-        <div><dt>Luftfeuchte</dt><dd id="humidity"></dd></div>
-        <div><dt>Wind</dt><dd id="wind"></dd></div>
-        <div><dt>Niederschlag</dt><dd id="precip"></dd></div>
-        <div><dt>Luftdruck</dt><dd id="pressure"></dd></div>
-        <div><dt>UV-Index</dt><dd id="uv"></dd></div>
-      </dl>
+    </div>
+    <label class="control" id="c-provider-wrap">
+      <span class="control-label">Wetterdienst</span>
+      <select id="c-provider"></select>
+    </label>
+    <div class="control">
+      <span class="control-label">Genauigkeit</span>
+      <div class="seg" id="c-res" role="group" aria-label="Zeitraster">
+        <button type="button" data-v="h" aria-pressed="true">2 Stunden</button>
+        <button type="button" data-v="d" aria-pressed="false">Ganzer Tag</button>
+      </div>
+    </div>
+    <label class="control">
+      <span class="control-label">Vorhersage für</span>
+      <select id="c-lead"></select>
+    </label>
+    <div class="control">
+      <span class="control-label">Bewertung</span>
+      <div class="seg" id="c-metric" role="group" aria-label="Bewertung">
+        <button type="button" data-v="yn" aria-pressed="true">Regen ja/nein</button>
+        <button type="button" data-v="amount" aria-pressed="false">Regenmenge</button>
+      </div>
+    </div>
+    <label class="control">
+      <span class="control-label">Zeitraum</span>
+      <select id="c-view"></select>
+    </label>
+    <label class="control toggle">
+      <input type="checkbox" id="c-smooth" checked>
+      <span>Glätten (25 km)</span>
+    </label>
+  </nav>
+
+  <p class="notice" id="notice" hidden></p>
+
+  <main>
+    <section class="hero">
+      <div class="card map-card">
+        <div class="card-head">
+          <h2 id="map-title">Karte</h2>
+          <p class="muted" id="map-sub"></p>
+        </div>
+        <div class="map-wrap">
+          <div id="map" class="map" aria-describedby="map-sub"></div>
+          <div id="tip" class="tip" hidden></div>
+        </div>
+        <div id="legend" class="legend"></div>
+      </div>
+
+      <aside class="side">
+        <div class="card">
+          <div class="card-head">
+            <h2 id="kpi-title">Deutschland gesamt</h2>
+            <p class="muted" id="kpi-sub"></p>
+          </div>
+          <div class="kpis" id="kpis"></div>
+        </div>
+        <div class="card" id="station-card">
+          <div class="card-head">
+            <h2 id="station-title">Station</h2>
+            <p class="muted" id="station-sub">Klicke auf die Karte, um eine Station anzusehen.</p>
+          </div>
+          <div class="table-wrap"><table class="table compact" id="station-table"></table></div>
+        </div>
+      </aside>
     </section>
 
-    <section id="hourly" class="card" hidden>
-      <h3>Nächste 24 Stunden</h3>
-      <div id="hourly-chart" class="chart"></div>
+    <section class="card">
+      <div class="card-head">
+        <h2>Welcher Wetterdienst trifft den Regen am besten?</h2>
+        <p class="muted" id="ranking-sub"></p>
+      </div>
+      <p class="winner" id="ranking-winner"></p>
+      <div class="table-wrap"><table class="table" id="ranking"></table></div>
     </section>
 
-    <section id="daily" class="card" hidden>
-      <h3>7-Tage-Vorhersage</h3>
-      <ul id="daily-list" class="daily-list"></ul>
+    <section class="grid-2">
+      <div class="card">
+        <div class="card-head">
+          <h2>Je weiter voraus, desto unsicherer</h2>
+          <p class="muted" id="lead-sub"></p>
+        </div>
+        <div class="chart-box"><canvas id="lead-chart" role="img"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <h2>Jahreszeiten</h2>
+          <p class="muted" id="season-sub"></p>
+        </div>
+        <div class="table-wrap"><table class="table compact" id="seasons"></table></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <h2>Bundesländer</h2>
+        <p class="muted" id="states-sub"></p>
+      </div>
+      <div class="table-wrap"><table class="table compact" id="states"></table></div>
+    </section>
+
+    <section class="card method">
+      <h2>So wird gemessen</h2>
+      <div class="method-grid">
+        <div>
+          <h3>Messwerte</h3>
+          <p>Stündlicher Niederschlag von <span class="station-count">hunderten</span> DWD-Stationen, gleichmäßig über Deutschland verteilt (etwa alle 28 km). Jede Station wurde vorab auf lückenlose Daten geprüft. Ein Tag wird erst ausgewertet, wenn er 10 Tage zurückliegt, damit der DWD fehlende Werte nachliefern kann.</p>
+        </div>
+        <div>
+          <h3>Regen ja/nein</h3>
+          <p>Ein 2-Stunden-Abschnitt gilt ab <strong>0,2 mm</strong> als nass, ein ganzer Tag ab <strong>1 mm</strong>.</p>
+          <ul>
+            <li><strong>Treffsicherheit:</strong> In allen Fällen, in denen Regen angesagt war oder fiel: Wie oft stimmte beides? Trockene Stunden, die richtig als trocken vorhergesagt wurden, zählen nicht mit, sonst lägen alle Dienste bei über 90 %.</li>
+            <li><strong>Regen erkannt:</strong> Anteil der Regenfälle, die vorhergesagt wurden.</li>
+            <li><strong>Fehlalarme:</strong> Anteil der Regenvorhersagen, bei denen es trocken blieb.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Fairer Vergleich</h3>
+          <p>Das Ranking vergleicht jeden Dienst nur in den Zeitabschnitten mit den anderen, in denen er selbst eine Vorhersage hatte (Paarvergleich). „+10 %“ heißt: 10 % weniger Fehler als der Durchschnitt aller Dienste in genau diesen Abschnitten. So sind auch Dienste vergleichbar, die erst seit kurzem gesammelt werden oder nicht so weit vorausrechnen.</p>
+        </div>
+        <div>
+          <h3>Wetterdienste</h3>
+          <p>Sechs Wettermodelle (DWD ICON, ECMWF, NOAA GFS, Météo-France, UK Met Office, GEM Kanada) aus dem Vorhersage-Archiv von <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a>. Dazu kommen die statistisch aufbereiteten Vorhersagen <strong>DWD MOSMIX</strong> (über <a href="https://brightsky.dev" target="_blank" rel="noopener">Bright Sky</a>) und <strong>MET Norway</strong> (<a href="https://api.met.no" target="_blank" rel="noopener">yr.no</a>). Diese beiden haben kein Archiv und werden seit Herbst 2026 jeden Morgen gesammelt. MET Norway liefert nur die ersten gut zwei Tage stündlich und fehlt deshalb im 2-Stunden-Raster ab dem dritten Tag.</p>
+        </div>
+        <div>
+          <h3>Karte</h3>
+          <p>Jede Fläche gehört zur nächstgelegenen Station. „Glätten“ fasst alle Stationen im Umkreis von 25 km zusammen. Das gleicht Zufallsschwankungen einzelner Stationen aus und zeigt regionale Muster. Grau heißt: noch zu wenig Regenfälle für eine Aussage. Landesgrenzen: <a href="https://github.com/isellsoap/deutschlandGeoJSON" target="_blank" rel="noopener">deutschlandGeoJSON</a>.</p>
+        </div>
+        <div>
+          <h3>Zeitraum</h3>
+          <p>Ausgewertet werden die letzten 24 Monate, gleitend. Ältere Monate fallen automatisch heraus, damit die Ergebnisse die aktuellen Versionen der Wettermodelle widerspiegeln.</p>
+        </div>
+      </div>
     </section>
   </main>
 
-  <footer class="muted">Daten: <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a></footer>
+  <footer class="site-foot">
+    Daten: <a href="https://www.dwd.de" target="_blank" rel="noopener">Deutscher Wetterdienst</a> über <a href="https://brightsky.dev" target="_blank" rel="noopener">Bright Sky</a> · <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a> (CC BY 4.0) · <a href="https://api.met.no" target="_blank" rel="noopener">MET Norway</a> (CC BY 4.0) · <a href="wetter.html">Aktuelles Wetter</a>
+  </footer>
 
-  <script src="app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+  <script type="module" src="regen.js?v=__VERSION__"></script>
 </body>
 </html>

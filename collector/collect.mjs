@@ -1,165 +1,185 @@
-// Sammelt täglich Vorhersagen und Messwerte für alle Orte aus config/locations.json.
+// Regen-Check: sammelt Regenvorhersagen und Messwerte und schreibt Monatszähler je Station.
 //
-//   node collector/collect.mjs                  Normalbetrieb: aktuelle Daten + Archiv-Import im Rahmen des Budgets
-//   node collector/collect.mjs --budget 8000    Budget für den Archiv-Import (Open-Meteo-Einheiten, Standard 6000)
-//   node collector/collect.mjs --only luebeck   nur einen Ort
+//   node collector/collect.mjs --collect            Morgenlauf: MOSMIX + MET Norway sammeln, dann auswerten
+//   node collector/collect.mjs                      nur auswerten / Archiv importieren
+//   Optionen: --state <Ordner> (Standard ./state), --budget <Open-Meteo-Einheiten> (Standard 4500),
+//             --minutes <Zeitlimit> (Standard 50), --only <Stations-ID>
 //
-// Archiv-Import: Für jeden Ort und jedes Modell wird das Open-Meteo-Archiv rückwärts bis ARCHIVE_FROM
-// eingelesen, in 92-Tage-Stücken, reihum über alle Orte (zuerst die jüngsten Monate). Der Fortschritt
-// steht in data/archive-progress.json. Bei erreichtem Tageslimit geht es beim nächsten Lauf weiter.
+// Ablauf
+//  1. MOSMIX und MET Norway haben kein Archiv: ihre Vorhersagen werden jeden Morgen in state/pending gelegt.
+//  2. Ist ein Tag „reif“ (10 Tage vorbei, DWD-Messwerte vollständig), wird er ausgewertet: Messwerte und
+//     das Open-Meteo-Archiv der 6 Modelle holen, mit den gesammelten Vorhersagen vergleichen, Zähler in
+//     state/acc/<Station>.json fortschreiben. Das geschieht in Blöcken von mindestens 7 Tagen (spart Abfragen).
+//  3. Mit dem übrigen Budget wird das 24-Monats-Fenster rückwärts gefüllt (jüngste Monate zuerst, reihum).
+//  4. Monate, die aus dem Fenster fallen, werden gelöscht.
 
-import { readFile, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
-import { join } from "node:path";
-import { addDays, localDate, upsertCsv, RateLimitError } from "./util.mjs";
-import { fetchObservations, fetchOpenMeteoArchive, openMeteoCost, fetchMosmix, fetchMetno } from "./sources.mjs";
-import { buildSummary } from "./summarize.mjs";
+import { join, resolve } from "node:path";
+import { addDays, daysBetween, localDate, readJson, writeJson, RateLimitError } from "./util.mjs";
+import { fetchObservations, fetchOpenMeteo, openMeteoCost, fetchMosmix, fetchMetno } from "./sources.mjs";
+import { toRecords, accumulateDay } from "./core.mjs";
+import { windowStart } from "../lib/rain.js";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
-const ARCHIVE_FROM = "2024-01-01";
-const RECENT_DAYS = 14;
-const CHUNK_DAYS = 92;
-const OBS_COLUMNS = ["date", "tmax", "tmin", "precip", "wind"];
-const FC_COLUMNS = ["target", "provider", "lead", "tmax", "tmin", "precip", "wind"];
-const FC_KEY = ["target", "provider", "lead"];
-const USER_AGENT = process.env.MET_USER_AGENT || "WetterVorhersageCheck/1.0 (privates Hobbyprojekt)";
-
 const args = process.argv.slice(2);
-const argValue = (name) => (args.includes(name) ? args[args.indexOf(name) + 1] : null);
-const only = argValue("--only");
-let budget = Number(argValue("--budget") ?? process.env.ARCHIVE_BUDGET ?? 6000);
+const arg = (name, fallback) => (args.includes(name) ? args[args.indexOf(name) + 1] : fallback);
+const STATE = resolve(arg("--state", join(ROOT, "state")));
+const COLLECT = args.includes("--collect");
+let budget = Number(arg("--budget", process.env.ARCHIVE_BUDGET || 4500));
+const deadline = Date.now() + Number(arg("--minutes", 50)) * 60_000;
+const only = arg("--only", null);
+const USER_AGENT = process.env.MET_USER_AGENT || "RegenCheck/1.0 (privates Hobbyprojekt)";
 
-const readJson = async (p, fallback) => {
-  try { return JSON.parse(await readFile(join(ROOT, p), "utf8")); } catch (err) { if (fallback !== undefined) return fallback; throw err; }
+const MATURE_DAYS = 10;  // so lange warten, bis Messwerte vollständig nachgeliefert sind
+const FORWARD_MIN = 7;   // neue Tage erst in Blöcken ab 7 Tagen auswerten
+const CHUNK = 92;        // Archiv-Import in Stücken von 92 Tagen
+
+const now = new Date();
+const today = localDate(now);
+const matureTo = addDays(today, -MATURE_DAYS);
+const wStart = windowStart(now);
+const stations = (await readJson(join(ROOT, "config", "stations.json"))).filter((s) => !only || s.id === only);
+const providers = await readJson(join(ROOT, "config", "providers.json"));
+const archived = providers.filter((p) => p.source === "openmeteo");
+const progress = await readJson(join(STATE, "progress.json"), {});
+const file = (dir, id) => join(STATE, dir, `${id}.json`);
+
+const status = { lastRun: now.toISOString(), collect: COLLECT, errors: [], counts: { gesammelt: 0, ausgewertet: 0, tage: 0 } };
+const fail = (where, err) => {
+  status.errors.push(`${where}: ${String(err.message || err).slice(0, 160)}`);
+  console.error(`✘ ${where}: ${err.message || err}`);
 };
-const locations = (await readJson("config/locations.json")).filter((l) => !only || l.id === only);
-const providers = await readJson("config/providers.json");
-const archiveProviders = providers.filter((p) => p.source === "openmeteo");
-const progress = await readJson("data/archive-progress.json", {});
-const files = (loc) => ({ obs: join(ROOT, "data", loc.id, "observations.csv"), fc: join(ROOT, "data", loc.id, "forecasts.csv") });
 
-const status = { lastRun: new Date().toISOString(), locations: {}, archive: {} };
-let failures = 0;
-
-function log(loc, name, ok, info, t0) {
-  const secs = ((Date.now() - t0) / 1000).toFixed(1);
-  if (ok) console.log(`✔ ${loc.name} · ${name}: ${JSON.stringify(info)} (${secs} s)`);
-  else console.error(`✘ ${loc.name} · ${name}: ${info}`);
+for (const s of stations) {
+  const p = (progress[s.id] ??= { from: addDays(matureTo, 1), to: matureTo });
+  if (p.from < wStart) p.from = wStart; // Fenster gleitet weiter
 }
 
-// ---------- 1. Tägliche Daten für alle Orte ----------
+// ---------- 1. MOSMIX und MET Norway sammeln ----------
 
-for (const loc of locations) {
-  const today = localDate(new Date(), loc.timezone);
-  const yesterday = addDays(today, -1);
-  const start = addDays(today, -RECENT_DAYS);
-  const f = files(loc);
-  const results = [];
-  status.locations[loc.id] = { today, results };
-
-  async function step(name, fn) {
-    const t0 = Date.now();
-    try {
-      const info = await fn();
-      results.push({ step: name, ok: true, ...info });
-      log(loc, name, true, info, t0);
-    } catch (err) {
-      failures++;
-      results.push({ step: name, ok: false, error: String(err.message || err) });
-      log(loc, name, false, err.stack || err, t0);
-    }
-  }
-
-  // Messwerte der letzten Tage erneut prüfen, weil der DWD Werte nachliefert
-  await step("messwerte", async () => upsertCsv(f.obs, OBS_COLUMNS, ["date"], await fetchObservations(loc, start, yesterday), { overwrite: true }));
-
-  for (const p of providers) {
-    if (p.source === "openmeteo") {
-      await step(p.id, async () => {
-        budget -= openMeteoCost(p, start, yesterday);
-        return upsertCsv(f.fc, FC_COLUMNS, FC_KEY, await fetchOpenMeteoArchive(loc, p, start, yesterday), { overwrite: true });
-      });
-    } else if (p.source === "brightsky") {
-      // erster Lauf des Tages zählt → nicht überschreiben
-      await step(p.id, async () => upsertCsv(f.fc, FC_COLUMNS, FC_KEY, await fetchMosmix(loc, p, today), { overwrite: false }));
-    } else if (p.source === "metno") {
-      await step(p.id, async () => upsertCsv(f.fc, FC_COLUMNS, FC_KEY, await fetchMetno(loc, p, today, USER_AGENT), { overwrite: false }));
-    }
-  }
-}
-
-// ---------- 2. Archiv-Import im Rahmen des Budgets ----------
-
-const tasks = locations.flatMap((loc) => ["messwerte", ...archiveProviders.map((p) => p.id)].map((id) => ({ loc, id })));
-const doneTo = (loc, id) => progress[loc.id]?.[id] ?? addDays(localDate(new Date(), loc.timezone), -RECENT_DAYS);
-let stopReason = null;
-const failed = new Set(); // bei Fehlern in diesem Lauf nicht erneut versuchen
-
-archive: while (true) {
-  const open = tasks.filter((t) => doneTo(t.loc, t.id) > ARCHIVE_FROM && !failed.has(`${t.loc.id}|${t.id}`));
-  if (!open.length) break;
-  for (const { loc, id } of open) { // eine Runde: jedes offene Paar ein Stück weiter zurück
-    const end = addDays(doneTo(loc, id), -1);
-    const start = addDays(end, -(CHUNK_DAYS - 1)) < ARCHIVE_FROM ? ARCHIVE_FROM : addDays(end, -(CHUNK_DAYS - 1));
-    const provider = archiveProviders.find((p) => p.id === id);
-    const cost = provider ? openMeteoCost(provider, start, end) : 0;
-    if (cost > budget) { stopReason = "Budget für diesen Lauf aufgebraucht"; break archive; }
-    const t0 = Date.now();
-    const f = files(loc);
-    try {
-      const info = provider
-        ? await upsertCsv(f.fc, FC_COLUMNS, FC_KEY, await fetchOpenMeteoArchive(loc, provider, start, end), { overwrite: true })
-        : await upsertCsv(f.obs, OBS_COLUMNS, ["date"], await fetchObservations(loc, start, end), { overwrite: true });
-      budget -= cost;
-      (progress[loc.id] ??= {})[id] = start;
-      await saveProgress();
-      log(loc, `archiv ${id} ${start}…${end}`, true, info, t0);
-    } catch (err) {
-      if (err instanceof RateLimitError) { stopReason = `Open-Meteo-Limit erreicht: ${err.message}`; break archive; }
-      failures++;
-      failed.add(`${loc.id}|${id}`);
-      log(loc, `archiv ${id} ${start}…${end}`, false, err.stack || err, t0);
-      (status.archiveErrors ??= []).push(`${loc.id}/${id}: ${err.message}`);
-    }
-  }
-}
-
-async function saveProgress() {
-  await writeFile(join(ROOT, "data", "archive-progress.json"), JSON.stringify(progress, null, 2) + "\n", "utf8");
-}
-
-// Fortschritt je Ort in Prozent (für das Dashboard)
-const allLocations = await readJson("config/locations.json");
-for (const loc of allLocations) {
-  const today = localDate(new Date(), loc.timezone);
-  const total = Date.parse(today) - Date.parse(ARCHIVE_FROM);
-  const ids = ["messwerte", ...archiveProviders.map((p) => p.id)];
-  const done = ids.map((id) => {
-    const to = progress[loc.id]?.[id] ?? addDays(today, -RECENT_DAYS);
-    return Math.min(1, (Date.parse(today) - Date.parse(to)) / total);
-  });
-  status.archive[loc.id] = Math.round((100 * done.reduce((a, b) => a + b, 0)) / ids.length);
-}
-if (stopReason) status.archiveNote = stopReason;
-
-// Zusammenfassung für das Dashboard
-try {
+if (COLLECT) {
   const t0 = Date.now();
-  const info = await buildSummary();
-  console.log(`✔ Zusammenfassung: ${info.orte} Orte (${((Date.now() - t0) / 1000).toFixed(1)} s)`);
-} catch (err) {
-  failures++;
-  console.error(`✘ Zusammenfassung: ${err.stack || err}`);
+  for (const s of stations) {
+    const pending = await readJson(file("pending", s.id), {});
+    for (const prov of providers.filter((x) => x.source === "brightsky" || x.source === "metno")) {
+      try {
+        const raw = prov.source === "brightsky" ? await fetchMosmix(s, today, prov.maxLead) : await fetchMetno(s, USER_AGENT);
+        if (!raw) continue; // kein MOSMIX-Punkt in der Nähe
+        const recs = toRecords(raw.fine, raw.coarse);
+        for (let k = 1; k <= prov.maxLead; k++) {
+          const target = addDays(today, k);
+          const rec = recs.get(target);
+          const slot = ((pending[target] ??= {})[prov.id] ??= {});
+          if (rec && !slot[k]) { slot[k] = rec; status.counts.gesammelt++; } // erster Lauf des Tages zählt
+        }
+      } catch (err) {
+        fail(`${s.id}/${prov.id}`, err);
+      }
+    }
+    await writeJson(file("pending", s.id), pending);
+  }
+  console.log(`✔ MOSMIX/MET Norway: ${status.counts.gesammelt} Vorhersagen (${((Date.now() - t0) / 60000).toFixed(1)} min)`);
 }
 
-// status.json: Ergebnisse anderer Orte bei --only erhalten
-if (only) {
-  const old = await readJson("data/status.json", { locations: {} });
-  status.locations = { ...old.locations, ...status.locations };
-}
-await writeFile(join(ROOT, "data", "status.json"), JSON.stringify(status, null, 2) + "\n", "utf8");
+// ---------- 2./3. Auswerten: neue Tage und Archiv ----------
 
-const pending = Object.values(status.archive).some((v) => v < 100);
-console.log(`\nArchiv: ${pending ? `noch nicht vollständig (${stopReason ?? "offen"})` : "vollständig"}.`);
-console.log(failures ? `${failures} Schritt(e) fehlgeschlagen.` : "Alles erfolgreich.");
-process.exitCode = failures ? 1 : 0;
+async function evaluate(s, from, to, forward) {
+  const obs = toRecords(await fetchObservations(s, from, to));
+  const fc = {}; // Datum → Anbieter → Vorlauf → Werte
+  for (const prov of archived) {
+    const byLead = await fetchOpenMeteo(s, prov, from, to);
+    budget -= openMeteoCost(prov, daysBetween(from, to) + 3);
+    for (const [k, series] of Object.entries(byLead)) {
+      for (const [date, rec] of toRecords(series)) {
+        if (date >= from && date <= to) (((fc[date] ??= {})[prov.id] ??= {})[k] = rec);
+      }
+    }
+  }
+  const pending = forward ? await readJson(file("pending", s.id), {}) : {};
+  for (const [date, byProv] of Object.entries(pending)) {
+    if (date < from || date > to) continue;
+    for (const [pid, leads] of Object.entries(byProv)) ((fc[date] ??= {})[pid] = leads);
+  }
+
+  const acc = await readJson(file("acc", s.id), {});
+  for (let d = from; d <= to; d = addDays(d, 1)) accumulateDay(acc, d, obs.get(d), fc[d] || {});
+  for (const m of Object.keys(acc)) if (m < wStart.slice(0, 7)) delete acc[m];
+  await writeJson(file("acc", s.id), acc);
+
+  if (forward) {
+    progress[s.id].to = to;
+    for (const date of Object.keys(pending)) if (date <= to) delete pending[date];
+    await writeJson(file("pending", s.id), pending);
+  } else {
+    progress[s.id].from = from;
+  }
+  await writeJson(join(STATE, "progress.json"), progress);
+  status.counts.ausgewertet++;
+  status.counts.tage += daysBetween(from, to) + 1;
+}
+
+const taskCost = (days) => archived.reduce((sum, prov) => sum + openMeteoCost(prov, days + 3), 0);
+let stopReason = null;
+
+const skipped = new Set(); // Stationen mit Fehler werden in diesem Lauf ausgelassen
+// feste, gut durchmischte Reihenfolge (Goldener-Schnitt-Folge über die Stationsnummern)
+const spread = (s) => (Number(s.id) * 0.6180339887) % 1;
+
+function nextTask() {
+  const active = stations.filter((s) => !skipped.has(s.id));
+  // zuerst neue Tage (vorwärts), dann das Archiv (rückwärts, jüngste Lücke zuerst)
+  const fwd = active.find((s) => daysBetween(progress[s.id].to, matureTo) >= FORWARD_MIN);
+  if (fwd) return { s: fwd, from: addDays(progress[fwd.id].to, 1), to: matureTo, forward: true };
+  // bei gleichem Stand in gestreuter Reihenfolge, damit sich die Karte gleichmäßig füllt
+  const back = active
+    .filter((s) => progress[s.id].from > wStart)
+    .sort((a, b) => (progress[b.id].from > progress[a.id].from ? 1 : progress[b.id].from < progress[a.id].from ? -1 : spread(a) - spread(b)))[0];
+  if (!back) return null;
+  const to = addDays(progress[back.id].from, -1);
+  const from = addDays(to, -(CHUNK - 1)) < wStart ? wStart : addDays(to, -(CHUNK - 1));
+  return { s: back, from, to, forward: false };
+}
+
+while (true) {
+  const task = nextTask();
+  if (!task) break;
+  const cost = taskCost(daysBetween(task.from, task.to) + 1);
+  if (cost > budget) { stopReason = "Budget dieses Laufs aufgebraucht"; break; }
+  if (Date.now() > deadline) { stopReason = "Zeitlimit dieses Laufs erreicht"; break; }
+  try {
+    await evaluate(task.s, task.from, task.to, task.forward);
+    console.log(`✔ ${task.s.name} ${task.forward ? "neu" : "Archiv"} ${task.from}…${task.to} (Budget ${Math.round(budget)})`);
+  } catch (err) {
+    if (err instanceof RateLimitError) { stopReason = `Open-Meteo-Limit: ${err.message}`; break; }
+    fail(`${task.s.id} ${task.from}…${task.to}`, err);
+    skipped.add(task.s.id);
+  }
+}
+
+// ---------- Fortschritt ----------
+
+const all = await readJson(join(ROOT, "config", "stations.json"));
+const full = daysBetween(wStart, matureTo) + 1;
+const shares = all.map((s) => {
+  const p = progress[s.id];
+  return p ? Math.max(0, daysBetween(p.from, p.to) + 1) / full : 0;
+});
+status.archive = Math.round((100 * shares.reduce((a, b) => a + b, 0)) / all.length);
+status.window = { from: wStart, to: matureTo };
+status.note = stopReason;
+
+// Stationen, die nicht mehr in der Konfiguration stehen, aufräumen
+const known = new Set(all.map((s) => s.id));
+for (const id of Object.keys(progress)) if (!known.has(id)) delete progress[id];
+await writeJson(join(STATE, "progress.json"), progress);
+
+// status.json zusammenführen: Fehler des Morgenlaufs bleiben bis zum nächsten Morgenlauf sichtbar
+const old = await readJson(join(STATE, "status.json"), {});
+const merged = { ...old, ...status, collectErrors: COLLECT ? status.errors.filter((e) => /\/(mosmix|metno)/.test(e)) : old.collectErrors || [] };
+await writeJson(join(STATE, "status.json"), merged, true);
+
+console.log(`\nArchiv ${status.archive} % · ${status.counts.ausgewertet} Auswertungen (${status.counts.tage} Stationstage) · ${stopReason || "fertig"}`);
+console.log(status.errors.length ? `${status.errors.length} Fehler.` : "Keine Fehler.");
+// Einzelne Aussetzer (z. B. eine MET-Abfrage) sind normal; rot wird der Lauf erst bei vielen Fehlern
+process.exitCode = status.errors.length > 20 ? 1 : 0;
+

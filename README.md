@@ -1,80 +1,82 @@
-# Wetter-Dashboard & Vorhersage-Check
+# Regen-Check
 
-Zwei Seiten, ohne Build-Schritt und ohne API-Schlüssel:
+**Wie zuverlässig sagen Wetterdienste Regen voraus?** Ausgewertet an 445 DWD-Niederschlagsstationen, gleichmäßig über Deutschland verteilt (etwa alle 28 km), jeden Tag neu.
 
-- **`index.html` – Aktuelles Wetter:** aktuelle Werte, 24-Stunden-Verlauf, 7-Tage-Vorhersage, Ortssuche.
-- **`zuverlaessigkeit.html` – Vorhersage-Check:** Wie genau sind Vorhersagen 1 bis 7 Tage im Voraus? Acht Anbieter werden täglich mit den Messwerten einer DWD-Station verglichen.
+Live: https://pollux1337.github.io/trueweather/
 
-## Anbieter
+## Was gemessen wird
 
-| ID | Anbieter | Quelle | Vorlaufzeit | Daten seit |
-|---|---|---|---|---|
-| `icon` | DWD ICON | Open-Meteo Previous Runs | 1–6 Tage | 2024 |
-| `ecmwf` | ECMWF IFS | Open-Meteo Previous Runs | 1–7 Tage | 2024 |
-| `gfs` | NOAA GFS | Open-Meteo Previous Runs | 1–7 Tage | 2024 |
-| `arpege` | Météo-France | Open-Meteo Previous Runs | 1–3 Tage | 2024 |
-| `ukmo` | UK Met Office | Open-Meteo Previous Runs | 1–6 Tage | Herbst 2024 |
-| `gem` | GEM Kanada | Open-Meteo Previous Runs | 1–7 Tage | 2024 |
-| `mosmix` | DWD MOSMIX | Bright Sky, täglich gesammelt | 1–7 Tage | Projektstart |
-| `metno` | MET Norway (yr) | api.met.no, täglich gesammelt | 1–7 Tage | Projektstart |
+- **Regen ja/nein** und **Regenmenge**
+- **2-Stunden-Abschnitte** für Vorhersagen 1–3 Tage im Voraus, **ganze Tage** für 1–7 Tage
+- **Gleitendes 24-Monats-Fenster:** Ältere Monate fallen automatisch heraus.
 
-**Orte:** die 16 Landeshauptstädte, Lübeck und 51 weitere DWD-Stationen im 70-km-Raster, zusammen 68 (`config/locations.json`). Das Dashboard zeigt jeden Ort einzeln und „Alle Orte (gemittelt)“. Im gemittelten Ranking wird jeder Ort einzeln bewertet und dann gemittelt, sodass jeder Ort gleich viel zählt. Mainz nutzt die Station Geisenheim und Wiesbaden die Station Frankfurt/Main, weil es in beiden Städten keine vollständige DWD-Station gibt.
+Ein 2-Stunden-Abschnitt gilt ab 0,2 mm als nass, ein Tag ab 1 mm. Kennzahlen:
 
-**Messwerte:** DWD-Station je Ort über [Bright Sky](https://brightsky.dev). Ein Tag wird erst ausgewertet, wenn mindestens 22 Stundenwerte vorliegen. Der DWD liefert die Werte mit 1–3 Tagen Verzögerung vollständig nach.
+| Kennzahl | Bedeutung |
+|---|---|
+| Treffsicherheit | Treffer ÷ (Treffer + Fehlalarme + verpasster Regen). Trockene Abschnitte, die richtig vorhergesagt wurden, zählen nicht, sonst lägen alle Dienste über 90 %. |
+| Regen erkannt | Anteil der Regenfälle, die vorhergesagt wurden |
+| Fehlalarme | Anteil der Regenvorhersagen, bei denen es trocken blieb |
+| Ø Abweichung | mittlere Abweichung der Regenmenge in mm |
+| Vergleich zum Durchschnitt | **Paarvergleich:** eigene Fehler gegenüber dem mittleren Fehler aller Dienste in genau denselben Abschnitten. Fair auch für Dienste mit kurzer Datenreihe oder kürzerer Reichweite. |
 
-**Tageswerte:** Höchst- und Tiefsttemperatur, Niederschlagssumme und stärkster Stundenmittelwind, jeweils für 0–24 Uhr Ortszeit. Ein Regentag hat mindestens 1 mm Niederschlag.
+## Wetterdienste
 
-## Karte
+| Dienst | Quelle | Vorlauf | Daten |
+|---|---|---|---|
+| DWD ICON, ECMWF IFS, NOAA GFS, UK Met Office, GEM Kanada | Open-Meteo Previous Runs | 1–7 Tage (ICON, UKMO 1–6) | Archiv, 24 Monate |
+| Météo-France | Open-Meteo Previous Runs | 1–3 Tage | Archiv, 24 Monate |
+| DWD MOSMIX | Bright Sky, nächster MOSMIX-Punkt im Umkreis von 15 km | 1–7 Tage | täglich gesammelt seit Okt. 2026 |
+| MET Norway (yr) | api.met.no | 1–7 Tage, stündlich nur ~2,5 Tage | täglich gesammelt seit Okt. 2026 |
 
-Die Ansicht „Alle Orte“ zeigt eine Deutschlandkarte. Jede Fläche (Voronoi-Zelle) umfasst das Gebiet, das einer Messstation am nächsten liegt, und ist in der Farbe des dort zuverlässigsten Anbieters eingefärbt. Die Karte lässt sich nach Messgröße und Vorlaufzeit (kurz, mittel, lang) filtern. Alternativ zeigt sie für einen einzelnen Anbieter, wo er besser oder schlechter als der Durchschnitt ist. Daneben steht eine Tabelle mit dem besten Anbieter je Bundesland.
+**Messwerte:** stündlicher Niederschlag der DWD-Stationen über [Bright Sky](https://brightsky.dev), ohne Ersatzwerte von Nachbarstationen. Ein Tag wird erst ausgewertet, wenn er 10 Tage zurückliegt, damit der DWD fehlende Werte nachliefern kann.
 
-Weitere Stationen findet `node collector/find-stations.mjs`. Das Skript wählt aus den DWD-Stationslisten gleichmäßig verteilte Stationen mit vollständigen Messungen (Standard: 70-km-Raster, höchstens 800 m hoch). Mit `--write` übernimmt es sie in die Konfiguration.
+## Ablauf
+
+GitHub Actions (`.github/workflows/collect.yml`) läuft zweimal täglich:
+
+- **05:15 UTC:** MOSMIX und MET Norway sammeln, neue Tage auswerten, Archiv importieren
+- **17:15 UTC:** nur auswerten und Archiv importieren
+
+Das Auswerten geschieht in Blöcken von mindestens 7 Tagen, das spart Abfragen. Das Archiv wird rückwärts gefüllt, die jüngsten Monate zuerst und die Stationen gestreut über Deutschland. Jeder Lauf nutzt höchstens 4.500 Open-Meteo-Einheiten, so bleiben Stunden- und Tageslimit eingehalten.
+
+**Speicher:** Statt Rohdaten werden Monatszähler je Station, Dienst und Vorlauf gespeichert (`state/acc/<Station>.json`). Der Datenstand liegt auf dem Zweig **`daten`**. Er wird bei jedem Lauf ersetzt, damit der Git-Verlauf nicht wächst. Eine Sicherungskopie liegt 14 Tage als Actions-Artefakt.
 
 ## Aufbau
 
 ```
-config/locations.json     Orte (neuer Ort = neuer Eintrag, inkl. DWD-Stations-ID)
-config/providers.json     Anbieter und ihre Reichweite
-collector/collect.mjs     Sammel-Skript (Node.js, keine Abhängigkeiten)
-collector/summarize.mjs   erzeugt data/summary.json für „Alle Orte“ und die Karte
-collector/find-stations.mjs  sucht gleichmäßig verteilte DWD-Stationen
-lib/scoring.js            Auswertung, gemeinsam für Browser und Node
-data/<ort>/observations.csv   Messwerte pro Tag
-data/<ort>/forecasts.csv      Vorhersagen: Zieltag, Anbieter, Vorlaufzeit, Werte
-data/status.json          Ergebnis des letzten Sammellaufs
-.github/workflows/collect.yml täglicher Lauf auf GitHub + Veröffentlichung
+index.html, regen.js, regen.css   Webseite „Regen-Check“
+lib/rain.js                       Definitionen und Kennzahlen (Browser und Node)
+config/stations.json              445 Stationen (erzeugt von collector/select-stations.mjs)
+config/providers.json             Wetterdienste
+collector/collect.mjs             Sammeln, Auswerten, Archiv-Import
+collector/sources.mjs             Abfragen: Bright Sky, Open-Meteo, MET Norway
+collector/core.mjs                Stunden → Tage/2-Stunden-Abschnitte, Zähler
+collector/build-site.mjs          baut _site/ mit vorberechneten Daten je Zeitraum
+collector/select-stations.mjs     wählt gleichmäßig verteilte Stationen
+wetter.html                       einfache Seite „Aktuelles Wetter“
 ```
 
-## Lokal benutzen
+## Lokal ausprobieren
 
 ```bash
-npm run collect
+npm run evaluate -- --budget 500
 ```
 
-Das Skript sammelt die aktuellen Vorhersagen und zieht die letzten 14 Tage nach. Danach setzt es den **Archiv-Import** fort: Messwerte und das Open-Meteo-Archiv werden je Ort rückwärts bis 2024-01-01 eingelesen, in 92-Tage-Stücken und reihum über alle Orte. Der Fortschritt steht in `data/archive-progress.json`.
+Wertet mit kleinem Budget aus. Die Daten landen in `state/`.
 
-Open-Meteo erlaubt 10.000 Einheiten pro Tag, der komplette Import für 16 Orte braucht etwa 15.000. Jeder Lauf nutzt deshalb höchstens ein Budget (Standard 6000, änderbar mit `--budget 8000`). Ist das Limit erreicht, hört er sauber auf und macht beim nächsten Lauf weiter.
+```bash
+npm run build
+```
 
-Dashboard lokal ansehen:
+Baut die Seite nach `_site/`.
 
 ```bash
 powershell -ExecutionPolicy Bypass -File serve.ps1
 ```
 
-Dann http://localhost:8000 öffnen. Die Seite muss über einen Webserver laufen, als Datei geöffnet kann sie die CSV-Dateien nicht laden.
+Danach http://localhost:8000/_site/ öffnen.
 
-## Einen Ort hinzufügen
+## Quellen & Lizenzen
 
-1. Die nächste DWD-Station suchen: `https://api.brightsky.dev/sources?lat=<lat>&lon=<lon>` und einen Eintrag mit `observation_type: historical` wählen.
-2. Den Ort in `config/locations.json` eintragen, mit den Koordinaten der Station.
-3. Fertig: Der nächste Lauf sammelt die aktuellen Daten, der Archiv-Import holt die Vergangenheit nach.
-
-## Auf GitHub
-
-Der Workflow läuft täglich um 05:15 UTC. Er speichert die neuen Daten im Repository und veröffentlicht beide Seiten über GitHub Pages. Unter *Actions → Wetterdaten sammeln → Run workflow* lässt er sich auch von Hand starten.
-
-## Datenquellen & Lizenzen
-
-- [Open-Meteo](https://open-meteo.com): CC BY 4.0, kostenlos für nicht-kommerzielle Nutzung
-- [Bright Sky](https://brightsky.dev) / [Deutscher Wetterdienst](https://www.dwd.de): DWD-Open-Data
-- [MET Norway](https://api.met.no): CC BY 4.0
+[Deutscher Wetterdienst](https://www.dwd.de) (Open Data) über [Bright Sky](https://brightsky.dev) · [Open-Meteo](https://open-meteo.com) (CC BY 4.0) · [MET Norway](https://api.met.no) (CC BY 4.0) · Ländergrenzen [deutschlandGeoJSON](https://github.com/isellsoap/deutschlandGeoJSON) (Unlicense)

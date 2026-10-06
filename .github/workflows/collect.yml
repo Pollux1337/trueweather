@@ -1,15 +1,20 @@
-name: Wetterdaten sammeln
+name: Regen-Check
 
 on:
   schedule:
-    - cron: "15 5 * * *" # täglich 05:15 UTC = 07:15 Uhr (Sommerzeit) bzw. 06:15 Uhr (Winterzeit)
+    - cron: "15 5 * * *"  # Morgenlauf: MOSMIX + MET Norway sammeln, auswerten, Archiv importieren
+    - cron: "15 17 * * *" # Abendlauf: nur auswerten und Archiv importieren
   workflow_dispatch:
     inputs:
+      collect:
+        description: "MOSMIX und MET Norway sammeln (nur einmal pro Tag sinnvoll)"
+        type: boolean
+        default: false
       budget:
-        description: "Budget für den Archiv-Import (Open-Meteo-Einheiten, Standard 6000)"
+        description: "Open-Meteo-Budget für den Archiv-Import (Standard 4500)"
         required: false
   push:
-    branches: [main] # bei Code-Änderungen nur das Dashboard neu veröffentlichen
+    branches: [main] # bei Code-Änderungen nur die Seite neu bauen
 
 permissions:
   contents: write
@@ -17,37 +22,53 @@ permissions:
   id-token: write
 
 concurrency:
-  group: wetterdaten
+  group: regen-check
   cancel-in-progress: false
+
+env:
+  REPO_URL: https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git
 
 jobs:
   collect:
     if: github.event_name != 'push'
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
 
-      - name: Daten sammeln
-        env:
-          ARCHIVE_BUDGET: ${{ inputs.budget || '6000' }}
-          MET_USER_AGENT: "WetterVorhersageCheck/1.0 (+https://github.com/${{ github.repository }})"
-        run: node collector/collect.mjs
+      - name: Datenstand holen (Zweig „daten“)
+        run: git clone --quiet --depth 1 --branch daten "$REPO_URL" state || mkdir -p state
 
-      - name: Daten speichern
+      - name: Sammeln und auswerten
+        env:
+          COLLECT: ${{ github.event.schedule == '15 5 * * *' || inputs.collect == true }}
+          ARCHIVE_BUDGET: ${{ inputs.budget || '4500' }}
+          MET_USER_AGENT: "RegenCheck/1.0 (+https://github.com/${{ github.repository }})"
+        run: node collector/collect.mjs --state state $([ "$COLLECT" = "true" ] && echo --collect)
+
+      - name: Datenstand speichern (ersetzt den Zweig, damit der Verlauf nicht wächst)
         if: always()
         run: |
+          cd state
+          rm -rf .git
+          git init --quiet -b daten
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data
-          if git diff --cached --quiet; then
-            echo "Keine neuen Daten."
-          else
-            git commit -m "Wetterdaten $(date -u +%F)"
-            git push
-          fi
+          git add -A
+          git commit --quiet -m "Datenstand $(date -u '+%F %H:%M')"
+          git push --quiet --force "$REPO_URL" daten
+
+      - name: Sicherungskopie (14 Tage)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: datenstand
+          path: state
+          retention-days: 14
+          overwrite: true
 
   deploy:
     needs: collect
@@ -58,18 +79,16 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.ref_name }} # neuester Stand inkl. der gerade gespeicherten Daten
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Zusammenfassung für das Dashboard erzeugen
-        run: node collector/summarize.mjs
-      - name: Versionskennung einsetzen (verhindert veraltete Browser-Caches)
-        run: sed -i "s/__VERSION__/${GITHUB_SHA::7}-${GITHUB_RUN_ID}/g" zuverlaessigkeit.html zuverlaessigkeit.js
+      - name: Datenstand holen
+        run: git clone --quiet --depth 1 --branch daten "$REPO_URL" state || mkdir -p state
+      - name: Seite bauen
+        run: node collector/build-site.mjs --state state --version "${GITHUB_SHA::7}-${GITHUB_RUN_ID}"
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
       - id: deployment
         uses: actions/deploy-pages@v4

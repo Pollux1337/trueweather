@@ -1,10 +1,13 @@
 {
-  "name": "wetter-dashboard",
+  "name": "regen-check",
   "private": true,
   "type": "module",
-  "description": "Wetter-Dashboard und Zuverlässigkeits-Check für Wettervorhersagen",
+  "description": "Wie zuverlässig sagen Wetterdienste Regen voraus? Auswertung an DWD-Stationen.",
   "engines": { "node": ">=20" },
   "scripts": {
-    "collect": "node collector/collect.mjs"
+    "collect": "node collector/collect.mjs --collect",
+    "evaluate": "node collector/collect.mjs",
+    "build": "node collector/build-site.mjs",
+    "stations": "node collector/select-stations.mjs"
   }
 }

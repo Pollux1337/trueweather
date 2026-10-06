@@ -1,141 +1,99 @@
-import { fetchJson, aggregateDaily, addDays, daysBetween, localDate, round1, sleep } from "./util.mjs";
+// Datenquellen. Alle liefern stündliche Niederschlagsmengen als Map(Stundenschlüssel → mm),
+// Schlüssel = Beginn der Stunde in deutscher Ortszeit (siehe util.hourKey).
+
+import { fetchJson, addDays, hourKey, hourKeyFromEnd, sleep } from "./util.mjs";
+
+const add = (map, key, mm) => map.set(key, (map.get(key) || 0) + mm);
 
 // ---------- Messwerte: DWD-Station über Bright Sky ----------
 
-export async function fetchObservations(loc, start, end) {
-  const points = new Map(); // timestamp -> Stundenwert
-  for (let from = start; from <= end; from = addDays(from, 30)) {
-    const to = addDays(from, 30) <= end ? addDays(from, 30) : addDays(end, 1);
-    const url = `https://api.brightsky.dev/weather?dwd_station_id=${loc.dwdStation}&date=${from}&last_date=${to}&tz=${encodeURIComponent(loc.timezone)}`;
-    const j = await fetchJson(url);
-    const obsSources = new Set(j.sources.filter((s) => s.observation_type !== "forecast").map((s) => s.id));
+export async function fetchObservations(station, from, to) {
+  const series = new Map();
+  // ein Tag Rand, damit auch die ersten/letzten Stunden in Ortszeit vollständig sind
+  for (let a = addDays(from, -1); a <= addDays(to, 1); a = addDays(a, 31)) {
+    const b = addDays(a, 31) < addDays(to, 2) ? addDays(a, 31) : addDays(to, 2);
+    const j = await fetchJson(`https://api.brightsky.dev/weather?dwd_station_id=${station.id}&date=${a}&last_date=${b}&tz=UTC`);
+    const own = new Set(j.sources.filter((s) => s.observation_type !== "forecast").map((s) => s.id));
     for (const w of j.weather) {
-      if (!obsSources.has(w.source_id)) continue;
-      const date = w.timestamp.slice(0, 10);
-      if (date < start || date > end) continue;
-      points.set(w.timestamp, { date, temp: w.temperature, precip: w.precipitation, wind: w.wind_speed });
+      // nur Werte dieser Station, keine Ersatzwerte von Nachbarstationen
+      if (!own.has(w.source_id) || w.precipitation == null || (w.fallback_source_ids || {}).precipitation) continue;
+      add(series, hourKeyFromEnd(new Date(w.timestamp)), w.precipitation);
     }
   }
-  const days = aggregateDaily([...points.values()]);
-  // Nur Tage mit vollständiger Temperatur gelten als gemessen
-  return [...days].filter(([, d]) => d.tmax != null).map(([date, d]) => ({ date, ...d }));
+  return series;
 }
 
 // ---------- Open-Meteo: archivierte Vorhersagen (Previous Runs API) ----------
-// temperature_2m_previous_dayK = Vorhersage, die K Tage vorher für diese Stunde gemacht wurde.
+// precipitation_previous_dayK = Vorhersage, die K Tage vorher für diese Stunde gemacht wurde
 
-// Open-Meteo zählt große Abfragen mehrfach: je 10 Variablen und je 14 Tage eine Einheit
-export function openMeteoCost(provider, start, end) {
-  const days = daysBetween(start, end) + 1;
-  const chunks = Math.ceil(days / 92);
-  return chunks * Math.max(1, (provider.maxLead * 3) / 10) * Math.max(1, Math.min(days, 92) / 14);
-}
+// Open-Meteo zählt Abfragen mit mehr als 10 Variablen oder 14 Tagen mehrfach
+export const openMeteoCost = (provider, days) => Math.max(1, provider.maxLead / 10) * Math.max(1, days / 14);
 
-export async function fetchOpenMeteoArchive(loc, provider, start, end) {
+export async function fetchOpenMeteo(station, provider, from, to) {
   const leads = Array.from({ length: provider.maxLead }, (_, i) => i + 1);
-  const vars = leads.flatMap((k) => [`temperature_2m_previous_day${k}`, `precipitation_previous_day${k}`, `wind_speed_10m_previous_day${k}`]);
-  const rows = [];
-  for (let from = start; from <= end; from = addDays(from, 92)) {
-    const to = addDays(from, 91) < end ? addDays(from, 91) : end;
-    const params = new URLSearchParams({
-      latitude: loc.lat, longitude: loc.lon, hourly: vars.join(","), models: provider.model,
-      start_date: from, end_date: to, timezone: loc.timezone, wind_speed_unit: "kmh",
-    });
-    const j = await fetchJson(`https://previous-runs-api.open-meteo.com/v1/forecast?${params}`);
-    const h = j.hourly;
-    const col = (name) => h[name] ?? h[`${name}_${provider.model}`] ?? [];
-    for (const k of leads) {
-      const t = col(`temperature_2m_previous_day${k}`), p = col(`precipitation_previous_day${k}`), w = col(`wind_speed_10m_previous_day${k}`);
-      const points = h.time.map((time, i) => ({ date: time.slice(0, 10), temp: t[i], precip: p[i], wind: w[i] }));
-      for (const [target, d] of aggregateDaily(points)) {
-        if (d.tmax != null) rows.push({ target, provider: provider.id, lead: k, ...d });
-      }
-    }
-    await sleep(Math.max(1_000, openMeteoCost(provider, from, to) * 130)); // Minutenlimit (600 Einheiten) schonen
+  const params = new URLSearchParams({
+    latitude: station.lat, longitude: station.lon, models: provider.model, timezone: "GMT",
+    hourly: leads.map((k) => `precipitation_previous_day${k}`).join(","),
+    start_date: addDays(from, -1), end_date: addDays(to, 1),
+  });
+  const j = await fetchJson(`https://previous-runs-api.open-meteo.com/v1/forecast?${params}`);
+  const h = j.hourly;
+  const byLead = {};
+  for (const k of leads) {
+    const col = h[`precipitation_previous_day${k}`] ?? h[`precipitation_previous_day${k}_${provider.model}`] ?? [];
+    const series = new Map();
+    h.time.forEach((t, i) => { if (col[i] != null) add(series, hourKeyFromEnd(new Date(t + ":00Z")), col[i]); });
+    byLead[k] = series;
   }
-  return rows;
+  await sleep(Math.max(800, openMeteoCost(provider, Math.round((Date.parse(to) - Date.parse(from)) / 86_400_000) + 3) * 130)); // Minutenlimit schonen
+  return byLead;
 }
 
 // ---------- DWD MOSMIX über Bright Sky (aktuelle Vorhersage, täglich gesammelt) ----------
 
-export async function fetchMosmix(loc, provider, today) {
-  const range = `date=${addDays(today, 1)}&last_date=${addDays(today, provider.maxLead + 1)}&tz=${encodeURIComponent(loc.timezone)}`;
+export async function fetchMosmix(station, today, maxLead) {
+  const range = `date=${today}&last_date=${addDays(today, maxLead + 2)}&tz=UTC`;
   let j;
   try {
-    j = await fetchJson(`https://api.brightsky.dev/weather?dwd_station_id=${loc.dwdStation}&${range}`);
+    j = await fetchJson(`https://api.brightsky.dev/weather?dwd_station_id=${station.id}&${range}`);
   } catch (err) {
-    // Manche MOSMIX-Punkte haben keine DWD-Stationsnummer (z. B. Münsingen) oder fehlen kurzzeitig:
-    // dann die nächste MOSMIX-Vorhersage im Umkreis von 10 km nehmen
-    if (!/HTTP 404/.test(err.message)) throw err;
-    j = await fetchJson(`https://api.brightsky.dev/weather?lat=${loc.lat}&lon=${loc.lon}&max_dist=10000&${range}`);
+    // Die meisten Regenstationen haben keinen eigenen MOSMIX-Punkt: nächsten im Umkreis von 15 km nehmen
+    if (err.status !== 404) throw err;
+    try {
+      j = await fetchJson(`https://api.brightsky.dev/weather?lat=${station.lat}&lon=${station.lon}&max_dist=15000&${range}`);
+    } catch (err2) {
+      if (err2.status === 404) return null; // kein MOSMIX in der Nähe
+      throw err2;
+    }
   }
-  const fcSources = new Set(j.sources.filter((s) => s.observation_type === "forecast").map((s) => s.id));
-  const points = j.weather
-    .filter((w) => fcSources.has(w.source_id))
-    .map((w) => ({ date: w.timestamp.slice(0, 10), temp: w.temperature, precip: w.precipitation, wind: w.wind_speed }));
-  return toLeadRows(aggregateDaily(points), provider, today);
+  const fc = new Set(j.sources.filter((s) => s.observation_type === "forecast").map((s) => s.id));
+  const series = new Map();
+  for (const w of j.weather) {
+    if (fc.has(w.source_id) && w.precipitation != null) add(series, hourKeyFromEnd(new Date(w.timestamp)), w.precipitation);
+  }
+  return { fine: series, coarse: new Map() };
 }
 
 // ---------- MET Norway Locationforecast (aktuelle Vorhersage, täglich gesammelt) ----------
-// Die ersten ~2,5 Tage kommen stündlich, danach in 6-Stunden-Blöcken.
+// Die ersten ~2,5 Tage stündlich („fine“), danach 6-Stunden-Blöcke („coarse“, gleichmäßig verteilt).
+// 2-Stunden-Abschnitte werden nur aus stündlichen Werten gebildet.
 
-export async function fetchMetno(loc, provider, today, userAgent) {
-  const url = `https://api.met.no/weatherapi/locationforecast/2.0/complete?lat=${loc.lat.toFixed(4)}&lon=${loc.lon.toFixed(4)}`;
+export async function fetchMetno(station, userAgent) {
+  const url = `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${station.lat.toFixed(4)}&lon=${station.lon.toFixed(4)}`;
   const j = await fetchJson(url, { headers: { "User-Agent": userAgent } });
   const ts = j.properties.timeseries;
-  const days = new Map();
-  const day = (date) => {
-    if (!days.has(date)) days.set(date, { temps: [], precip: 0, precipHours: 0, winds: [], hours: 0 });
-    return days.get(date);
-  };
-
+  const fine = new Map(), coarse = new Map();
   for (let i = 0; i < ts.length; i++) {
-    const e = ts[i];
-    const start = new Date(e.time);
-    const next = ts[i + 1] ? new Date(ts[i + 1].time) : null;
-    const gap = next ? Math.round((next - start) / 3_600_000) : 0;
-    const d = e.data;
-    const block = d.next_1_hours && gap === 1 ? { h: 1, ...d.next_1_hours.details } : d.next_6_hours ? { h: Math.min(6, gap || 6), ...d.next_6_hours.details } : null;
-    if (!block) continue;
-
-    // Temperatur und Wind (Momentanwert) gehören zum Startzeitpunkt
-    const startDay = day(localDate(start, loc.timezone));
-    startDay.temps.push(d.instant.details.air_temperature);
-    startDay.winds.push(d.instant.details.wind_speed * 3.6);
-
-    // Blockwerte: Extremwerte zum Tag der Blockmitte, Niederschlag anteilig pro Stunde
-    const mid = new Date(start.getTime() + (block.h / 2) * 3_600_000);
-    const midDay = day(localDate(mid, loc.timezone));
-    if (block.air_temperature_max != null) midDay.temps.push(block.air_temperature_max);
-    if (block.air_temperature_min != null) midDay.temps.push(block.air_temperature_min);
-    for (let k = 0; k < block.h; k++) {
-      const hourDay = day(localDate(new Date(start.getTime() + k * 3_600_000), loc.timezone));
-      hourDay.hours++;
-      if (block.precipitation_amount != null) {
-        hourDay.precip += block.precipitation_amount / block.h;
-        hourDay.precipHours++;
-      }
+    const start = new Date(ts[i].time);
+    const gap = ts[i + 1] ? Math.round((new Date(ts[i + 1].time) - start) / 3_600_000) : 0;
+    const d = ts[i].data;
+    if (d.next_1_hours && gap === 1) {
+      add(fine, hourKey(start), d.next_1_hours.details.precipitation_amount ?? 0);
+    } else if (d.next_6_hours && gap > 1) {
+      const hours = Math.min(6, gap);
+      const mm = d.next_6_hours.details.precipitation_amount ?? 0;
+      for (let k = 0; k < hours; k++) add(coarse, hourKey(new Date(start.getTime() + k * 3_600_000)), mm / hours);
     }
   }
-
-  const result = new Map();
-  for (const [date, d] of days) {
-    if (d.hours < 22 || !d.temps.length) continue; // Tag nicht vollständig abgedeckt
-    result.set(date, {
-      tmax: round1(Math.max(...d.temps)),
-      tmin: round1(Math.min(...d.temps)),
-      precip: d.precipHours >= 22 ? round1(d.precip) : null,
-      wind: round1(Math.max(...d.winds)),
-    });
-  }
-  return toLeadRows(result, provider, today);
-}
-
-function toLeadRows(days, provider, today) {
-  const rows = [];
-  for (const [target, d] of days) {
-    const lead = daysBetween(today, target);
-    if (lead >= 1 && lead <= provider.maxLead && d.tmax != null) rows.push({ target, provider: provider.id, lead, ...d });
-  }
-  return rows;
+  return { fine, coarse };
 }
