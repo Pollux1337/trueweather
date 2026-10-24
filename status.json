@@ -1,0 +1,17 @@
+{
+ "lastRun": "2026-10-24T19:29:34.137Z",
+ "collect": false,
+ "errors": [],
+ "counts": {
+  "gesammelt": 0,
+  "ausgewertet": 0,
+  "tage": 0
+ },
+ "archive": 99,
+ "window": {
+  "from": "2024-10-01",
+  "to": "2026-10-14"
+ },
+ "note": null,
+ "collectErrors": []
+}
